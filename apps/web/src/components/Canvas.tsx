@@ -1,12 +1,12 @@
 // React-Konva canvas component for Little Chef editor
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Stage, Layer, Rect, Text, Group } from 'react-konva';
-import { Doc, Node, Op, applyOps, snapToGrid } from '@little-chef/dsl';
+import { Doc, Node, Op, snapToGrid } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface CanvasProps {
   doc: Doc;
-  onDocChange: (doc: Doc) => void;
+  onDocChange: (ops: Op[]) => void;
   selectedIds: string[];
   onSelectionChange: (ids: string[]) => void;
   zoom: number;
@@ -63,9 +63,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         patch: { x: newX, y: newY }
       };
       
-      // Apply operation locally first
-      const updatedDoc = applyOps(doc, [op]);
-      onDocChange(updatedDoc);
+      // Send operation to parent
+      onDocChange([op]);
       
       // Send to server
       apiClient.appendOps(doc.id, [op]).catch(console.error);
@@ -77,8 +76,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   // Render different node types
   const renderNode = (node: Node) => {
     const isSelected = selectedIds.includes(node.id);
-    const strokeColor = isSelected ? '#4c93af' : node.stroke || 'transparent';
-    const strokeWidth = isSelected ? 2 : node.strokeWidth || 0;
+    const strokeColor = isSelected ? '#4c93af' : ('stroke' in node ? node.stroke : undefined) || 'transparent';
+    const strokeWidth = isSelected ? 2 : ('strokeWidth' in node ? node.strokeWidth : undefined) || 0;
 
     switch (node.type) {
       case 'rect':

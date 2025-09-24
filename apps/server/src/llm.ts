@@ -11,7 +11,6 @@ export class LLMClient {
     this.model = this.genAI.getGenerativeModel({ 
       model: 'gemini-1.5-flash',
       generationConfig: {
-        responseMimeType: 'application/json',
         temperature: 0.3,
         maxOutputTokens: 2048,
       }

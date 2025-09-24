@@ -1,9 +1,9 @@
 // Document editor page
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Doc, Node, Op, applyOps } from '@little-chef/dsl';
-import { apiClient } from '../lib/api';
-import { Canvas } from '../../components/Canvas';
+import { Doc, Op, applyOps } from '@little-chef/dsl';
+import { apiClient } from '../../lib/api';
+import { Canvas } from '../../components/CanvasWrapper';
 import { Inspector } from '../../components/Inspector';
 import { PromptBox } from '../../components/PromptBox';
 
@@ -13,8 +13,8 @@ export default function DocumentEditor() {
   
   const [doc, setDoc] = useState<Doc | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [zoom] = useState(1);
+  const [pan] = useState({ x: 0, y: 0 });
   const [error, setError] = useState<string | null>(null);
   const [collaborators, setCollaborators] = useState(0);
   

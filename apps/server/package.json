@@ -14,7 +14,7 @@
     "@fastify/cors": "^8.4.0",
     "@fastify/websocket": "^8.3.1",
     "@google/generative-ai": "^0.2.1",
-    "@little-chef/dsl": "workspace:*",
+    "@little-chef/dsl": "file:../../packages/dsl",
     "dotenv": "^16.3.1",
     "fastify": "^4.25.2",
     "zod": "^3.22.4"

@@ -11,7 +11,7 @@
     "clean": "rm -rf .next dist"
   },
   "dependencies": {
-    "@little-chef/dsl": "workspace:*",
+    "@little-chef/dsl": "file:../../packages/dsl",
     "konva": "^9.2.0",
     "next": "^14.0.4",
     "react": "^18.2.0",

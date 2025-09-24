@@ -1,6 +1,7 @@
 // Home page - list documents and create new ones
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Doc } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
@@ -63,7 +64,16 @@ export default function HomePage() {
     <div className="container">
       <nav className="navbar">
         <div className="nav-inner">
-          <div className="brand">Little Chef</div>
+          <div className="brand">
+            <Image 
+              src="/assets/littleChef.png" 
+              alt="Little Chef" 
+              width={32} 
+              height={32}
+              style={{ marginRight: '8px' }}
+            />
+            Little Chef
+          </div>
           <div className="nav-spacer"></div>
           <button 
             className="nav-cta"
@@ -75,12 +85,13 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <div className="hero">
+      <div className="hero" style={{ padding: '20px', borderRadius: '10px' }}>
         <div className="hero-inner">
-          <div>
-            <h1 className="display">Little Chef</h1>
+          <div >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+              <h1 className="display">Little Chef</h1>
+            </div>
             <p className="lead">
-              Create beautiful designs with the power of AI. 
               Describe what you want, and Little Chef will bring it to life.
             </p>
             <button 

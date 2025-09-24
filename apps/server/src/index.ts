@@ -42,7 +42,7 @@ async function buildServer() {
 
   // Initialize services
   const store = new Store();
-  const llmClient = new LLMClient(GOOGLE_API_KEY);
+  const llmClient = new LLMClient(GOOGLE_API_KEY!);
 
   // Register routes
   registerRoutes(fastify, store, llmClient);
@@ -77,7 +77,7 @@ async function buildServer() {
       connection.socket.send(JSON.stringify(message));
 
       // Handle incoming messages (for future features)
-      connection.socket.on('message', (message) => {
+      connection.socket.on('message', (message: any) => {
         try {
           const data = JSON.parse(message.toString());
           console.log('Received WebSocket message:', data);
@@ -111,6 +111,24 @@ async function start() {
     
     console.log(`🚀 Little Chef server running on http://localhost:${PORT}`);
     console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}/v1/sync`);
+    
+    // Graceful shutdown handling
+    const gracefulShutdown = async (signal: string) => {
+      console.log(`\n${signal} received. Shutting down gracefully...`);
+      try {
+        await server.close();
+        console.log('Server closed successfully');
+        process.exit(0);
+      } catch (err) {
+        console.error('Error during shutdown:', err);
+        process.exit(1);
+      }
+    };
+
+    // Handle different termination signals
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+    
   } catch (err) {
     console.error('Error starting server:', err);
     process.exit(1);

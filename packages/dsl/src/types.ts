@@ -75,6 +75,6 @@ export interface Doc {
 
 export type Op =
   | { t: 'add'; node: Node }
-  | { t: 'update'; id: string; patch: Partial<Node> }
+  | { t: 'update'; id: string; patch: Record<string, any> }
   | { t: 'remove'; id: string }
   | { t: 'reorder'; id: string; z: number };

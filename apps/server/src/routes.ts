@@ -7,9 +7,9 @@ import { CreateDocRequest, CreateDocResponse, GetDocResponse, AppendOpsRequest, 
 
 export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient: LLMClient) {
   // Create a new document
-  fastify.post<{ Body: CreateDocRequest; Reply: CreateDocResponse }>('/v1/doc', async (request, reply) => {
+  fastify.post('/v1/doc', async (request, reply) => {
     try {
-      const { width = 800, height = 600, title } = request.body;
+      const { width = 800, height = 600, title } = request.body as CreateDocRequest;
       
       const doc = newDoc({ width, height, title });
       store.createDoc(doc);
@@ -47,9 +47,9 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
   });
 
   // Append operations to document
-  fastify.post<{ Body: AppendOpsRequest; Reply: AppendOpsResponse }>('/v1/ops', async (request, reply) => {
+  fastify.post('/v1/ops', async (request, reply) => {
     try {
-      const { docId, ops } = request.body;
+      const { docId, ops } = request.body as AppendOpsRequest;
       
       // Validate operations
       const validatedOps = validateOps(ops);
@@ -83,9 +83,9 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
   });
 
   // Generate operations using LLM
-  fastify.post<{ Body: GenerateRequest; Reply: GenerateResponse }>('/v1/generate', async (request, reply) => {
+  fastify.post('/v1/generate', async (request, reply) => {
     try {
-      const { docId, prompt, palette } = request.body;
+      const { docId, prompt, palette } = request.body as GenerateRequest;
       
       // Get current document
       const doc = store.getDoc(docId);
