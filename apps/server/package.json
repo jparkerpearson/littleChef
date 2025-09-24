@@ -1,0 +1,28 @@
+{
+  "name": "@little-chef/server",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.4.0",
+    "@fastify/websocket": "^8.3.1",
+    "@google/generative-ai": "^0.2.1",
+    "@little-chef/dsl": "workspace:*",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.25.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "pino-pretty": "^10.3.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
+  }
+}
