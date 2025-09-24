@@ -12,6 +12,7 @@ export interface RectNode {
   stroke?: ColorHex;
   strokeWidth?: number;
   cornerRadius?: number;
+  rotation?: number;
 }
 
 export interface TextNode {
@@ -28,6 +29,7 @@ export interface TextNode {
   fill: ColorHex;
   align: 'left' | 'center' | 'right';
   verticalAlign: 'top' | 'middle' | 'bottom';
+  rotation?: number;
 }
 
 export interface ButtonNode {
@@ -46,6 +48,7 @@ export interface ButtonNode {
   fontFamily: string;
   fontWeight: string;
   textFill: ColorHex;
+  rotation?: number;
 }
 
 export interface ImageNode {
@@ -57,6 +60,7 @@ export interface ImageNode {
   height: number;
   src: string;
   cornerRadius?: number;
+  rotation?: number;
 }
 
 export type Node = RectNode | TextNode | ButtonNode | ImageNode;

@@ -859,6 +859,90 @@ textarea.input {
   color: var(--gray-700);
 }
 
+/* === Toolbar === */
+.toolbar {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+  white-space: nowrap;
+  min-width: 60px;
+}
+
+.toolbar-button:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-300);
+}
+
+.toolbar-button.active {
+  background: var(--brand-teal);
+  border-color: var(--brand-teal);
+  color: var(--white);
+}
+
+/* === Context Menu === */
+.context-menu {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+.context-menu-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  background: var(--white);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-700);
+  transition: background-color 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.context-menu-item:hover {
+  background: var(--gray-100);
+}
+
+.context-menu-item:active {
+  background: var(--gray-200);
+}
+
 /* === Responsive Design === */
 @media (max-width: 1200px) {
   .editor-content {

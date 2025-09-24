@@ -6,6 +6,7 @@ import { apiClient } from '../../lib/api';
 import { Canvas } from '../../components/CanvasWrapper';
 import { Inspector } from '../../components/Inspector';
 import { PromptBox } from '../../components/PromptBox';
+import { Toolbar } from '../../components/Toolbar';
 
 export default function DocumentEditor() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function DocumentEditor() {
   const [error, setError] = useState<string | null>(null);
   const [collaborators, setCollaborators] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [creationMode, setCreationMode] = useState<'none' | 'rect' | 'text' | 'button' | 'image'>('none');
 
   const wsRef = useRef<WebSocket | null>(null);
   const undoStack = useRef<Doc[]>([]);
@@ -215,6 +217,10 @@ export default function DocumentEditor() {
 
       <div className="editor-content">
         <div className="editor-sidebar">
+          <Toolbar
+            creationMode={creationMode}
+            onCreationModeChange={setCreationMode}
+          />
           <PromptBox
             docId={doc.id}
             onGenerate={handleGenerate}
@@ -231,6 +237,8 @@ export default function DocumentEditor() {
               onSelectionChange={setSelectedIds}
               zoom={zoom}
               pan={pan}
+              creationMode={creationMode}
+              onCreationModeChange={setCreationMode}
             />
           </div>
 
