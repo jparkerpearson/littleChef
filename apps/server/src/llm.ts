@@ -3,21 +3,30 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Op, Doc, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
 
 export class LLMClient {
-  private genAI: GoogleGenerativeAI;
+  private genAI: GoogleGenerativeAI | null;
   private model: any;
 
   constructor(apiKey: string) {
-    this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 2048,
-      }
-    });
+    if (!apiKey || apiKey === 'your_gemini_api_key_here') {
+      this.genAI = null;
+      this.model = null;
+    } else {
+      this.genAI = new GoogleGenerativeAI(apiKey);
+      this.model = this.genAI.getGenerativeModel({ 
+        model: 'gemini-1.5-flash',
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 2048,
+        }
+      });
+    }
   }
 
   async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
+    if (!this.model) {
+      throw new Error('LLM API key not configured. Please set GOOGLE_API_KEY in apps/server/.env');
+    }
+    
     const systemPrompt = this.buildSystemPrompt(palette);
     const userPrompt = this.buildUserPrompt(doc, prompt);
     
