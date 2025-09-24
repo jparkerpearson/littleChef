@@ -10,21 +10,25 @@ import { PromptBox } from '../../components/PromptBox';
 export default function DocumentEditor() {
   const router = useRouter();
   const { id } = router.query;
-  
+
   const [doc, setDoc] = useState<Doc | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [zoom] = useState(1);
   const [pan] = useState({ x: 0, y: 0 });
   const [error, setError] = useState<string | null>(null);
   const [collaborators, setCollaborators] = useState(0);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   const wsRef = useRef<WebSocket | null>(null);
   const undoStack = useRef<Doc[]>([]);
   const redoStack = useRef<Doc[]>([]);
+  const loadingStartTime = useRef<number>(Date.now());
 
   useEffect(() => {
     if (!id || typeof id !== 'string') return;
 
+    loadingStartTime.current = Date.now();
+    setIsLoading(true);
     loadDocument(id);
     connectWebSocket(id);
 
@@ -39,15 +43,25 @@ export default function DocumentEditor() {
     try {
       const response = await apiClient.fetchDoc(docId);
       setDoc(response.snapshot);
-      
+
       // Apply any operations since the snapshot
       if (response.opsSince.length > 0) {
         const updatedDoc = applyOps(response.snapshot, response.opsSince);
         setDoc(updatedDoc);
       }
+
+      // Ensure minimum loading time of 1.5 seconds
+      const elapsedTime = Date.now() - loadingStartTime.current;
+      const remainingTime = Math.max(0, 1800 - elapsedTime);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, remainingTime);
+
     } catch (error) {
       console.error('Failed to load document:', error);
       setError('Failed to load document');
+      setIsLoading(false);
     }
   };
 
@@ -61,7 +75,7 @@ export default function DocumentEditor() {
         if (doc) {
           const updatedDoc = applyOps(doc, message.ops);
           setDoc(updatedDoc);
-          
+
           // Update collaborator count (rough estimate)
           setCollaborators(prev => Math.max(prev, 2));
         }
@@ -109,7 +123,7 @@ export default function DocumentEditor() {
       e.preventDefault();
       const step = e.shiftKey ? 8 : 1;
       const delta = { x: 0, y: 0 };
-      
+
       switch (e.key) {
         case 'ArrowUp': delta.y = -step; break;
         case 'ArrowDown': delta.y = step; break;
@@ -141,7 +155,7 @@ export default function DocumentEditor() {
 
   const undo = () => {
     if (undoStack.current.length === 0) return;
-    
+
     const previousDoc = undoStack.current.pop()!;
     redoStack.current.push(doc!);
     setDoc(previousDoc);
@@ -149,7 +163,7 @@ export default function DocumentEditor() {
 
   const redo = () => {
     if (redoStack.current.length === 0) return;
-    
+
     const nextDoc = redoStack.current.pop()!;
     undoStack.current.push(doc!);
     setDoc(nextDoc);
@@ -157,14 +171,22 @@ export default function DocumentEditor() {
 
   if (!doc) {
     return (
-      <div className="container">
-        <div className="hero">
-          <div className="hero-inner">
-            <div>
-              <h1 className="display">Loading...</h1>
-              <p className="lead">Loading your document...</p>
+      <div className="editor-layout">
+        <nav className="navbar">
+          <div className="nav-inner">
+            <div className="brand">
+              <img src="/assets/littleChef.png" alt="Little Chef" className="brand-logo" />
+              Little Chef
             </div>
+            <div className="nav-spacer"></div>
           </div>
+        </nav>
+        <div className="editor-content">
+          <div className="editor-sidebar"></div>
+          <div className="editor-main">
+            <div className="canvas-wrapper"></div>
+          </div>
+          <div className="editor-sidebar"></div>
         </div>
       </div>
     );
@@ -176,7 +198,10 @@ export default function DocumentEditor() {
     <div className="editor-layout" onKeyDown={handleKeyDown} tabIndex={0}>
       <nav className="navbar">
         <div className="nav-inner">
-          <div className="brand">Little Chef</div>
+          <div className="brand">
+            <img src="/assets/littleChef.png" alt="Little Chef" className="brand-logo" />
+            Little Chef
+          </div>
           <div className="nav-spacer"></div>
           <div className="collaborators">
             {collaborators > 0 && (
@@ -208,7 +233,7 @@ export default function DocumentEditor() {
               pan={pan}
             />
           </div>
-          
+
           {error && (
             <div className="error-banner">
               {error}
@@ -224,6 +249,26 @@ export default function DocumentEditor() {
           />
         </div>
       </div>
+
+      {isLoading && (
+        <div className="loading-modal">
+          <div className="loading-modal-content">
+            <div className="loading-animation">
+              {/* <div className="chef-hat">
+                <div className="hat-top"></div>
+                <div className="hat-band"></div>
+              </div> */}
+              <div className="cooking-ingredients">
+                <div className="ingredient ingredient--tomato"></div>
+                <div className="ingredient ingredient--carrot"></div>
+                <div className="ingredient ingredient--onion"></div>
+              </div>
+            </div>
+            <h2 className="loading-title">Little Chef is cooking...</h2>
+            <p className="loading-subtitle">Preparing your document...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,37 +7,32 @@ export class LLMClient {
   private model: any;
 
   constructor(apiKey: string) {
-    if (!apiKey || apiKey === 'your_gemini_api_key_here') {
-      this.genAI = null;
-      this.model = null;
-    } else {
-      this.genAI = new GoogleGenerativeAI(apiKey);
-      this.model = this.genAI.getGenerativeModel({ 
-        model: 'gemini-1.5-flash',
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 2048,
-        }
-      });
-    }
+    this.genAI = new GoogleGenerativeAI(apiKey);
+    this.model = this.genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 2048,
+      }
+    });
   }
 
   async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
     if (!this.model) {
-      throw new Error('LLM API key not configured. Please set GOOGLE_API_KEY in apps/server/.env');
+      throw new Error('LLM API key not configured. Please set GEMINI_API_KEY in apps/server/.env');
     }
-    
+
     const systemPrompt = this.buildSystemPrompt(palette);
     const userPrompt = this.buildUserPrompt(doc, prompt);
-    
+
     try {
       const result = await this.model.generateContent([
         { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }
       ]);
-      
+
       const response = await result.response;
       const text = response.text();
-      
+
       // Parse JSON response
       let jsonResponse;
       try {
@@ -46,13 +41,13 @@ export class LLMClient {
         console.error('Failed to parse LLM JSON response:', parseError);
         throw new Error('Invalid JSON response from LLM');
       }
-      
+
       // Validate operations
       const ops = validateOps(jsonResponse);
-      
+
       // Apply constraints
       return this.applyConstraints(ops);
-      
+
     } catch (error) {
       console.error('LLM generation error:', error);
       throw new Error('Failed to generate operations');
@@ -90,7 +85,7 @@ Constraints:
   private buildUserPrompt(doc: Doc, userPrompt: string): string {
     const docSummary = getDocSummary(doc);
     const existingNodeIds = doc.nodes.map(n => n.id).join(', ');
-    
+
     return `Current document: ${docSummary}
 Existing node IDs: ${existingNodeIds || 'none'}
 
@@ -103,38 +98,38 @@ Generate operations that add or update nodes to fulfill this request. Focus on d
     return ops.map(op => {
       if (op.t === 'add') {
         const node = { ...op.node };
-        
+
         // Snap positions to grid
         node.x = snapToGrid(node.x);
         node.y = snapToGrid(node.y);
         node.width = snapToGrid(node.width);
         node.height = snapToGrid(node.height);
-        
+
         // Ensure button minimum height
         if (node.type === 'button') {
           node.height = ensureMinButtonHeight(node.height);
         }
-        
+
         return { ...op, node };
       }
-      
+
       if (op.t === 'update' && op.patch) {
         const patch = { ...op.patch };
-        
+
         // Snap position updates to grid
         if (typeof patch.x === 'number') patch.x = snapToGrid(patch.x);
         if (typeof patch.y === 'number') patch.y = snapToGrid(patch.y);
         if (typeof patch.width === 'number') patch.width = snapToGrid(patch.width);
         if (typeof patch.height === 'number') patch.height = snapToGrid(patch.height);
-        
+
         // Ensure button minimum height
         if (patch.height && typeof patch.height === 'number') {
           patch.height = ensureMinButtonHeight(patch.height);
         }
-        
+
         return { ...op, patch };
       }
-      
+
       return op;
     });
   }

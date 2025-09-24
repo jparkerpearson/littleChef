@@ -12,17 +12,17 @@ import { WebSocketMessage } from './types';
 dotenv.config();
 
 const PORT = parseInt(process.env.PORT || '4000');
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // Debug port configuration
 console.log('🔧 Environment variables:');
 console.log('  PORT:', process.env.PORT || 'undefined (using default 4000)');
-console.log('  GOOGLE_API_KEY:', GOOGLE_API_KEY ? 'set' : 'not set');
+console.log('  GEMINI_API_KEY:', GEMINI_API_KEY ? 'set' : 'not set');
 console.log('🚀 Starting server on port:', PORT);
 
-if (!GOOGLE_API_KEY || GOOGLE_API_KEY === 'your_gemini_api_key_here') {
-  console.warn('⚠️  GOOGLE_API_KEY not set or using placeholder. LLM features will not work.');
-  console.warn('   Set GOOGLE_API_KEY in apps/server/.env to enable AI features.');
+if (!GEMINI_API_KEY || GEMINI_API_KEY === 'your_gemini_api_key_here') {
+  console.warn('⚠️  GEMINI_API_KEY not set or using placeholder. LLM features will not work.');
+  console.warn('   Set GEMINI_API_KEY in apps/server/.env to enable AI features.');
 }
 
 async function buildServer() {
@@ -48,7 +48,7 @@ async function buildServer() {
 
   // Initialize services
   const store = new Store();
-  const llmClient = new LLMClient(GOOGLE_API_KEY || '');
+  const llmClient = new LLMClient(GEMINI_API_KEY || '');
 
   // Register routes
   registerRoutes(fastify, store, llmClient);

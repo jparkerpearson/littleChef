@@ -40,18 +40,18 @@ export function PromptBox({ docId, onGenerate, onError }: PromptBoxProps) {
       <h3>Little Chef</h3>
       <p>Describe what you want to create...</p>
       
-      <div className="input-group">
+      <div className="prompt-input-section">
         <textarea
-          className="input"
+          className="prompt-textarea"
           placeholder="e.g., Marketing hero with headline left, subhead, primary CTA, rounded image on the right; soft gray background"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyPress={handleKeyPress}
-          rows={3}
+          rows={4}
           disabled={isGenerating}
         />
         <button
-          className="btn btn--primary"
+          className="btn btn--primary prompt-generate-btn"
           onClick={handleGenerate}
           disabled={!prompt.trim() || isGenerating}
         >
