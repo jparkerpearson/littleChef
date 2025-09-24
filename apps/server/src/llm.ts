@@ -1,37 +1,51 @@
 // Gemini LLM client for generating operations
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleAuth } from 'google-auth-library';
 import { Op, Doc, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
 
 export class LLMClient {
-  private genAI: GoogleGenerativeAI | null;
-  private model: any;
+  private auth: GoogleAuth;
+  private model: string;
+  private endpoint: string;
 
   constructor(apiKey: string) {
-    this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 2048,
-      }
+    this.model = "gemini-1.5-flash";
+    this.endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`;
+
+    this.auth = new GoogleAuth({
+      scopes: ["https://www.googleapis.com/auth/generative-language"],
     });
   }
 
   async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
-    if (!this.model) {
-      throw new Error('LLM API key not configured. Please set GEMINI_API_KEY in apps/server/.env');
+    if (!this.auth) {
+      throw new Error('LLM authentication not configured. Please set up Google Auth credentials.');
     }
 
     const systemPrompt = this.buildSystemPrompt(palette);
     const userPrompt = this.buildUserPrompt(doc, prompt);
 
     try {
-      const result = await this.model.generateContent([
-        { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] }
-      ]);
+      const client = await this.auth.getClient();
 
-      const response = await result.response;
-      const text = response.text();
+      const response = await client.request({
+        url: this.endpoint,
+        method: "POST",
+        data: {
+          contents: [{
+            role: "user",
+            parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }]
+          }],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 2048,
+          }
+        },
+      });
+
+      const text = (response.data as any).candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) {
+        throw new Error('No text content in LLM response');
+      }
 
       // Parse JSON response
       let jsonResponse;
