@@ -1,5 +1,5 @@
 // React-Konva canvas component for Little Chef editor
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Text, Group, Circle } from 'react-konva';
 import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
@@ -18,10 +18,26 @@ interface CanvasProps {
 export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom, pan, creationMode = 'none', onCreationModeChange }: CanvasProps) {
   const stageRef = useRef<any>(null);
   const [dragging, setDragging] = useState(false);
+  const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [dragCurrent, setDragCurrent] = useState({ x: 0, y: 0 });
   const [rotationHandle, setRotationHandle] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; nodeId: string } | null>(null);
   const [editingText, setEditingText] = useState<string | null>(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
+
+  // Handle window resize
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      const width = Math.max(400, window.innerWidth - 300); // Subtract sidebar width, min 400px
+      const height = Math.max(300, window.innerHeight - 100); // Subtract navbar height, min 300px
+      setCanvasSize({ width, height });
+    };
+
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, []);
 
   // Handle node selection
   const handleNodeClick = (nodeId: string, event: any) => {
@@ -157,16 +173,62 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
   // Handle drag start
   const handleDragStart = (nodeId: string, event: any) => {
+    // Select the node if it's not already selected
+    if (!selectedIds.includes(nodeId)) {
+      onSelectionChange([nodeId]);
+    }
+
     setDragging(true);
-    setDragStart({ x: event.target.x(), y: event.target.y() });
+    setDraggingNodeId(nodeId);
+
+    // Get the node to access its dimensions
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Convert from Konva center position to top-left position
+    const centerX = event.target.x();
+    const centerY = event.target.y();
+    const topLeftX = centerX - node.width / 2;
+    const topLeftY = centerY - node.height / 2;
+
+    setDragStart({ x: topLeftX, y: topLeftY });
+    setDragCurrent({ x: topLeftX, y: topLeftY });
+  };
+
+  // Handle drag move
+  const handleDragMove = (nodeId: string, event: any) => {
+    if (!dragging) return;
+
+    // Get the node to access its dimensions
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Convert from Konva center position to top-left position
+    const centerX = event.target.x();
+    const centerY = event.target.y();
+    const topLeftX = centerX - node.width / 2;
+    const topLeftY = centerY - node.height / 2;
+
+    setDragCurrent({ x: topLeftX, y: topLeftY });
   };
 
   // Handle drag end
   const handleDragEnd = (nodeId: string, event: any) => {
     if (!dragging) return;
 
-    const newX = snapToGrid(event.target.x());
-    const newY = snapToGrid(event.target.y());
+    // Get the node to access its dimensions
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Convert from Konva center position to top-left position
+    const centerX = event.target.x();
+    const centerY = event.target.y();
+    const topLeftX = centerX - node.width / 2;
+    const topLeftY = centerY - node.height / 2;
+
+    // Snap the top-left position to grid
+    const newX = snapToGrid(topLeftX);
+    const newY = snapToGrid(topLeftY);
 
     // Only update if position actually changed
     if (newX !== dragStart.x || newY !== dragStart.y) {
@@ -184,6 +246,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     }
 
     setDragging(false);
+    setDraggingNodeId(null);
   };
 
   // Handle rotation handle drag
@@ -221,9 +284,13 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   // Render different node types
   const renderNode = (node: Node) => {
     const isSelected = selectedIds.includes(node.id);
+    const isDragging = draggingNodeId === node.id;
     const strokeColor = isSelected ? '#4c93af' : ('stroke' in node ? node.stroke : undefined) || 'transparent';
     const strokeWidth = isSelected ? 2 : ('strokeWidth' in node ? node.strokeWidth : undefined) || 0;
     const rotation = ('rotation' in node ? node.rotation : undefined) || 0;
+
+    // Calculate opacity for dragging effect
+    const opacity = isDragging ? 0.5 : 1;
 
     const nodeElement = (() => {
       switch (node.type) {
@@ -242,6 +309,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
+              opacity={opacity}
               draggable
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
@@ -252,6 +320,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 }
               }}
               onDragStart={(e) => handleDragStart(node.id, e)}
+              onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
             />
           );
@@ -265,6 +334,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
+              opacity={opacity}
               draggable
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
@@ -275,6 +345,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 }
               }}
               onDragStart={(e) => handleDragStart(node.id, e)}
+              onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
             >
               <Rect
@@ -311,6 +382,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
+              opacity={opacity}
               draggable
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
@@ -321,6 +393,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 }
               }}
               onDragStart={(e) => handleDragStart(node.id, e)}
+              onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
             >
               <Rect
@@ -358,6 +431,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
+              opacity={opacity}
               draggable
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
@@ -368,6 +442,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 }
               }}
               onDragStart={(e) => handleDragStart(node.id, e)}
+              onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
             >
               <Rect
@@ -417,15 +492,41 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       );
     }
 
+    // Add preview rectangle when dragging
+    if (isDragging) {
+      const snappedX = snapToGrid(dragCurrent.x);
+      const snappedY = snapToGrid(dragCurrent.y);
+
+      return (
+        <Group key={`${node.id}-dragging`}>
+          {nodeElement}
+          <Rect
+            x={snappedX + node.width / 2}
+            y={snappedY + node.height / 2}
+            width={node.width}
+            height={node.height}
+            fill="transparent"
+            stroke="#4c93af"
+            strokeWidth={2}
+            cornerRadius={node.type === 'rect' ? node.cornerRadius || 0 : 0}
+            offsetX={node.width / 2}
+            offsetY={node.height / 2}
+            dash={[5, 5]}
+            opacity={0.8}
+          />
+        </Group>
+      );
+    }
+
     return nodeElement;
   };
 
   return (
-    <div className="canvas-container">
+    <div className="canvas-container" style={{ width: '100%', height: '100%' }}>
       <Stage
         ref={stageRef}
-        width={800}
-        height={600}
+        width={canvasSize.width}
+        height={canvasSize.height}
         scaleX={zoom}
         scaleY={zoom}
         x={pan.x}

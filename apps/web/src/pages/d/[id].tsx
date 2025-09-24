@@ -5,6 +5,7 @@ import { Doc, Op, applyOps } from '@little-chef/dsl';
 import { apiClient } from '../../lib/api';
 import { Canvas } from '../../components/CanvasWrapper';
 import { Inspector } from '../../components/Inspector';
+import { NodeList } from '../../components/NodeList';
 import { PromptBox } from '../../components/PromptBox';
 import { Toolbar } from '../../components/Toolbar';
 
@@ -40,6 +41,13 @@ export default function DocumentEditor() {
       }
     };
   }, [id]);
+
+  // Debug: Log document state
+  useEffect(() => {
+    if (doc) {
+      console.log('Document nodes:', doc.nodes.length, doc.nodes.map(n => ({ id: n.id, type: n.type })));
+    }
+  }, [doc]);
 
   const loadDocument = async (docId: string) => {
     try {
@@ -194,7 +202,7 @@ export default function DocumentEditor() {
     );
   }
 
-  const selectedNodes = doc.nodes.filter(node => selectedIds.includes(node.id));
+  const selectedNodes = doc ? doc.nodes.filter(node => selectedIds.includes(node.id)) : [];
 
   return (
     <div className="editor-layout" onKeyDown={handleKeyDown} tabIndex={0}>
@@ -250,6 +258,11 @@ export default function DocumentEditor() {
         </div>
 
         <div className="editor-sidebar">
+          <NodeList
+            nodes={doc.nodes}
+            selectedIds={selectedIds}
+            onSelectionChange={setSelectedIds}
+          />
           <Inspector
             selectedNodes={selectedNodes}
             docId={doc.id}
