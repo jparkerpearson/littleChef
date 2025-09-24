@@ -1,48 +1,66 @@
 // Gemini LLM client for generating operations
-import { GoogleAuth } from 'google-auth-library';
+import { GoogleAuth } from "google-auth-library";
 import { Op, Doc, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
 
 export class LLMClient {
   private auth: GoogleAuth;
-  private model: string;
-  private endpoint: string;
 
-  constructor(apiKey: string) {
-    this.model = "gemini-1.5-flash";
-    this.endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`;
-
+  constructor(serviceAccountKeyPath?: string) {
+    // Initialize Google Auth
     this.auth = new GoogleAuth({
-      scopes: ["https://www.googleapis.com/auth/generative-language"],
+      keyFile: serviceAccountKeyPath,
+      scopes: [
+        'https://www.googleapis.com/auth/generative-language',
+        'https://www.googleapis.com/auth/cloud-platform'
+      ]
     });
   }
 
   async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
-    if (!this.auth) {
-      throw new Error('LLM authentication not configured. Please set up Google Auth credentials.');
-    }
-
     const systemPrompt = this.buildSystemPrompt(palette);
     const userPrompt = this.buildUserPrompt(doc, prompt);
+    const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
 
     try {
+      // Get authenticated client and access token
       const client = await this.auth.getClient();
+      const token = await client.getAccessToken();
 
-      const response = await client.request({
-        url: this.endpoint,
-        method: "POST",
-        data: {
-          contents: [{
-            role: "user",
-            parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }]
-          }],
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 2048,
-          }
-        },
-      });
+      if (!token.token) {
+        throw new Error('Failed to get access token');
+      }
 
-      const text = (response.data as any).candidates?.[0]?.content?.parts?.[0]?.text;
+      // Make request to Gemini API
+      const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [{
+              role: "user",
+              parts: [{ text: fullPrompt }]
+            }],
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API request failed: ${response.status} ${errorText}`);
+      }
+
+      const data = await response.json() as any;
+
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        throw new Error('Invalid response structure from Gemini API');
+      }
+
+      const text = data.candidates[0].content.parts[0].text;
+
       if (!text) {
         throw new Error('No text content in LLM response');
       }

@@ -8,21 +8,24 @@ import { LLMClient } from './llm';
 import { registerRoutes } from './routes';
 import { WebSocketMessage } from './types';
 
+
+
 // Load environment variables
 dotenv.config();
 
 const PORT = parseInt(process.env.PORT || '4000');
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
 // Debug port configuration
 console.log('🔧 Environment variables:');
 console.log('  PORT:', process.env.PORT || 'undefined (using default 4000)');
-console.log('  GEMINI_API_KEY:', GEMINI_API_KEY ? 'set' : 'not set');
+console.log('  GOOGLE_APPLICATION_CREDENTIALS:', GOOGLE_APPLICATION_CREDENTIALS ? 'set' : 'not set');
 console.log('🚀 Starting server on port:', PORT);
 
-if (!GEMINI_API_KEY || GEMINI_API_KEY === 'your_gemini_api_key_here') {
-  console.warn('⚠️  GEMINI_API_KEY not set or using placeholder. LLM features will not work.');
-  console.warn('   Set GEMINI_API_KEY in apps/server/.env to enable AI features.');
+if (!GOOGLE_APPLICATION_CREDENTIALS) {
+  console.warn('⚠️  GOOGLE_APPLICATION_CREDENTIALS not set. LLM features will not work.');
+  console.warn('   Set GOOGLE_APPLICATION_CREDENTIALS in apps/server/.env to enable AI features.');
+  console.warn('   This should point to your Google Cloud service account key file.');
 }
 
 async function buildServer() {
@@ -48,7 +51,7 @@ async function buildServer() {
 
   // Initialize services
   const store = new Store();
-  const llmClient = new LLMClient(GEMINI_API_KEY || '');
+  const llmClient = new LLMClient(GOOGLE_APPLICATION_CREDENTIALS);
 
   // Register routes
   registerRoutes(fastify, store, llmClient);
@@ -109,15 +112,15 @@ async function buildServer() {
 async function start() {
   try {
     const server = await buildServer();
-    
-    await server.listen({ 
-      port: PORT, 
-      host: '0.0.0.0' 
+
+    await server.listen({
+      port: PORT,
+      host: '0.0.0.0'
     });
-    
+
     console.log(`🚀 Little Chef server running on http://localhost:${PORT}`);
     console.log(`📡 WebSocket endpoint: ws://localhost:${PORT}/v1/sync`);
-    
+
     // Graceful shutdown handling
     const gracefulShutdown = async (signal: string) => {
       console.log(`\n${signal} received. Shutting down gracefully...`);
@@ -134,7 +137,7 @@ async function start() {
     // Handle different termination signals
     process.on('SIGINT', () => gracefulShutdown('SIGINT'));
     process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-    
+
   } catch (err) {
     console.error('Error starting server:', err);
     process.exit(1);
