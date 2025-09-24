@@ -10,10 +10,10 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
   fastify.post('/v1/doc', async (request, reply) => {
     try {
       const { width = 800, height = 600, title } = request.body as CreateDocRequest;
-      
+
       const doc = newDoc({ width, height, title });
       store.createDoc(doc);
-      
+
       return { doc };
     } catch (error) {
       reply.code(400);
@@ -26,15 +26,15 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
     try {
       const { id } = request.params;
       const since = request.query.since ? parseInt(request.query.since) : 0;
-      
+
       const doc = store.getDoc(id);
       if (!doc) {
         reply.code(404);
         return { error: 'Document not found' };
       }
-      
+
       const opsSince = store.getOpsSince(id, since);
-      
+
       return {
         snapshot: doc,
         opsSince,
@@ -50,35 +50,47 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
   fastify.post('/v1/ops', async (request, reply) => {
     try {
       const { docId, ops } = request.body as AppendOpsRequest;
-      
+
       // Validate operations
       const validatedOps = validateOps(ops);
-      
+
       // Get current document
       const doc = store.getDoc(docId);
       if (!doc) {
         reply.code(404);
         return { error: 'Document not found' };
       }
-      
+
       // Apply operations
       const updatedDoc = applyOps(doc, validatedOps);
-      
+
       // Store updates
       store.updateDoc(updatedDoc);
       store.appendOps(docId, validatedOps);
-      
+
       // Broadcast to WebSocket subscribers
       store.broadcast(docId, {
         type: 'ops',
         ops: validatedOps,
         version: updatedDoc.version
       });
-      
+
       return { ok: true, version: updatedDoc.version };
     } catch (error) {
-      reply.code(400);
-      return { error: 'Invalid operations' };
+      console.error('Operations validation error:', error);
+
+      // Provide more specific error messages for validation failures
+      if ((error as any).name === 'ZodError') {
+        const zodError = error as any;
+        reply.code(400);
+        return {
+          error: 'Invalid operation format',
+          details: zodError.issues?.map((issue: any) => `${issue.path.join('.')}: ${issue.message}`) || ['Unknown validation error']
+        };
+      } else {
+        reply.code(400);
+        return { error: 'Invalid operations' };
+      }
     }
   });
 
@@ -86,36 +98,50 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
   fastify.post('/v1/generate', async (request, reply) => {
     try {
       const { docId, prompt, palette } = request.body as GenerateRequest;
-      
+
       // Get current document
       const doc = store.getDoc(docId);
       if (!doc) {
         reply.code(404);
         return { error: 'Document not found' };
       }
-      
+
       // Generate operations using LLM
       const ops = await llmClient.generateOps(doc, prompt, palette);
-      
+
       // Apply operations
       const updatedDoc = applyOps(doc, ops);
-      
+
       // Store updates
       store.updateDoc(updatedDoc);
       store.appendOps(docId, ops);
-      
+
       // Broadcast to WebSocket subscribers
       store.broadcast(docId, {
         type: 'ops',
         ops,
         version: updatedDoc.version
       });
-      
+
       return { ops, version: updatedDoc.version };
     } catch (error) {
       console.error('Generate error:', error);
-      reply.code(422);
-      return { error: 'The recipe didn\'t validate. Trying a simpler plating.' };
+
+      // Provide more specific error messages based on error type
+      const err = error as Error;
+      if (err.message.includes('Gemini API')) {
+        reply.code(503);
+        return { error: 'AI service temporarily unavailable. Please try again.' };
+      } else if (err.message.includes('Invalid JSON')) {
+        reply.code(422);
+        return { error: 'AI generated invalid response. Please try a different prompt.' };
+      } else if (err.message.includes('Failed to get access token')) {
+        reply.code(503);
+        return { error: 'AI service authentication failed. Please contact support.' };
+      } else {
+        reply.code(422);
+        return { error: 'The recipe didn\'t validate. Trying a simpler plating.' };
+      }
     }
   });
 
