@@ -38,7 +38,17 @@ export function applyOp(doc: Doc, op: Op): Doc {
       break;
 
     case 'remove':
-      updatedDoc.nodes = doc.nodes.filter(node => node.id !== op.id);
+      // When removing a node, also remove all its children
+      const nodesToRemove = new Set<string>();
+      const collectChildren = (nodeId: string) => {
+        nodesToRemove.add(nodeId);
+        const node = doc.nodes.find(n => n.id === nodeId);
+        if (node?.children) {
+          node.children.forEach(childId => collectChildren(childId));
+        }
+      };
+      collectChildren(op.id);
+      updatedDoc.nodes = doc.nodes.filter(node => !nodesToRemove.has(node.id));
       break;
 
     case 'reorder':
@@ -47,6 +57,35 @@ export function applyOp(doc: Doc, op: Op): Doc {
       updatedDoc.nodes = doc.nodes.map(node =>
         node.id === op.id ? { ...node, y: op.z } : node
       );
+      break;
+
+    case 'reparent':
+      updatedDoc.nodes = doc.nodes.map(node => {
+        if (node.id === op.id) {
+          return { ...node, parentId: op.parentId || undefined };
+        }
+        return node;
+      });
+      break;
+
+    case 'addChild':
+      updatedDoc.nodes = doc.nodes.map(node => {
+        if (node.id === op.parentId) {
+          const children = node.children || [];
+          return { ...node, children: [...children, op.childId] };
+        }
+        return node;
+      });
+      break;
+
+    case 'removeChild':
+      updatedDoc.nodes = doc.nodes.map(node => {
+        if (node.id === op.parentId) {
+          const children = node.children || [];
+          return { ...node, children: children.filter(id => id !== op.childId) };
+        }
+        return node;
+      });
       break;
   }
 
@@ -205,6 +244,55 @@ export function createImageNode(options: {
     cornerRadius: options.cornerRadius,
     rotation: options.rotation || 0,
   };
+}
+
+// Hierarchical helper functions
+export function getRootNodes(doc: Doc): Node[] {
+  return doc.nodes.filter(node => !node.parentId);
+}
+
+export function getChildNodes(doc: Doc, parentId: string): Node[] {
+  const parent = doc.nodes.find(n => n.id === parentId);
+  if (!parent?.children) return [];
+  return doc.nodes.filter(node => parent.children!.includes(node.id));
+}
+
+export function getAllDescendants(doc: Doc, nodeId: string): Node[] {
+  const descendants: Node[] = [];
+  const node = doc.nodes.find(n => n.id === nodeId);
+  if (!node?.children) return descendants;
+
+  const collectDescendants = (childId: string) => {
+    const child = doc.nodes.find(n => n.id === childId);
+    if (child) {
+      descendants.push(child);
+      if (child.children) {
+        child.children.forEach(collectDescendants);
+      }
+    }
+  };
+
+  node.children.forEach(collectDescendants);
+  return descendants;
+}
+
+export function getNodeDepth(doc: Doc, nodeId: string): number {
+  const node = doc.nodes.find(n => n.id === nodeId);
+  if (!node?.parentId) return 0;
+  return 1 + getNodeDepth(doc, node.parentId);
+}
+
+export function isAncestor(doc: Doc, ancestorId: string, descendantId: string): boolean {
+  const descendant = doc.nodes.find(n => n.id === descendantId);
+  if (!descendant?.parentId) return false;
+  if (descendant.parentId === ancestorId) return true;
+  return isAncestor(doc, ancestorId, descendant.parentId);
+}
+
+export function canReparent(doc: Doc, nodeId: string, newParentId: string | null): boolean {
+  if (!newParentId) return true; // Moving to root is always allowed
+  if (nodeId === newParentId) return false; // Can't be parent of itself
+  return !isAncestor(doc, nodeId, newParentId); // Can't create circular hierarchy
 }
 
 // Migration utilities (placeholder for future schema changes)

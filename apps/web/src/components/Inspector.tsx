@@ -1,15 +1,16 @@
 // Inspector panel for editing selected nodes
 import React, { useState, useEffect } from 'react';
-import { Node, Op } from '@little-chef/dsl';
+import { Node, Op, getChildNodes, getAllDescendants } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface InspectorProps {
   selectedNodes: Node[];
   docId: string;
+  doc: { nodes: Node[] };
   onDocChange: (ops: Op[]) => void;
 }
 
-export function Inspector({ selectedNodes, docId, onDocChange }: InspectorProps) {
+export function Inspector({ selectedNodes, docId, doc, onDocChange }: InspectorProps) {
   const [editingNode, setEditingNode] = useState<Node | null>(null);
 
   useEffect(() => {
@@ -54,10 +55,49 @@ export function Inspector({ selectedNodes, docId, onDocChange }: InspectorProps)
     );
   }
 
+  // Get children and descendants for grouped nodes
+  const children = editingNode ? getChildNodes(doc, editingNode.id) : [];
+  const allDescendants = editingNode ? getAllDescendants(doc, editingNode.id) : [];
+  const hasChildren = children.length > 0;
+
   return (
     <div className="inspector">
       <h3>Inspector</h3>
-      
+
+      {hasChildren && (
+        <div className="inspector-section">
+          <h4>Group Information</h4>
+          <div className="form-group">
+            <label>Direct Children</label>
+            <div className="children-list">
+              {children.map(child => (
+                <div key={child.id} className="child-item">
+                  <span className="child-icon">
+                    {child.type === 'rect' ? '▢' :
+                      child.type === 'text' ? 'T' :
+                        child.type === 'button' ? 'B' :
+                          child.type === 'image' ? '🖼' : '?'}
+                  </span>
+                  <span className="child-label">
+                    {child.type === 'text' ? child.text || 'Text' :
+                      child.type === 'button' ? child.label || 'Button' :
+                        child.type === 'image' ? 'Image' :
+                          child.type === 'rect' ? 'Rectangle' : 'Unknown'}
+                  </span>
+                  <span className="child-dimensions">{child.width}×{child.height}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {allDescendants.length > children.length && (
+            <div className="form-group">
+              <label>Total Descendants</label>
+              <span className="descendant-count">{allDescendants.length} nodes</span>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="inspector-section">
         <h4>Position & Size</h4>
         <div className="form-group">
@@ -228,7 +268,7 @@ export function Inspector({ selectedNodes, docId, onDocChange }: InspectorProps)
       )}
 
       <div className="inspector-section">
-        <button 
+        <button
           className="btn btn--orange"
           onClick={deleteNode}
         >

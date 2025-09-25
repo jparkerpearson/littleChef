@@ -13,6 +13,8 @@ export interface RectNode {
   strokeWidth?: number;
   cornerRadius?: number;
   rotation?: number;
+  parentId?: string;
+  children?: string[];
 }
 
 export interface TextNode {
@@ -30,6 +32,8 @@ export interface TextNode {
   align: 'left' | 'center' | 'right';
   verticalAlign: 'top' | 'middle' | 'bottom';
   rotation?: number;
+  parentId?: string;
+  children?: string[];
 }
 
 export interface ButtonNode {
@@ -49,6 +53,8 @@ export interface ButtonNode {
   fontWeight: string;
   textFill: ColorHex;
   rotation?: number;
+  parentId?: string;
+  children?: string[];
 }
 
 export interface ImageNode {
@@ -61,6 +67,8 @@ export interface ImageNode {
   src: string;
   cornerRadius?: number;
   rotation?: number;
+  parentId?: string;
+  children?: string[];
 }
 
 export type Node = RectNode | TextNode | ButtonNode | ImageNode;
@@ -81,4 +89,7 @@ export type Op =
   | { t: 'add'; node: Node }
   | { t: 'update'; id: string; patch: Record<string, any> }
   | { t: 'remove'; id: string }
-  | { t: 'reorder'; id: string; z: number };
+  | { t: 'reorder'; id: string; z: number }
+  | { t: 'reparent'; id: string; parentId: string | null }
+  | { t: 'addChild'; parentId: string; childId: string }
+  | { t: 'removeChild'; parentId: string; childId: string };

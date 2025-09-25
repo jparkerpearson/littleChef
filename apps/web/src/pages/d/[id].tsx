@@ -1,6 +1,7 @@
 // Document editor page
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { Doc, Op, applyOps } from '@little-chef/dsl';
 import { apiClient } from '../../lib/api';
 import { Canvas } from '../../components/CanvasWrapper';
@@ -117,6 +118,69 @@ export default function DocumentEditor() {
     setTimeout(() => setError(null), 5000);
   };
 
+  const handleGroup = () => {
+    if (!doc || selectedIds.length < 2) return;
+
+    // Use the first selected node as the parent
+    const parentId = selectedIds[0];
+    const childIds = selectedIds.slice(1);
+
+    const ops: Op[] = [];
+
+    // Set parentId for child nodes
+    childIds.forEach(id => {
+      ops.push({ t: 'reparent', id, parentId });
+    });
+
+    // Add children to parent node
+    const parentNode = doc.nodes.find(n => n.id === parentId);
+    const existingChildren = parentNode?.children || [];
+    const newChildren = [...existingChildren, ...childIds];
+    ops.push({ t: 'update', id: parentId, patch: { children: newChildren } });
+
+    handleDocChange(ops);
+    apiClient.appendOps(doc.id, ops).catch(console.error);
+
+    // Select only the parent node after grouping
+    setSelectedIds([parentId]);
+  };
+
+  const handleUngroup = () => {
+    if (!doc || selectedIds.length === 0) return;
+
+    const ops: Op[] = [];
+    const parentUpdates = new Map<string, string[]>(); // parentId -> children to remove
+
+    selectedIds.forEach(nodeId => {
+      const node = doc.nodes.find(n => n.id === nodeId);
+
+      if (node?.parentId) {
+        // Remove parentId from the node
+        ops.push({ t: 'reparent', id: nodeId, parentId: null });
+
+        // Track which children to remove from each parent
+        if (!parentUpdates.has(node.parentId)) {
+          parentUpdates.set(node.parentId, []);
+        }
+        parentUpdates.get(node.parentId)!.push(nodeId);
+      }
+    });
+
+    // Update parent nodes to remove children
+    parentUpdates.forEach((childrenToRemove, parentId) => {
+      const parentNode = doc.nodes.find(n => n.id === parentId);
+      if (parentNode?.children) {
+        const updatedChildren = parentNode.children.filter(id => !childrenToRemove.includes(id));
+        ops.push({ t: 'update', id: parentId, patch: { children: updatedChildren } });
+      }
+    });
+
+    if (ops.length > 0) {
+      handleDocChange(ops);
+      apiClient.appendOps(doc.id, ops).catch(console.error);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!doc) return;
 
@@ -184,10 +248,10 @@ export default function DocumentEditor() {
       <div className="editor-layout">
         <nav className="navbar">
           <div className="nav-inner">
-            <div className="brand">
+            <Link href="/" className="brand">
               <img src="/assets/littleChef.png" alt="Little Chef" className="brand-logo" />
               Little Chef
-            </div>
+            </Link>
             <div className="nav-spacer"></div>
           </div>
         </nav>
@@ -208,10 +272,10 @@ export default function DocumentEditor() {
     <div className="editor-layout" onKeyDown={handleKeyDown} tabIndex={0}>
       <nav className="navbar">
         <div className="nav-inner">
-          <div className="brand">
+          <Link href="/" className="brand">
             <img src="/assets/littleChef.png" alt="Little Chef" className="brand-logo" />
             Little Chef
-          </div>
+          </Link>
           <div className="nav-spacer"></div>
           <div className="collaborators">
             {collaborators > 0 && (
@@ -228,6 +292,9 @@ export default function DocumentEditor() {
           <Toolbar
             creationMode={creationMode}
             onCreationModeChange={setCreationMode}
+            selectedIds={selectedIds}
+            onGroup={handleGroup}
+            onUngroup={handleUngroup}
           />
           <PromptBox
             docId={doc.id}
@@ -259,13 +326,14 @@ export default function DocumentEditor() {
 
         <div className="editor-sidebar">
           <NodeList
-            nodes={doc.nodes}
+            doc={doc}
             selectedIds={selectedIds}
             onSelectionChange={setSelectedIds}
           />
           <Inspector
             selectedNodes={selectedNodes}
             docId={doc.id}
+            doc={doc}
             onDocChange={handleDocChange}
           />
         </div>

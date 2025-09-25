@@ -237,6 +237,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
 }
 
 .brand-logo {
@@ -449,6 +450,60 @@ textarea.input {
 .form-group textarea:focus {
   outline: 2px solid rgba(76, 147, 175, .35);
   border-color: transparent;
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--gray-50);
+}
+
+.child-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: var(--white);
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+  font-size: 13px;
+}
+
+.child-icon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.child-label {
+  flex: 1;
+  font-weight: 500;
+  color: var(--brand-brown);
+}
+
+.child-dimensions {
+  font-size: 11px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.descendant-count {
+  font-size: 12px;
+  color: var(--brand-teal);
+  font-weight: 500;
+  background: rgba(76, 147, 175, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 /* === Prompt Box === */
@@ -903,6 +958,26 @@ textarea.input {
   color: var(--white);
 }
 
+.toolbar-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--gray-100);
+  border-color: var(--gray-200);
+  color: var(--gray-300);
+}
+
+.toolbar-button.disabled:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-200);
+}
+
+.toolbar-separator {
+  width: 1px;
+  background: var(--gray-200);
+  margin: 0 8px;
+  align-self: stretch;
+}
+
 /* === Context Menu === */
 .context-menu {
   background: var(--white);
@@ -1043,6 +1118,44 @@ textarea.input {
   padding: 2px 8px;
   border-radius: 4px;
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.node-expand-toggle {
+  font-size: 12px;
+  color: var(--gray-700);
+  cursor: pointer;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.node-expand-toggle:hover {
+  color: var(--brand-teal);
+}
+
+.node-expand-spacer {
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.node-item.has-children {
+  font-weight: 600;
+}
+
+.node-item.has-children .node-icon {
+  color: var(--brand-teal);
+}
+
+.child-count {
+  margin-left: 4px;
+  color: var(--brand-teal);
+  font-weight: 500;
+}
+
+.node-children {
+  background: var(--gray-50);
+  border-left: 2px solid var(--gray-200);
 }
 
 /* === Responsive Design === */

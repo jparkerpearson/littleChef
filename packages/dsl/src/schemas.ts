@@ -10,6 +10,8 @@ const BaseNodeSchema = z.object({
   y: z.number().int().min(0),
   width: z.number().int().min(1),
   height: z.number().int().min(1),
+  parentId: z.string().optional(),
+  children: z.array(z.string()).optional(),
 });
 
 // Node type schemas
@@ -91,6 +93,21 @@ export const OpSchema = z.discriminatedUnion('t', [
     t: z.literal('reorder'),
     id: z.string().min(1),
     z: z.number().int(),
+  }),
+  z.object({
+    t: z.literal('reparent'),
+    id: z.string().min(1),
+    parentId: z.string().nullable(),
+  }),
+  z.object({
+    t: z.literal('addChild'),
+    parentId: z.string().min(1),
+    childId: z.string().min(1),
+  }),
+  z.object({
+    t: z.literal('removeChild'),
+    parentId: z.string().min(1),
+    childId: z.string().min(1),
   }),
 ]);
 

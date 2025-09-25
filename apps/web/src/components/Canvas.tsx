@@ -1,7 +1,7 @@
 // React-Konva canvas component for Little Chef editor
 import React, { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Text, Group, Circle } from 'react-konva';
-import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode } from '@little-chef/dsl';
+import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface CanvasProps {
@@ -98,13 +98,22 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   const handleNodeRightClick = (nodeId: string, event: any) => {
     event.cancelBubble = true;
     event.evt.preventDefault();
+    event.evt.stopPropagation();
 
     const stage = event.target.getStage();
     const pointerPosition = stage.getPointerPosition();
 
+    // Get the node to position the menu closer to it
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Position the menu near the node's center, accounting for zoom and pan
+    const nodeCenterX = (node.x + node.width / 2 + pan.x) * zoom;
+    const nodeCenterY = (node.y + node.height / 2 + pan.y) * zoom;
+
     setContextMenu({
-      x: pointerPosition.x,
-      y: pointerPosition.y,
+      x: nodeCenterX,
+      y: nodeCenterY,
       nodeId
     });
   };
@@ -121,13 +130,58 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         onSelectionChange(selectedIds.filter(id => id !== nodeId));
         break;
       case 'duplicate':
-        const node = doc.nodes.find(n => n.id === nodeId);
-        if (node) {
-          const newNode = { ...node, id: Math.random().toString(36).substr(2, 9), x: node.x + 20, y: node.y + 20 };
+        const duplicateNode = doc.nodes.find(n => n.id === nodeId);
+        if (duplicateNode) {
+          const newNode = { ...duplicateNode, id: Math.random().toString(36).substr(2, 9), x: duplicateNode.x + 20, y: duplicateNode.y + 20 };
           const duplicateOp: Op = { t: 'add', node: newNode };
           onDocChange([duplicateOp]);
           apiClient.appendOps(doc.id, [duplicateOp]).catch(console.error);
           onSelectionChange([newNode.id]);
+        }
+        break;
+      case 'ungroup':
+        // Remove parent relationship for this node
+        const ungroupNode = doc.nodes.find(n => n.id === nodeId);
+        const ops: Op[] = [];
+
+        // Remove parentId from the node
+        ops.push({ t: 'reparent', id: nodeId, parentId: null });
+
+        // Remove this node from parent's children array
+        if (ungroupNode?.parentId) {
+          const parentNode = doc.nodes.find(n => n.id === ungroupNode.parentId);
+          if (parentNode?.children) {
+            const updatedChildren = parentNode.children.filter(id => id !== nodeId);
+            ops.push({ t: 'update', id: ungroupNode.parentId, patch: { children: updatedChildren } });
+          }
+        }
+
+        onDocChange(ops);
+        apiClient.appendOps(doc.id, ops).catch(console.error);
+        break;
+      case 'group':
+        // Group selected nodes under this node
+        if (selectedIds.length > 1) {
+          const ops: Op[] = [];
+          const childIds: string[] = [];
+
+          selectedIds.forEach(id => {
+            if (id !== nodeId) {
+              ops.push({ t: 'reparent', id, parentId: nodeId });
+              childIds.push(id);
+            }
+          });
+
+          // Add children to parent node
+          if (childIds.length > 0) {
+            const parentNode = doc.nodes.find(n => n.id === nodeId);
+            const existingChildren = parentNode?.children || [];
+            const newChildren = [...existingChildren, ...childIds];
+            ops.push({ t: 'update', id: nodeId, patch: { children: newChildren } });
+          }
+
+          onDocChange(ops);
+          apiClient.appendOps(doc.id, ops).catch(console.error);
         }
         break;
     }
@@ -188,8 +242,20 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     }
   };
 
+  // Handle stage mouse down (for right-click prevention on empty areas)
+  const handleStageMouseDown = (event: any) => {
+    // Only handle right-clicks on empty areas (directly on stage)
+    if (event.evt.button === 2 && event.target === stageRef.current) {
+      event.evt.preventDefault();
+      setContextMenu(null); // Close any existing context menu
+    }
+  };
+
   // Handle drag start
   const handleDragStart = (nodeId: string, event: any) => {
+    // Prevent multiple drag operations
+    if (dragging) return;
+
     // Select the node if it's not already selected
     if (!selectedIds.includes(nodeId)) {
       onSelectionChange([nodeId]);
@@ -200,13 +266,15 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
     // Get the node to access its dimensions
     const node = doc.nodes.find(n => n.id === nodeId);
-    if (!node) return;
+    if (!node) {
+      setDragging(false);
+      setDraggingNodeId(null);
+      return;
+    }
 
-    // Convert from Konva center position to top-left position
-    const centerX = event.target.x();
-    const centerY = event.target.y();
-    const topLeftX = centerX - node.width / 2;
-    const topLeftY = centerY - node.height / 2;
+    // Use the node's current position as the drag start position
+    const topLeftX = node.x;
+    const topLeftY = node.y;
 
     setDragStart({ x: topLeftX, y: topLeftY });
     setDragCurrent({ x: topLeftX, y: topLeftY });
@@ -214,52 +282,75 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
   // Handle drag move
   const handleDragMove = (nodeId: string, event: any) => {
-    if (!dragging) return;
+    if (!dragging || draggingNodeId !== nodeId) return;
 
     // Get the node to access its dimensions
     const node = doc.nodes.find(n => n.id === nodeId);
     if (!node) return;
 
-    // Convert from Konva center position to top-left position
-    const centerX = event.target.x();
-    const centerY = event.target.y();
-    const topLeftX = centerX - node.width / 2;
-    const topLeftY = centerY - node.height / 2;
+    // Get the stage and pointer position
+    const stage = event.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
 
-    setDragCurrent({ x: topLeftX, y: topLeftY });
+    // Calculate position relative to the document (accounting for zoom and pan)
+    const x = (pointerPosition.x - pan.x) / zoom;
+    const y = (pointerPosition.y - pan.y) / zoom;
+
+    setDragCurrent({ x, y });
   };
 
   // Handle drag end
   const handleDragEnd = (nodeId: string, event: any) => {
-    if (!dragging) return;
+    if (!dragging || draggingNodeId !== nodeId) {
+      setDragging(false);
+      setDraggingNodeId(null);
+      return;
+    }
 
     // Get the node to access its dimensions
     const node = doc.nodes.find(n => n.id === nodeId);
-    if (!node) return;
+    if (!node) {
+      setDragging(false);
+      setDraggingNodeId(null);
+      return;
+    }
 
-    // Convert from Konva center position to top-left position
-    const centerX = event.target.x();
-    const centerY = event.target.y();
-    const topLeftX = centerX - node.width / 2;
-    const topLeftY = centerY - node.height / 2;
-
-    // Snap the top-left position to grid
-    const newX = snapToGrid(topLeftX);
-    const newY = snapToGrid(topLeftY);
+    // Snap the current drag position to grid
+    const newX = snapToGrid(dragCurrent.x);
+    const newY = snapToGrid(dragCurrent.y);
 
     // Only update if position actually changed
     if (newX !== dragStart.x || newY !== dragStart.y) {
-      const op: Op = {
+      const deltaX = newX - dragStart.x;
+      const deltaY = newY - dragStart.y;
+
+      const ops: Op[] = [];
+
+      // Update the dragged node
+      ops.push({
         t: 'update',
         id: nodeId,
         patch: { x: newX, y: newY }
-      };
+      });
 
-      // Send operation to parent
-      onDocChange([op]);
+      // Update all descendant nodes with the same delta
+      const descendants = getAllDescendants(doc, nodeId);
+      descendants.forEach((descendant: Node) => {
+        ops.push({
+          t: 'update',
+          id: descendant.id,
+          patch: {
+            x: descendant.x + deltaX,
+            y: descendant.y + deltaY
+          }
+        });
+      });
+
+      // Send operations to parent
+      onDocChange(ops);
 
       // Send to server
-      apiClient.appendOps(doc.id, [op]).catch(console.error);
+      apiClient.appendOps(doc.id, ops).catch(console.error);
     }
 
     setDragging(false);
@@ -296,6 +387,24 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   // Handle rotation handle drag end
   const handleRotationDragEnd = () => {
     setRotationHandle(null);
+  };
+
+  // Render hierarchical nodes recursively
+  const renderHierarchicalNode = (node: Node): React.ReactNode => {
+    const children = getChildNodes(doc, node.id);
+    const nodeElement = renderNode(node);
+
+    if (children.length === 0) {
+      return nodeElement;
+    }
+
+    // Render children inside the parent node
+    return (
+      <Group key={`group-${node.id}`}>
+        {nodeElement}
+        {children.map((child: Node) => renderHierarchicalNode(child))}
+      </Group>
+    );
   };
 
   // Render different node types
@@ -549,110 +658,127 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         x={pan.x}
         y={pan.y}
         onClick={handleStageClick}
+        onMouseDown={handleStageMouseDown}
       >
         <Layer>
-          {/* Background */}
-          <Rect
-            x={0}
-            y={0}
-            width={doc.width}
-            height={doc.height}
-            fill="#ffffff"
-            stroke="#e0e0e0"
-            strokeWidth={1}
-          />
-
-          {/* Render all nodes */}
-          {doc.nodes.map(renderNode)}
+          {/* Render hierarchical nodes */}
+          {getRootNodes(doc).map(node => renderHierarchicalNode(node))}
         </Layer>
+
       </Stage>
 
       {/* Context Menu */}
-      {contextMenu && (
-        <div
-          className="context-menu"
-          style={{
-            position: 'absolute',
-            left: contextMenu.x,
-            top: contextMenu.y,
-            zIndex: 1000,
-          }}
-        >
-          <div className="context-menu-content">
-            <button
-              className="context-menu-item"
-              onClick={() => handleContextMenuAction('duplicate', contextMenu.nodeId)}
+      {
+        contextMenu && (() => {
+          const node = doc.nodes.find(n => n.id === contextMenu.nodeId);
+          const hasParent = node && 'parentId' in node && node.parentId;
+          const canGroup = selectedIds.length > 1 && selectedIds.includes(contextMenu.nodeId);
+
+          return (
+            <div
+              className="context-menu"
+              style={{
+                position: 'absolute',
+                left: contextMenu.x,
+                top: contextMenu.y,
+                zIndex: 1000,
+              }}
             >
-              📋 Duplicate
-            </button>
-            <button
-              className="context-menu-item"
-              onClick={() => handleContextMenuAction('delete', contextMenu.nodeId)}
-            >
-              🗑️ Delete
-            </button>
-          </div>
-        </div>
-      )}
+              <div className="context-menu-content">
+                <button
+                  className="context-menu-item"
+                  onClick={() => handleContextMenuAction('duplicate', contextMenu.nodeId)}
+                >
+                  📋 Duplicate
+                </button>
+                {hasParent && (
+                  <button
+                    className="context-menu-item"
+                    onClick={() => handleContextMenuAction('ungroup', contextMenu.nodeId)}
+                  >
+                    📦 Ungroup
+                  </button>
+                )}
+                {canGroup && (
+                  <button
+                    className="context-menu-item"
+                    onClick={() => handleContextMenuAction('group', contextMenu.nodeId)}
+                  >
+                    📦 Group
+                  </button>
+                )}
+                <button
+                  className="context-menu-item"
+                  onClick={() => handleContextMenuAction('delete', contextMenu.nodeId)}
+                >
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+          );
+        })()
+      }
 
       {/* Text Editing Overlay */}
-      {editingText && (() => {
-        const node = doc.nodes.find(n => n.id === editingText);
-        if (!node || node.type !== 'text') return null;
+      {
+        editingText && (() => {
+          const node = doc.nodes.find(n => n.id === editingText);
+          if (!node || node.type !== 'text') return null;
 
-        return (
-          <div
-            className="text-edit-overlay"
-            style={{
-              position: 'absolute',
-              left: (node.x + pan.x) * zoom,
-              top: (node.y + pan.y) * zoom,
-              width: node.width * zoom,
-              height: node.height * zoom,
-              zIndex: 1001,
-            }}
-          >
-            <textarea
-              className="text-edit-input"
-              value={node.text}
-              onChange={(e) => {
-                const op: Op = {
-                  t: 'update',
-                  id: node.id,
-                  patch: { text: e.target.value }
-                };
-                onDocChange([op]);
-                apiClient.appendOps(doc.id, [op]).catch(console.error);
-              }}
-              onBlur={() => setEditingText(null)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  setEditingText(null);
-                }
-                if (e.key === 'Escape') {
-                  setEditingText(null);
-                }
-              }}
-              autoFocus
+          return (
+            <div
+              className="text-edit-overlay"
               style={{
-                width: '100%',
-                height: '100%',
-                border: '2px solid var(--brand-teal)',
-                borderRadius: '4px',
-                padding: '4px',
-                fontSize: `${node.fontSize * zoom}px`,
-                fontFamily: node.fontFamily,
-                fontWeight: node.fontWeight,
-                color: node.fill,
-                background: 'rgba(255, 255, 255, 0.95)',
-                resize: 'none',
-                outline: 'none',
+                position: 'absolute',
+                left: (node.x + pan.x) * zoom,
+                top: (node.y + pan.y) * zoom,
+                width: node.width * zoom,
+                height: node.height * zoom,
+                zIndex: 1001,
               }}
-            />
-          </div>
-        );
-      })()}
-    </div>
+            >
+              <textarea
+                className="text-edit-input"
+                value={node.text}
+                onChange={(e) => {
+                  const op: Op = {
+                    t: 'update',
+                    id: node.id,
+                    patch: { text: e.target.value }
+                  };
+                  onDocChange([op]);
+                  apiClient.appendOps(doc.id, [op]).catch(console.error);
+                }}
+                onBlur={() => setEditingText(null)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    setEditingText(null);
+                  }
+                  if (e.key === 'Escape') {
+                    setEditingText(null);
+                  }
+                }}
+                autoFocus
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: '2px solid var(--brand-teal)',
+                  borderRadius: '4px',
+                  padding: '4px',
+                  fontSize: `${node.fontSize * zoom}px`,
+                  fontFamily: node.fontFamily,
+                  fontWeight: node.fontWeight,
+                  color: node.fill,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  resize: 'none',
+                  outline: 'none',
+                }}
+              />
+            </div>
+          );
+        })()
+      }
+    </div >
   );
 }
