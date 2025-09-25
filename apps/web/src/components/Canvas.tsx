@@ -29,8 +29,25 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   // Handle window resize
   useEffect(() => {
     const updateCanvasSize = () => {
-      const width = Math.max(400, window.innerWidth - 300); // Subtract sidebar width, min 400px
-      const height = Math.max(300, window.innerHeight - 100); // Subtract navbar height, min 300px
+      let sidebarWidth = 0;
+      let gapWidth = 0;
+
+      if (window.innerWidth <= 900) {
+        // Mobile: single column layout
+        sidebarWidth = 0;
+        gapWidth = 0;
+      } else if (window.innerWidth <= 1200) {
+        // Tablet: 250px sidebars
+        sidebarWidth = 500; // 250px + 250px
+        gapWidth = 40; // 20px gap between each column
+      } else {
+        // Desktop: 300px sidebars
+        sidebarWidth = 600; // 300px + 300px
+        gapWidth = 40; // 20px gap between each column
+      }
+
+      const width = Math.max(400, window.innerWidth - sidebarWidth - gapWidth - 80); // Subtract sidebars, gaps, padding (20px each side), and right margin (20px)
+      const height = Math.max(300, window.innerHeight - 140); // Subtract navbar height + padding, min 300px
       setCanvasSize({ width, height });
     };
 

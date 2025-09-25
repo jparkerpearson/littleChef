@@ -222,12 +222,12 @@ body {
 }
 
 .nav-inner {
-  width: min(1100px, 92vw);
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 20px;
   height: 72px;
+  padding: 0 20px;
 }
 
 .brand {
@@ -366,7 +366,8 @@ textarea.input {
   display: grid;
   grid-template-columns: 300px 1fr 300px;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 20px 20px 20px;
+  margin-right: 20px;
   overflow: hidden;
 }
 
@@ -396,8 +397,6 @@ textarea.input {
 .canvas-container {
   width: 100%;
   height: 100%;
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -941,6 +940,109 @@ textarea.input {
 
 .context-menu-item:active {
   background: var(--gray-200);
+}
+
+/* === Node List === */
+.node-list {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.node-list-header {
+  cursor: pointer;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-100);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--brand-brown);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.node-list-header:hover {
+  background: var(--gray-200);
+}
+
+.node-list-toggle {
+  font-size: 12px;
+  color: var(--gray-700);
+  transition: transform 0.2s ease;
+}
+
+.node-list-header.expanded .node-list-toggle {
+  transform: rotate(180deg);
+}
+
+.node-list-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.node-list-empty {
+  padding: 20px;
+  color: var(--gray-700);
+  font-size: 14px;
+  text-align: center;
+  font-style: italic;
+}
+
+.node-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--white);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.node-item:last-child {
+  border-bottom: none;
+}
+
+.node-item:hover {
+  background: var(--gray-100);
+}
+
+.node-item.selected {
+  background: rgba(76, 147, 175, 0.1);
+  border-left: 3px solid var(--brand-teal);
+}
+
+.node-item.selected:hover {
+  background: rgba(76, 147, 175, 0.15);
+}
+
+.node-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.node-label {
+  flex: 1;
+  font-weight: 500;
+  color: var(--brand-brown);
+}
+
+.node-dimensions {
+  font-size: 12px;
+  color: var(--gray-700);
+  font-weight: 400;
+  background: var(--gray-100);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 }
 
 /* === Responsive Design === */

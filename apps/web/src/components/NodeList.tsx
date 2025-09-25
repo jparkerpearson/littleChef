@@ -29,15 +29,15 @@ export function NodeList({ nodes, selectedIds, onSelectionChange }: NodeListProp
     const getNodeIcon = (node: Node) => {
         switch (node.type) {
             case 'rect':
-                return '⬜';
+                return '▢';
             case 'text':
-                return '📝';
+                return 'T';
             case 'button':
-                return '🔘';
+                return 'B';
             case 'image':
-                return '🖼️';
+                return '🖼';
             default:
-                return '📦';
+                return '?';
         }
     };
 
@@ -59,56 +59,31 @@ export function NodeList({ nodes, selectedIds, onSelectionChange }: NodeListProp
     return (
         <div className="node-list">
             <div
-                className="node-list-header"
+                className={`node-list-header ${isExpanded ? 'expanded' : ''}`}
                 onClick={() => setIsExpanded(!isExpanded)}
-                style={{
-                    cursor: 'pointer',
-                    padding: '8px 12px',
-                    borderBottom: '1px solid #e0e0e0',
-                    backgroundColor: '#f8f9fa',
-                    fontWeight: '600',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}
             >
                 <span>Nodes ({nodes.length})</span>
-                <span style={{ fontSize: '12px' }}>
-                    {isExpanded ? '▼' : '▶'}
+                <span className="node-list-toggle">
+                    ▼
                 </span>
             </div>
 
             {isExpanded && (
-                <div className="node-list-content" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                <div className="node-list-content">
                     {nodes.length === 0 ? (
-                        <div style={{ padding: '12px', color: '#666', fontSize: '14px' }}>
+                        <div className="node-list-empty">
                             No nodes yet
                         </div>
                     ) : (
                         nodes.map((node) => (
                             <div
                                 key={node.id}
+                                className={`node-item ${selectedIds.includes(node.id) ? 'selected' : ''}`}
                                 onClick={(e) => handleNodeClick(node.id, e)}
-                                style={{
-                                    padding: '8px 12px',
-                                    cursor: 'pointer',
-                                    borderBottom: '1px solid #f0f0f0',
-                                    backgroundColor: selectedIds.includes(node.id) ? '#e3f2fd' : 'transparent',
-                                    fontSize: '14px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = selectedIds.includes(node.id) ? '#bbdefb' : '#f5f5f5';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = selectedIds.includes(node.id) ? '#e3f2fd' : 'transparent';
-                                }}
                             >
-                                <span style={{ fontSize: '16px' }}>{getNodeIcon(node)}</span>
-                                <span style={{ flex: 1 }}>{getNodeLabel(node)}</span>
-                                <span style={{ fontSize: '12px', color: '#666' }}>
+                                <span className="node-icon">{getNodeIcon(node)}</span>
+                                <span className="node-label">{getNodeLabel(node)}</span>
+                                <span className="node-dimensions">
                                     {node.width}×{node.height}
                                 </span>
                             </div>

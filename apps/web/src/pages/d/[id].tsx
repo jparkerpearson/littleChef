@@ -62,7 +62,7 @@ export default function DocumentEditor() {
 
       // Ensure minimum loading time of 1.5 seconds
       const elapsedTime = Date.now() - loadingStartTime.current;
-      const remainingTime = Math.max(0, 1500 - elapsedTime);
+      const remainingTime = Math.max(0, 200 - elapsedTime);
 
       setTimeout(() => {
         setIsLoading(false);
