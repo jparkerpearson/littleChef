@@ -1,19 +1,14 @@
 // Gemini LLM client for generating operations
-import { GoogleAuth } from "google-auth-library";
+import { GoogleGenAI } from "@google/genai";
 import { Op, Doc, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
 
 export class LLMClient {
-  private auth: GoogleAuth;
+  private ai: GoogleGenAI;
 
-  constructor(serviceAccountKeyPath?: string) {
-    // Initialize Google Auth
-    this.auth = new GoogleAuth({
-      keyFile: serviceAccountKeyPath,
-      scopes: [
-        'https://www.googleapis.com/auth/generative-language',
-        'https://www.googleapis.com/auth/cloud-platform'
-      ]
-    });
+  constructor() {
+    // Initialize Google GenAI client
+    // The client gets the API key from the environment variable `GEMINI_API_KEY`
+    this.ai = new GoogleGenAI({});
   }
 
   async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
@@ -32,76 +27,27 @@ export class LLMClient {
     const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
 
     try {
-      // Get authenticated client and access token
-      console.log(`[${requestId}] Getting authentication token`);
-      const client = await this.auth.getClient();
-      const token = await client.getAccessToken();
-
-      if (!token.token) {
-        throw new Error('Failed to get access token from Google Auth');
-      }
-
-      // Make request to Gemini API
+      // Make request to Gemini API using GoogleGenAI
       console.log(`[${requestId}] Making request to Gemini API`, {
         promptLength: fullPrompt.length,
-        model: 'gemini-1.5-flash'
+        model: 'gemini-2.5-flash-lite'
       });
 
       const apiStartTime = Date.now();
-      const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [{
-              role: "user",
-              parts: [{ text: fullPrompt }]
-            }],
-          }),
-        }
-      );
+      const response = await this.ai.models.generateContent({
+        model: "gemini-2.5-flash-lite",
+        contents: fullPrompt,
+      });
 
       const apiDuration = Date.now() - apiStartTime;
       console.log(`[${requestId}] Gemini API response`, {
-        status: response.status,
-        statusText: response.statusText,
         duration: `${apiDuration}ms`
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`[${requestId}] Gemini API error`, {
-          status: response.status,
-          statusText: response.statusText,
-          errorBody: errorText,
-          duration: `${apiDuration}ms`
-        });
-        throw new Error(`Gemini API request failed: ${response.status} ${response.statusText} - ${errorText}`);
-      }
-
-      const data = await response.json() as any;
-
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        console.error(`[${requestId}] Invalid Gemini response structure`, {
-          hasCandidates: !!data.candidates,
-          candidatesLength: data.candidates?.length || 0,
-          hasContent: !!data.candidates?.[0]?.content,
-          responseKeys: Object.keys(data)
-        });
-        throw new Error('Invalid response structure from Gemini API - missing candidates or content');
-      }
-
-      const text = data.candidates[0].content.parts[0].text;
+      const text = response.text;
 
       if (!text) {
-        console.error(`[${requestId}] No text content in Gemini response`, {
-          candidates: data.candidates.length,
-          contentParts: data.candidates[0].content.parts?.length || 0
-        });
+        console.error(`[${requestId}] No text content in Gemini response`);
         throw new Error('No text content in LLM response');
       }
 
@@ -175,8 +121,8 @@ export class LLMClient {
       });
 
       // Re-throw with more context
-      if (err.message.includes('Gemini API') || err.message.includes('Invalid JSON')) {
-        throw error; // Keep original error for API/parsing issues
+      if (err.message.includes('Invalid JSON')) {
+        throw error; // Keep original error for parsing issues
       } else {
         throw new Error(`LLM generation failed: ${err.message}`);
       }

@@ -14,18 +14,18 @@ import { WebSocketMessage } from './types';
 dotenv.config();
 
 const PORT = parseInt(process.env.PORT || '4000');
-const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // Debug port configuration
 console.log('🔧 Environment variables:');
 console.log('  PORT:', process.env.PORT || 'undefined (using default 4000)');
-console.log('  GOOGLE_APPLICATION_CREDENTIALS:', GOOGLE_APPLICATION_CREDENTIALS ? 'set' : 'not set');
+console.log('  GEMINI_API_KEY:', GEMINI_API_KEY ? 'set' : 'not set');
 console.log('🚀 Starting server on port:', PORT);
 
-if (!GOOGLE_APPLICATION_CREDENTIALS) {
-  console.warn('⚠️  GOOGLE_APPLICATION_CREDENTIALS not set. LLM features will not work.');
-  console.warn('   Set GOOGLE_APPLICATION_CREDENTIALS in apps/server/.env to enable AI features.');
-  console.warn('   This should point to your Google Cloud service account key file.');
+if (!GEMINI_API_KEY) {
+  console.warn('⚠️  GEMINI_API_KEY not set. LLM features will not work.');
+  console.warn('   Set GEMINI_API_KEY in apps/server/.env to enable AI features.');
+  console.warn('   Get your API key from: https://makersuite.google.com/app/apikey');
 }
 
 async function buildServer() {
@@ -51,7 +51,7 @@ async function buildServer() {
 
   // Initialize services
   const store = new Store();
-  const llmClient = new LLMClient(GOOGLE_APPLICATION_CREDENTIALS);
+  const llmClient = new LLMClient();
 
   // Register routes
   registerRoutes(fastify, store, llmClient);
