@@ -42,3 +42,27 @@ export interface WebSocketMessage {
   snapshot?: any; // Doc type from DSL
   ops?: any[]; // Op[] type from DSL
 }
+
+export interface CachedResponse {
+  id: string;
+  timestamp: number;
+  prompt: string;
+  docId: string;
+  docSummary: string;
+  palette?: string[];
+  ops: any[]; // Op[] type from DSL
+  requestId: string;
+}
+
+export interface CacheListResponse {
+  responses: CachedResponse[];
+}
+
+export interface CacheLoadRequest {
+  docId: string;
+}
+
+export interface CacheLoadResponse {
+  ops: any[]; // Op[] type from DSL
+  version: number;
+}

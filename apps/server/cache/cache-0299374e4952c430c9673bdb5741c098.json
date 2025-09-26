@@ -1,0 +1,1280 @@
+{
+  "id": "cache-0299374e4952c430c9673bdb5741c098",
+  "timestamp": 1758908881854,
+  "prompt": "Can you generate me a web app about cheeseburgers?",
+  "docId": "mhrodnvyr",
+  "docSummary": "Document mhrodnvyr: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "page-wrapper",
+        "x": 0,
+        "y": 0,
+        "width": 1400,
+        "height": 2800,
+        "type": "rect",
+        "fill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1400,
+        "height": 80,
+        "parentId": "page-wrapper",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo-text",
+        "x": 32,
+        "y": 24,
+        "width": 200,
+        "height": 32,
+        "parentId": "header",
+        "type": "text",
+        "text": "BurgerHub",
+        "fontSize": 28,
+        "fontFamily": "Arial",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 400,
+        "y": 16,
+        "width": 504,
+        "height": 48,
+        "parentId": "header",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-home",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Home",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu-burgers",
+        "x": 120,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Our Burgers",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-about",
+        "x": 264,
+        "y": 0,
+        "width": 80,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "About Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-contact",
+        "x": 360,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Contact",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta",
+        "x": 1184,
+        "y": 16,
+        "width": 160,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "Order Now",
+        "fill": "#e67e22",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-section",
+        "x": 0,
+        "y": 80,
+        "width": 1400,
+        "height": 504,
+        "type": "rect",
+        "fill": "#fff8e1"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-title",
+        "x": 104,
+        "y": 120,
+        "width": 704,
+        "height": 104,
+        "parentId": "hero-section",
+        "type": "text",
+        "text": "The Ultimate Cheeseburger Experience",
+        "fontSize": 64,
+        "fontFamily": "Merriweather",
+        "fontWeight": "900",
+        "fill": "#4a2f1f",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-subtitle",
+        "x": 104,
+        "y": 240,
+        "width": 600,
+        "height": 72,
+        "parentId": "hero-section",
+        "type": "text",
+        "text": "Juicy, delicious, and made with the freshest ingredients. Taste the difference.",
+        "fontSize": 24,
+        "fontFamily": "Open Sans",
+        "fontWeight": "400",
+        "fill": "#7f8c8d",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-primary",
+        "x": 104,
+        "y": 344,
+        "width": 200,
+        "height": 64,
+        "parentId": "hero-section",
+        "type": "button",
+        "label": "Explore Menu",
+        "fill": "#e67e22",
+        "cornerRadius": 12,
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-secondary",
+        "x": 320,
+        "y": 344,
+        "width": 184,
+        "height": 64,
+        "parentId": "hero-section",
+        "type": "button",
+        "label": "Find a Location",
+        "fill": "#ffffff",
+        "stroke": "#e67e22",
+        "strokeWidth": 2,
+        "cornerRadius": 12,
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "textFill": "#e67e22"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-image-burger",
+        "x": 704,
+        "y": 104,
+        "width": 600,
+        "height": 400,
+        "parentId": "hero-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1550273961-be089b633605?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600&h=400",
+        "cornerRadius": 24
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "featured-burgers-section",
+        "x": 0,
+        "y": 584,
+        "width": 1400,
+        "height": 600,
+        "type": "rect",
+        "fill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "featured-title",
+        "x": 0,
+        "y": 48,
+        "width": 1400,
+        "height": 56,
+        "parentId": "featured-burgers-section",
+        "type": "text",
+        "text": "Our Signature Burgers",
+        "fontSize": 48,
+        "fontFamily": "Merriweather",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-card-1",
+        "x": 80,
+        "y": 144,
+        "width": 360,
+        "height": 360,
+        "parentId": "featured-burgers-section",
+        "type": "rect",
+        "fill": "#fdfdfd",
+        "stroke": "#eeeeee",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-image-1",
+        "x": 104,
+        "y": 168,
+        "width": 312,
+        "height": 208,
+        "parentId": "burger-card-1",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1571066746405-774574b7f24d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=312&h=208",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-name-1",
+        "x": 104,
+        "y": 384,
+        "width": 312,
+        "height": 32,
+        "parentId": "burger-card-1",
+        "type": "text",
+        "text": "Classic Cheeseburger",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-desc-1",
+        "x": 104,
+        "y": 424,
+        "width": 312,
+        "height": 48,
+        "parentId": "burger-card-1",
+        "type": "text",
+        "text": "A timeless favorite. Perfectly grilled patty with melted cheese.",
+        "fontSize": 14,
+        "fontFamily": "Open Sans",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-card-2",
+        "x": 520,
+        "y": 144,
+        "width": 360,
+        "height": 360,
+        "parentId": "featured-burgers-section",
+        "type": "rect",
+        "fill": "#fdfdfd",
+        "stroke": "#eeeeee",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-image-2",
+        "x": 544,
+        "y": 168,
+        "width": 312,
+        "height": 208,
+        "parentId": "burger-card-2",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1553977114-15170e2f26f8?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=312&h=208",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-name-2",
+        "x": 544,
+        "y": 384,
+        "width": 312,
+        "height": 32,
+        "parentId": "burger-card-2",
+        "type": "text",
+        "text": "Spicy Jalapeño Burger",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-desc-2",
+        "x": 544,
+        "y": 424,
+        "width": 312,
+        "height": 48,
+        "parentId": "burger-card-2",
+        "type": "text",
+        "text": "A kick of heat! Pepper jack cheese and fresh jalapeños.",
+        "fontSize": 14,
+        "fontFamily": "Open Sans",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-card-3",
+        "x": 960,
+        "y": 144,
+        "width": 360,
+        "height": 360,
+        "parentId": "featured-burgers-section",
+        "type": "rect",
+        "fill": "#fdfdfd",
+        "stroke": "#eeeeee",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-image-3",
+        "x": 984,
+        "y": 168,
+        "width": 312,
+        "height": 208,
+        "parentId": "burger-card-3",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1619888327120-c6591b982097?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=312&h=208",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-name-3",
+        "x": 984,
+        "y": 384,
+        "width": 312,
+        "height": 32,
+        "parentId": "burger-card-3",
+        "type": "text",
+        "text": "Mushroom Swiss Burger",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "burger-desc-3",
+        "x": 984,
+        "y": 424,
+        "width": 312,
+        "height": 48,
+        "parentId": "burger-card-3",
+        "type": "text",
+        "text": "Earthy mushrooms and savory Swiss cheese, a perfect pairing.",
+        "fontSize": 14,
+        "fontFamily": "Open Sans",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-us-section",
+        "x": 0,
+        "y": 1184,
+        "width": 1400,
+        "height": 504,
+        "type": "rect",
+        "fill": "#fffaf0"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-title",
+        "x": 104,
+        "y": 48,
+        "width": 600,
+        "height": 56,
+        "parentId": "about-us-section",
+        "type": "text",
+        "text": "Our Story",
+        "fontSize": 48,
+        "fontFamily": "Merriweather",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-content",
+        "x": 104,
+        "y": 120,
+        "width": 600,
+        "height": 240,
+        "parentId": "about-us-section",
+        "type": "text",
+        "text": "BurgerHub was founded with a simple passion: to create the most delicious and satisfying cheeseburgers. We use only the highest quality ingredients, from premium beef patties to fresh, locally sourced produce. Our commitment to taste and quality has made us a go-to spot for burger lovers everywhere. Come experience the BurgerHub difference!",
+        "fontSize": 18,
+        "fontFamily": "Open Sans",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-image",
+        "x": 752,
+        "y": 120,
+        "width": 504,
+        "height": 352,
+        "parentId": "about-us-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1555934814-ef345b4f737b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=500&h=350",
+        "cornerRadius": 24
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-section",
+        "x": 0,
+        "y": 1680,
+        "width": 1400,
+        "height": 504,
+        "type": "rect",
+        "fill": "#f9fafb"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-title",
+        "x": 104,
+        "y": 48,
+        "width": 600,
+        "height": 56,
+        "parentId": "contact-section",
+        "type": "text",
+        "text": "Get In Touch",
+        "fontSize": 48,
+        "fontFamily": "Merriweather",
+        "fontWeight": "700",
+        "fill": "#4a2f1f",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-form-container",
+        "x": 104,
+        "y": 120,
+        "width": 600,
+        "height": 352,
+        "parentId": "contact-section",
+        "type": "rect",
+        "fill": "white",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-label-name",
+        "x": 32,
+        "y": 32,
+        "width": 104,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Name",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-input-name",
+        "x": 32,
+        "y": 64,
+        "width": 536,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-label-email",
+        "x": 32,
+        "y": 128,
+        "width": 104,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Email",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-input-email",
+        "x": 32,
+        "y": 160,
+        "width": 536,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-label-message",
+        "x": 32,
+        "y": 224,
+        "width": 152,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Message",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-input-message",
+        "x": 32,
+        "y": 256,
+        "width": 536,
+        "height": 80,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-submit-button",
+        "x": 32,
+        "y": 376,
+        "width": 160,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "button",
+        "label": "Send Message",
+        "fill": "#3b82f6",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-info-container",
+        "x": 752,
+        "y": 120,
+        "width": 552,
+        "height": 352,
+        "parentId": "contact-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-phone-title",
+        "x": 0,
+        "y": 0,
+        "width": 152,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Phone:",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-phone-number",
+        "x": 160,
+        "y": 0,
+        "width": 248,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "+1 (800) BURGER-1",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#3b82f6",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-title",
+        "x": 0,
+        "y": 64,
+        "width": 152,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Email:",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-address",
+        "x": 160,
+        "y": 64,
+        "width": 352,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "info@burgerhub.com",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#3b82f6",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-address-title",
+        "x": 0,
+        "y": 128,
+        "width": 152,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Address:",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-address-line1",
+        "x": 160,
+        "y": 128,
+        "width": 352,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "123 Burger Lane",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-address-line2",
+        "x": 160,
+        "y": 160,
+        "width": 352,
+        "height": 32,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Delicious City, DC 54321",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer",
+        "x": 0,
+        "y": 2184,
+        "width": 1400,
+        "height": 152,
+        "type": "rect",
+        "fill": "#333333"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-logo",
+        "x": 32,
+        "y": 48,
+        "width": 200,
+        "height": 32,
+        "parentId": "footer",
+        "type": "text",
+        "text": "BurgerHub",
+        "fontSize": 28,
+        "fontFamily": "Arial",
+        "fontWeight": "700",
+        "fill": "#ffffff",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-container",
+        "x": 400,
+        "y": 48,
+        "width": 600,
+        "height": 32,
+        "parentId": "footer",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-home",
+        "x": 0,
+        "y": 0,
+        "width": 80,
+        "height": 44,
+        "parentId": "footer-nav-container",
+        "type": "button",
+        "label": "Home",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#cccccc"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-menu",
+        "x": 104,
+        "y": 0,
+        "width": 104,
+        "height": 44,
+        "parentId": "footer-nav-container",
+        "type": "button",
+        "label": "Menu",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#cccccc"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-about",
+        "x": 224,
+        "y": 0,
+        "width": 80,
+        "height": 44,
+        "parentId": "footer-nav-container",
+        "type": "button",
+        "label": "About",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#cccccc"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-contact",
+        "x": 320,
+        "y": 0,
+        "width": 104,
+        "height": 44,
+        "parentId": "footer-nav-container",
+        "type": "button",
+        "label": "Contact",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#cccccc"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-copyright",
+        "x": 32,
+        "y": 96,
+        "width": 400,
+        "height": 24,
+        "parentId": "footer",
+        "type": "text",
+        "text": "© 2023 BurgerHub. All rights reserved.",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#cccccc",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "page-wrapper",
+      "childId": "header"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "logo-text"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "nav-menu"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-home"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-menu-burgers"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-about"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-subtitle"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-cta-primary"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-cta-secondary"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-image-burger"
+    },
+    {
+      "t": "addChild",
+      "parentId": "featured-burgers-section",
+      "childId": "featured-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "featured-burgers-section",
+      "childId": "burger-card-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-1",
+      "childId": "burger-image-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-1",
+      "childId": "burger-name-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-1",
+      "childId": "burger-desc-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "featured-burgers-section",
+      "childId": "burger-card-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-2",
+      "childId": "burger-image-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-2",
+      "childId": "burger-name-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-2",
+      "childId": "burger-desc-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "featured-burgers-section",
+      "childId": "burger-card-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-3",
+      "childId": "burger-image-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-3",
+      "childId": "burger-name-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "burger-card-3",
+      "childId": "burger-desc-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-us-section",
+      "childId": "about-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-us-section",
+      "childId": "about-content"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-us-section",
+      "childId": "about-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-form-container"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-label-name"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-input-name"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-label-email"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-input-email"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-label-message"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-input-message"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "form-submit-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-info-container"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-phone-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-phone-number"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-email-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-email-address"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-address-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-address-line1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-address-line2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-nav-container"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav-container",
+      "childId": "footer-nav-home"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav-container",
+      "childId": "footer-nav-menu"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav-container",
+      "childId": "footer-nav-about"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav-container",
+      "childId": "footer-nav-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-copyright"
+    }
+  ],
+  "requestId": "req-1758908866883-yh1xri99c"
+}

@@ -1,17 +1,121 @@
 // Gemini LLM client for generating operations
 import { GoogleGenAI } from "@google/genai";
 import { Op, Doc, Node, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
+import * as fs from 'fs';
+import * as path from 'path';
+
+export interface CachedResponse {
+  id: string;
+  timestamp: number;
+  prompt: string;
+  docId: string;
+  docSummary: string;
+  palette?: string[];
+  ops: Op[];
+  requestId: string;
+}
+
+export class CacheManager {
+  private cacheDir: string;
+
+  constructor(cacheDir: string = './cache') {
+    this.cacheDir = cacheDir;
+    this.ensureCacheDir();
+  }
+
+  private ensureCacheDir(): void {
+    if (!fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true });
+    }
+  }
+
+  private getCacheFilePath(id: string): string {
+    return path.join(this.cacheDir, `${id}.json`);
+  }
+
+  saveResponse(response: CachedResponse): void {
+    try {
+      const filePath = this.getCacheFilePath(response.id);
+      fs.writeFileSync(filePath, JSON.stringify(response, null, 2));
+      console.log(`[Cache] Saved response ${response.id} to ${filePath}`);
+    } catch (error) {
+      console.error(`[Cache] Failed to save response ${response.id}:`, error);
+    }
+  }
+
+  loadResponse(id: string): CachedResponse | null {
+    try {
+      const filePath = this.getCacheFilePath(id);
+      if (!fs.existsSync(filePath)) {
+        return null;
+      }
+      const data = fs.readFileSync(filePath, 'utf8');
+      const response = JSON.parse(data) as CachedResponse;
+      console.log(`[Cache] Loaded response ${id} from ${filePath}`);
+      return response;
+    } catch (error) {
+      console.error(`[Cache] Failed to load response ${id}:`, error);
+      return null;
+    }
+  }
+
+  listResponses(): CachedResponse[] {
+    try {
+      const files = fs.readdirSync(this.cacheDir);
+      const responses: CachedResponse[] = [];
+
+      for (const file of files) {
+        if (file.endsWith('.json')) {
+          const id = file.replace('.json', '');
+          const response = this.loadResponse(id);
+          if (response) {
+            responses.push(response);
+          }
+        }
+      }
+
+      // Sort by timestamp (newest first)
+      return responses.sort((a, b) => b.timestamp - a.timestamp);
+    } catch (error) {
+      console.error('[Cache] Failed to list responses:', error);
+      return [];
+    }
+  }
+
+  deleteResponse(id: string): boolean {
+    try {
+      const filePath = this.getCacheFilePath(id);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`[Cache] Deleted response ${id}`);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(`[Cache] Failed to delete response ${id}:`, error);
+      return false;
+    }
+  }
+
+  generateCacheId(prompt: string, docId: string, palette?: string[]): string {
+    const content = `${prompt}|${docId}|${palette?.join(',') || ''}`;
+    const hash = require('crypto').createHash('md5').update(content).digest('hex');
+    return `cache-${hash}`;
+  }
+}
 
 export class LLMClient {
   private ai: GoogleGenAI;
+  private cacheManager: CacheManager;
 
-  constructor() {
+  constructor(cacheDir?: string) {
     // Initialize Google GenAI client
     // The client gets the API key from the environment variable `GEMINI_API_KEY`
     this.ai = new GoogleGenAI({});
+    this.cacheManager = new CacheManager(cacheDir);
   }
 
-  async generateOps(doc: Doc, prompt: string, palette?: string[]): Promise<Op[]> {
+  async generateOps(doc: Doc, prompt: string, palette?: string[], useCache: boolean = true): Promise<Op[]> {
     const requestId = `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const startTime = Date.now();
 
@@ -19,8 +123,24 @@ export class LLMClient {
       docId: doc.id,
       docNodes: doc.nodes.length,
       promptLength: prompt.length,
-      palette: palette?.length || 0
+      palette: palette?.length || 0,
+      useCache
     });
+
+    // Check cache first if enabled
+    if (useCache) {
+      const cacheId = this.cacheManager.generateCacheId(prompt, doc.id, palette);
+      const cachedResponse = this.cacheManager.loadResponse(cacheId);
+
+      if (cachedResponse) {
+        console.log(`[${requestId}] Using cached response ${cacheId}`, {
+          cachedRequestId: cachedResponse.requestId,
+          operationCount: cachedResponse.ops.length,
+          cacheAge: Date.now() - cachedResponse.timestamp
+        });
+        return cachedResponse.ops;
+      }
+    }
 
     const systemPrompt = this.buildSystemPrompt(palette);
     const userPrompt = this.buildUserPrompt(doc, prompt);
@@ -102,6 +222,22 @@ export class LLMClient {
 
       // Log tree representation of the resulting document
       this.logDocumentTree(requestId, doc, constrainedOps);
+
+      // Save to cache if enabled
+      if (useCache) {
+        const cacheId = this.cacheManager.generateCacheId(prompt, doc.id, palette);
+        const cachedResponse: CachedResponse = {
+          id: cacheId,
+          timestamp: Date.now(),
+          prompt,
+          docId: doc.id,
+          docSummary: getDocSummary(doc),
+          palette,
+          ops: constrainedOps,
+          requestId
+        };
+        this.cacheManager.saveResponse(cachedResponse);
+      }
 
       const totalDuration = Date.now() - startTime;
       console.log(`[${requestId}] LLM generation completed successfully`, {
@@ -446,7 +582,7 @@ PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes.
   }
 
   private applyConstraints(ops: Op[]): Op[] {
-    return ops.map(op => {
+    const constrainedOps = ops.map(op => {
       if (op.t === 'add') {
         const node = { ...op.node };
 
@@ -483,6 +619,22 @@ PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes.
 
       return op as Op;
     });
+
+    // Add addChild operations for any nodes with parentId
+    const additionalOps: Op[] = [];
+    const addOps = constrainedOps.filter(op => op.t === 'add') as Array<{ t: 'add'; node: Node }>;
+
+    for (const addOp of addOps) {
+      if (addOp.node.parentId) {
+        additionalOps.push({
+          t: 'addChild',
+          parentId: addOp.node.parentId,
+          childId: addOp.node.id
+        });
+      }
+    }
+
+    return [...constrainedOps, ...additionalOps];
   }
 
   private logDocumentTree(requestId: string, originalDoc: Doc, ops: Op[]): void {
@@ -559,5 +711,31 @@ PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes.
     } catch (error) {
       console.error(`[${requestId}] Failed to log document tree:`, error);
     }
+  }
+
+  // Cache management methods
+  listCachedResponses(): CachedResponse[] {
+    return this.cacheManager.listResponses();
+  }
+
+  loadCachedResponse(id: string): CachedResponse | null {
+    return this.cacheManager.loadResponse(id);
+  }
+
+  deleteCachedResponse(id: string): boolean {
+    return this.cacheManager.deleteResponse(id);
+  }
+
+  generateOpsFromCache(cacheId: string): Op[] | null {
+    const cachedResponse = this.cacheManager.loadResponse(cacheId);
+    if (cachedResponse) {
+      console.log(`[Cache] Loading operations from cache ${cacheId}`, {
+        operationCount: cachedResponse.ops.length,
+        originalRequestId: cachedResponse.requestId,
+        cacheAge: Date.now() - cachedResponse.timestamp
+      });
+      return cachedResponse.ops;
+    }
+    return null;
   }
 }

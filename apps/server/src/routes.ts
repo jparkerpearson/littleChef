@@ -155,4 +155,75 @@ export function registerRoutes(fastify: FastifyInstance, store: Store, llmClient
       return { error: 'Internal server error' };
     }
   });
+
+  // List cached LLM responses
+  fastify.get('/v1/cache', async (request, reply) => {
+    try {
+      const cachedResponses = llmClient.listCachedResponses();
+      return { responses: cachedResponses };
+    } catch (error) {
+      reply.code(500);
+      return { error: 'Internal server error' };
+    }
+  });
+
+  // Load operations from cached response
+  fastify.post('/v1/cache/:id/load', async (request, reply) => {
+    try {
+      const { id } = request.params as { id: string };
+      const { docId } = request.body as { docId: string };
+
+      // Get current document
+      const doc = store.getDoc(docId);
+      if (!doc) {
+        reply.code(404);
+        return { error: 'Document not found' };
+      }
+
+      // Load operations from cache
+      const ops = llmClient.generateOpsFromCache(id);
+      if (!ops) {
+        reply.code(404);
+        return { error: 'Cached response not found' };
+      }
+
+      // Apply operations
+      const updatedDoc = applyOps(doc, ops);
+
+      // Store updates
+      store.updateDoc(updatedDoc);
+      store.appendOps(docId, ops);
+
+      // Broadcast to WebSocket subscribers
+      store.broadcast(docId, {
+        type: 'ops',
+        ops,
+        version: updatedDoc.version
+      });
+
+      return { ops, version: updatedDoc.version };
+    } catch (error) {
+      console.error('Cache load error:', error);
+      reply.code(500);
+      return { error: 'Internal server error' };
+    }
+  });
+
+  // Delete cached response
+  fastify.delete('/v1/cache/:id', async (request, reply) => {
+    try {
+      const { id } = request.params as { id: string };
+      const deleted = llmClient.deleteCachedResponse(id);
+
+      if (!deleted) {
+        reply.code(404);
+        return { error: 'Cached response not found' };
+      }
+
+      return { ok: true };
+    } catch (error) {
+      reply.code(500);
+      return { error: 'Internal server error' };
+    }
+  });
 }

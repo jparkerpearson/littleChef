@@ -40,6 +40,30 @@ export interface GenerateResponse {
   version: number;
 }
 
+export interface CachedResponse {
+  id: string;
+  timestamp: number;
+  prompt: string;
+  docId: string;
+  docSummary: string;
+  palette?: string[];
+  ops: Op[];
+  requestId: string;
+}
+
+export interface CacheListResponse {
+  responses: CachedResponse[];
+}
+
+export interface CacheLoadRequest {
+  docId: string;
+}
+
+export interface CacheLoadResponse {
+  ops: Op[];
+  version: number;
+}
+
 export class ApiClient {
   private baseUrl: string;
 
@@ -115,6 +139,44 @@ export class ApiClient {
 
     if (!response.ok) {
       throw new Error(`Failed to list documents: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  async listCachedResponses(): Promise<CacheListResponse> {
+    const response = await fetch(`${this.baseUrl}/v1/cache`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to list cached responses: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  async loadCachedResponse(cacheId: string, docId: string): Promise<CacheLoadResponse> {
+    const response = await fetch(`${this.baseUrl}/v1/cache/${cacheId}/load`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ docId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to load cached response: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  async deleteCachedResponse(cacheId: string): Promise<{ ok: boolean }> {
+    const response = await fetch(`${this.baseUrl}/v1/cache/${cacheId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete cached response: ${response.statusText}`);
     }
 
     return response.json();
