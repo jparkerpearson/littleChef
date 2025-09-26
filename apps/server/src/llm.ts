@@ -1,6 +1,6 @@
 // Gemini LLM client for generating operations
 import { GoogleGenAI } from "@google/genai";
-import { Op, Doc, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
+import { Op, Doc, Node, validateOps, getDocSummary, snapToGrid, ensureMinButtonHeight } from '@little-chef/dsl';
 
 export class LLMClient {
   private ai: GoogleGenAI;
@@ -90,7 +90,7 @@ export class LLMClient {
         operationCount: Array.isArray(jsonResponse) ? jsonResponse.length : 'not an array'
       });
 
-      const ops = validateOps(jsonResponse);
+      const ops = validateOps(jsonResponse) as Op[];
 
       console.log(`[${requestId}] Operations validated successfully`, {
         operationCount: ops.length,
@@ -99,6 +99,9 @@ export class LLMClient {
 
       // Apply constraints
       const constrainedOps = this.applyConstraints(ops);
+
+      // Log tree representation of the resulting document
+      this.logDocumentTree(requestId, doc, constrainedOps);
 
       const totalDuration = Date.now() - startTime;
       console.log(`[${requestId}] LLM generation completed successfully`, {
@@ -458,7 +461,7 @@ PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes.
           node.height = ensureMinButtonHeight(node.height);
         }
 
-        return { ...op, node };
+        return { ...op, node } as Op;
       }
 
       if (op.t === 'update' && op.patch) {
@@ -475,10 +478,86 @@ PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes.
           patch.height = ensureMinButtonHeight(patch.height);
         }
 
-        return { ...op, patch };
+        return { ...op, patch } as Op;
       }
 
-      return op;
+      return op as Op;
     });
+  }
+
+  private logDocumentTree(requestId: string, originalDoc: Doc, ops: Op[]): void {
+    try {
+      // Simulate applying operations to get the resulting document structure
+      const nodeMap = new Map(originalDoc.nodes.map(node => [node.id, { ...node }]));
+
+      // Apply operations to simulate the final state
+      for (const op of ops) {
+        if (op.t === 'add') {
+          nodeMap.set(op.node.id, { ...op.node });
+        } else if (op.t === 'update') {
+          const existing = nodeMap.get(op.id);
+          if (existing) {
+            nodeMap.set(op.id, { ...existing, ...op.patch });
+          }
+        } else if (op.t === 'remove') {
+          nodeMap.delete(op.id);
+        } else if (op.t === 'reparent') {
+          const existing = nodeMap.get(op.id);
+          if (existing) {
+            nodeMap.set(op.id, { ...existing, parentId: op.parentId === null ? undefined : op.parentId });
+          }
+        }
+      }
+
+      const allNodes = Array.from(nodeMap.values());
+
+      // Build tree structure
+      const rootNodes = allNodes.filter(node => !node.parentId);
+      const treeLines: string[] = [];
+
+      const buildTree = (nodes: Node[], depth: number = 0, prefix: string = '') => {
+        for (let i = 0; i < nodes.length; i++) {
+          const node = nodes[i];
+          const isLast = i === nodes.length - 1;
+          const currentPrefix = prefix + (isLast ? '└── ' : '├── ');
+          const nextPrefix = prefix + (isLast ? '    ' : '│   ');
+
+          // Create node description
+          let nodeDesc = `${node.type}(${node.id})`;
+          if (node.type === 'text' && 'text' in node) {
+            nodeDesc += `: "${node.text.substring(0, 30)}${node.text.length > 30 ? '...' : ''}"`;
+          } else if (node.type === 'button' && 'label' in node) {
+            nodeDesc += `: "${node.label}"`;
+          } else if (node.type === 'image' && 'src' in node) {
+            nodeDesc += `: ${node.src.split('/').pop() || 'image'}`;
+          }
+
+          nodeDesc += ` [${node.x},${node.y}] ${node.width}x${node.height}`;
+
+          treeLines.push(currentPrefix + nodeDesc);
+
+          // Find children
+          const children = allNodes.filter(child => child.parentId === node.id);
+          if (children.length > 0) {
+            buildTree(children, depth + 1, nextPrefix);
+          }
+        }
+      };
+
+      buildTree(rootNodes);
+
+      console.log(`[${requestId}] Document Tree Structure:`);
+      console.log(`[${requestId}] ${'─'.repeat(50)}`);
+      if (treeLines.length === 0) {
+        console.log(`[${requestId}] (empty document)`);
+      } else {
+        treeLines.forEach(line => console.log(`[${requestId}] ${line}`));
+      }
+      console.log(`[${requestId}] ${'─'.repeat(50)}`);
+      console.log(`[${requestId}] Total nodes: ${allNodes.length} (${rootNodes.length} root, ${allNodes.length - rootNodes.length} children)`);
+
+    } catch (error) {
+      console.error(`[${requestId}] Failed to log document tree:`, error);
+    }
   }
 }
