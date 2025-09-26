@@ -606,12 +606,12 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   };
 
   // Render hierarchical nodes recursively
-  const renderHierarchicalNode = (node: Node): React.ReactNode => {
+  const renderHierarchicalNode = (node: Node, parentOffset: { x: number; y: number } = { x: 0, y: 0 }): React.ReactNode => {
     const children = getChildNodes(doc, node.id);
-    const nodeElement = renderNode(node);
 
     if (children.length === 0) {
-      return nodeElement;
+      // No children, just render the node directly at its position relative to parent
+      return renderNode({ ...node, x: node.x + parentOffset.x, y: node.y + parentOffset.y });
     }
 
     // Apply alignment if specified
@@ -627,18 +627,18 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       }));
     }
 
+    // Calculate the node's absolute position
+    const nodeAbsoluteX = node.x + parentOffset.x;
+    const nodeAbsoluteY = node.y + parentOffset.y;
+
     // Render children inside the parent node with relative positioning
     return (
-      <Group key={`group-${node.id}`}>
-        {nodeElement}
+      <Group key={`group-${node.id}`} x={nodeAbsoluteX} y={nodeAbsoluteY}>
+        {/* Render the parent node at (0,0) relative to the group */}
+        {renderNode({ ...node, x: 0, y: 0 })}
         {alignedChildren.map((child: Node) => {
-          // Create a child node with coordinates relative to the parent
-          const relativeChild = {
-            ...child,
-            x: child.x - node.x,
-            y: child.y - node.y
-          };
-          return renderHierarchicalNode(relativeChild);
+          // Child nodes are positioned relative to this node's absolute position
+          return renderHierarchicalNode(child, { x: nodeAbsoluteX, y: nodeAbsoluteY });
         })}
       </Group>
     );
