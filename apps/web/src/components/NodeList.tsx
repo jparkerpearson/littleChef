@@ -1,9 +1,9 @@
 // Node list component for the sidebar
 import React, { useState } from 'react';
-import { Node, getRootNodes, getChildNodes } from '@little-chef/dsl';
+import { Node, getRootNodes, getChildNodes, Doc } from '@little-chef/dsl';
 
 interface NodeListProps {
-    doc: { nodes: Node[] };
+    doc: Doc;
     selectedIds: string[];
     onSelectionChange: (ids: string[]) => void;
 }

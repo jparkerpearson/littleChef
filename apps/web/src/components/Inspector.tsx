@@ -1,12 +1,12 @@
 // Inspector panel for editing selected nodes
 import React, { useState, useEffect } from 'react';
-import { Node, Op, getChildNodes, getAllDescendants } from '@little-chef/dsl';
+import { Node, Op, getChildNodes, getAllDescendants, Doc } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface InspectorProps {
   selectedNodes: Node[];
   docId: string;
-  doc: { nodes: Node[] };
+  doc: Doc;
   onDocChange: (ops: Op[]) => void;
 }
 

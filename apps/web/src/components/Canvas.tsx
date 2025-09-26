@@ -1,7 +1,7 @@
 // React-Konva canvas component for Little Chef editor
 import React, { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Text, Group, Circle } from 'react-konva';
-import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants } from '@little-chef/dsl';
+import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants, groupNodes, ungroupNodes } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface CanvasProps {
@@ -62,15 +62,45 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     return () => window.removeEventListener('resize', updateCanvasSize);
   }, []);
 
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Only handle shortcuts when canvas is focused or no input is focused
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      if (event.key === 'g' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        if (selectedIds.length >= 2) {
+          handleGroupSelected();
+        }
+      } else if (event.key === 'u' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        if (selectedIds.length === 1) {
+          const node = doc.nodes.find(n => n.id === selectedIds[0]);
+          if (node?.children && node.children.length > 0) {
+            handleUngroupNode(selectedIds[0]);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedIds, doc]);
+
   // Handle node selection
   const handleNodeClick = (nodeId: string, event: any) => {
     event.cancelBubble = true;
 
-    if (event.evt.ctrlKey || event.evt.metaKey) {
-      // Multi-select
+    if (event.evt.shiftKey) {
+      // Multi-select with Shift+click
       if (selectedIds.includes(nodeId)) {
+        // If already selected, remove from selection
         onSelectionChange(selectedIds.filter(id => id !== nodeId));
       } else {
+        // Add to existing selection
         onSelectionChange([...selectedIds, nodeId]);
       }
     } else {
@@ -98,6 +128,32 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     onDocChange([op]);
     apiClient.appendOps(doc.id, [op]).catch(console.error);
     setEditingText(null);
+  };
+
+  // Handle grouping selected nodes
+  const handleGroupSelected = () => {
+    if (selectedIds.length < 2) return;
+
+    try {
+      const { ops, groupId } = groupNodes(doc, selectedIds);
+      onDocChange(ops);
+      apiClient.appendOps(doc.id, ops).catch(console.error);
+      onSelectionChange([groupId]); // Select the new group
+    } catch (error) {
+      console.error('Failed to group nodes:', error);
+    }
+  };
+
+  // Handle ungrouping a node
+  const handleUngroupNode = (nodeId: string) => {
+    try {
+      const ops = ungroupNodes(doc, nodeId);
+      onDocChange(ops);
+      apiClient.appendOps(doc.id, ops).catch(console.error);
+      onSelectionChange([]); // Clear selection after ungrouping
+    } catch (error) {
+      console.error('Failed to ungroup node:', error);
+    }
   };
 
   // Handle right-click context menu
@@ -146,49 +202,10 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         }
         break;
       case 'ungroup':
-        // Remove parent relationship for this node
-        const ungroupNode = doc.nodes.find(n => n.id === nodeId);
-        const ops: Op[] = [];
-
-        // Remove parentId from the node
-        ops.push({ t: 'reparent', id: nodeId, parentId: null });
-
-        // Remove this node from parent's children array
-        if (ungroupNode?.parentId) {
-          const parentNode = doc.nodes.find(n => n.id === ungroupNode.parentId);
-          if (parentNode?.children) {
-            const updatedChildren = parentNode.children.filter(id => id !== nodeId);
-            ops.push({ t: 'update', id: ungroupNode.parentId, patch: { children: updatedChildren } });
-          }
-        }
-
-        onDocChange(ops);
-        apiClient.appendOps(doc.id, ops).catch(console.error);
+        handleUngroupNode(nodeId);
         break;
       case 'group':
-        // Group selected nodes under this node
-        if (selectedIds.length > 1) {
-          const ops: Op[] = [];
-          const childIds: string[] = [];
-
-          selectedIds.forEach(id => {
-            if (id !== nodeId) {
-              ops.push({ t: 'reparent', id, parentId: nodeId });
-              childIds.push(id);
-            }
-          });
-
-          // Add children to parent node
-          if (childIds.length > 0) {
-            const parentNode = doc.nodes.find(n => n.id === nodeId);
-            const existingChildren = parentNode?.children || [];
-            const newChildren = [...existingChildren, ...childIds];
-            ops.push({ t: 'update', id: nodeId, patch: { children: newChildren } });
-          }
-
-          onDocChange(ops);
-          apiClient.appendOps(doc.id, ops).catch(console.error);
-        }
+        handleGroupSelected();
         break;
     }
   };
@@ -1045,6 +1062,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         contextMenu && (() => {
           const node = doc.nodes.find(n => n.id === contextMenu.nodeId);
           const hasParent = node && 'parentId' in node && node.parentId;
+          const isGroup = node && node.children && node.children.length > 0;
           const canGroup = selectedIds.length > 1 && selectedIds.includes(contextMenu.nodeId);
 
           return (
@@ -1068,7 +1086,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 >
                   📋 Duplicate
                 </button>
-                {hasParent && (
+                {isGroup && (
                   <button
                     className="context-menu-item"
                     onClick={() => handleContextMenuAction('ungroup', contextMenu.nodeId)}
@@ -1081,7 +1099,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                     className="context-menu-item"
                     onClick={() => handleContextMenuAction('group', contextMenu.nodeId)}
                   >
-                    📦 Group
+                    📦 Group Selected ({selectedIds.length})
                   </button>
                 )}
                 <button
@@ -1095,6 +1113,31 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           );
         })()
       }
+
+      {/* Multi-selection info */}
+      {selectedIds.length > 1 && (
+        <div
+          className="multi-selection-info"
+          style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            background: 'rgba(76, 147, 175, 0.9)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '500',
+            zIndex: 1000,
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+          }}
+        >
+          {selectedIds.length} nodes selected
+          <div style={{ fontSize: '12px', opacity: 0.8, marginTop: '2px' }}>
+            Ctrl+G to group • Ctrl+U to ungroup
+          </div>
+        </div>
+      )}
 
       {/* Text Editing Overlay */}
       {

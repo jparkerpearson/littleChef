@@ -138,8 +138,6 @@ export function createRectNode(options: {
   cornerRadius?: number;
   rotation?: number;
 }): RectNode {
-  console.log('creating rectangle node')
-  console.log('fill', options.fill);
   return {
     id: generateId(),
     type: 'rect',
@@ -297,11 +295,101 @@ export function canReparent(doc: Doc, nodeId: string, newParentId: string | null
   return !isAncestor(doc, nodeId, newParentId); // Can't create circular hierarchy
 }
 
-// Migration utilities (placeholder for future schema changes)
-export function migrateDoc(doc: Doc): Doc {
-  if (doc.schemaVersion < 1) {
-    // Future migration logic here
-    return { ...doc, schemaVersion: 1 };
+// Create a new group container node
+export function createGroupNode(options: {
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  cornerRadius?: number;
+  rotation?: number;
+}): RectNode {
+  return {
+    id: generateId(),
+    type: 'rect',
+    x: options.x,
+    y: options.y,
+    width: options.width || 200,
+    height: options.height || 200,
+    fill: options.fill || 'transparent',
+    stroke: options.stroke || '#4c93af',
+    strokeWidth: options.strokeWidth || 2,
+    cornerRadius: options.cornerRadius || 8,
+    rotation: options.rotation || 0,
+    children: [],
+  };
+}
+
+// Group multiple nodes under a new container
+export function groupNodes(doc: Doc, nodeIds: string[]): { ops: Op[]; groupId: string } {
+  if (nodeIds.length < 2) {
+    throw new Error('At least 2 nodes are required to create a group');
   }
-  return doc;
+
+  // Find the bounding box of all selected nodes
+  const nodes = nodeIds.map(id => doc.nodes.find(n => n.id === id)).filter(Boolean) as Node[];
+  if (nodes.length !== nodeIds.length) {
+    throw new Error('Some nodes not found');
+  }
+
+  const minX = Math.min(...nodes.map(n => n.x));
+  const minY = Math.min(...nodes.map(n => n.y));
+  const maxX = Math.max(...nodes.map(n => n.x + n.width));
+  const maxY = Math.max(...nodes.map(n => n.y + n.height));
+
+  // Create group container with padding
+  const padding = 20;
+  const groupX = minX - padding;
+  const groupY = minY - padding;
+  const groupWidth = maxX - minX + (padding * 2);
+  const groupHeight = maxY - minY + (padding * 2);
+
+  const groupNode = createGroupNode({
+    x: groupX,
+    y: groupY,
+    width: groupWidth,
+    height: groupHeight,
+  });
+
+  const ops: Op[] = [];
+
+  // Add the group node
+  ops.push({ t: 'add', node: groupNode });
+
+  // Reparent all selected nodes to the group
+  nodeIds.forEach(nodeId => {
+    ops.push({ t: 'reparent', id: nodeId, parentId: groupNode.id });
+  });
+
+  // Add children to the group node
+  ops.push({
+    t: 'update',
+    id: groupNode.id,
+    patch: { children: nodeIds }
+  });
+
+  return { ops, groupId: groupNode.id };
+}
+
+// Ungroup nodes from their parent
+export function ungroupNodes(doc: Doc, groupId: string): Op[] {
+  const groupNode = doc.nodes.find(n => n.id === groupId);
+  if (!groupNode?.children) {
+    throw new Error('Group node not found or has no children');
+  }
+
+  const ops: Op[] = [];
+
+  // Remove parent relationship for all children
+  groupNode.children.forEach(childId => {
+    ops.push({ t: 'reparent', id: childId, parentId: null });
+  });
+
+  // Remove the group node
+  ops.push({ t: 'remove', id: groupId });
+
+  return ops;
 }
