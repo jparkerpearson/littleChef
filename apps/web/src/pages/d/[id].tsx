@@ -16,8 +16,8 @@ export default function DocumentEditor() {
 
   const [doc, setDoc] = useState<Doc | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [zoom] = useState(1);
-  const [pan] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [error, setError] = useState<string | null>(null);
   const [collaborators, setCollaborators] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -227,6 +227,65 @@ export default function DocumentEditor() {
     }
   };
 
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+
+    if (e.ctrlKey || e.metaKey) {
+      // Zoom functionality
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      const newZoom = Math.max(0.1, Math.min(5, zoom + delta));
+
+      // Calculate zoom center point
+      const rect = e.currentTarget.getBoundingClientRect();
+      const centerX = e.clientX - rect.left;
+      const centerY = e.clientY - rect.top;
+
+      // Adjust pan to keep the zoom center point stable
+      const zoomRatio = newZoom / zoom;
+      const newPanX = centerX - (centerX - pan.x) * zoomRatio;
+      const newPanY = centerY - (centerY - pan.y) * zoomRatio;
+
+      setZoom(newZoom);
+      setPan({ x: newPanX, y: newPanY });
+    } else {
+      // Pan functionality
+      const panSpeed = 1;
+      setPan(prev => ({
+        x: prev.x - e.deltaX * panSpeed,
+        y: prev.y - e.deltaY * panSpeed
+      }));
+    }
+  };
+
+  const handleNodeDoubleClick = (nodeId: string) => {
+    if (!doc) return;
+
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Calculate node center position
+    const nodeCenterX = node.x + node.width / 2;
+    const nodeCenterY = node.y + node.height / 2;
+
+    // Get canvas dimensions (we'll need to calculate this)
+    const canvasWidth = 800; // This should match the canvas size
+    const canvasHeight = 600;
+
+    // Calculate the zoom level to fit the node nicely in view
+    // We want the node to take up about 1/3 of the canvas
+    const targetZoom = Math.min(2, Math.max(0.5, Math.min(canvasWidth / (node.width * 3), canvasHeight / (node.height * 3))));
+
+    // Calculate pan to center the node
+    const targetPanX = canvasWidth / 2 - nodeCenterX * targetZoom;
+    const targetPanY = canvasHeight / 2 - nodeCenterY * targetZoom;
+
+    setZoom(targetZoom);
+    setPan({ x: targetPanX, y: targetPanY });
+
+    // Also select the node
+    setSelectedIds([nodeId]);
+  };
+
   const undo = () => {
     if (undoStack.current.length === 0) return;
 
@@ -304,7 +363,7 @@ export default function DocumentEditor() {
         </div>
 
         <div className="editor-main">
-          <div className="canvas-wrapper">
+          <div className="canvas-wrapper" onWheel={handleWheel}>
             <Canvas
               doc={doc}
               onDocChange={handleDocChange}
@@ -329,6 +388,7 @@ export default function DocumentEditor() {
             doc={doc}
             selectedIds={selectedIds}
             onSelectionChange={setSelectedIds}
+            onNodeDoubleClick={handleNodeDoubleClick}
           />
           <Inspector
             selectedNodes={selectedNodes}

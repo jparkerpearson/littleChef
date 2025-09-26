@@ -1038,12 +1038,12 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         }}
       >
         <Layer>
-          {/* Canvas background */}
+          {/* Canvas background - large enough to cover zoom/pan area */}
           <Rect
-            x={0}
-            y={0}
-            width={canvasSize.width / zoom}
-            height={canvasSize.height / zoom}
+            x={-10000}
+            y={-10000}
+            width={20000}
+            height={20000}
             fill="#f8f9fa"
           />
           {/* Render hierarchical nodes */}

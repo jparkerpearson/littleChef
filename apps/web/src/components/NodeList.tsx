@@ -6,9 +6,10 @@ interface NodeListProps {
     doc: Doc;
     selectedIds: string[];
     onSelectionChange: (ids: string[]) => void;
+    onNodeDoubleClick?: (nodeId: string) => void;
 }
 
-export function NodeList({ doc, selectedIds, onSelectionChange }: NodeListProps) {
+export function NodeList({ doc, selectedIds, onSelectionChange, onNodeDoubleClick }: NodeListProps) {
     const [isExpanded, setIsExpanded] = useState(true);
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
 
@@ -25,6 +26,12 @@ export function NodeList({ doc, selectedIds, onSelectionChange }: NodeListProps)
             // Single select
             onSelectionChange([nodeId]);
         }
+    };
+
+    const handleNodeDoubleClick = (nodeId: string, event: React.MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onNodeDoubleClick?.(nodeId);
     };
 
     const getNodeIcon = (node: Node) => {
@@ -88,6 +95,7 @@ export function NodeList({ doc, selectedIds, onSelectionChange }: NodeListProps)
                 <div
                     className={`node-item ${selectedIds.includes(node.id) ? 'selected' : ''} ${hasChildren ? 'has-children' : ''}`}
                     onClick={(e) => handleNodeClick(node.id, e)}
+                    onDoubleClick={(e) => handleNodeDoubleClick(node.id, e)}
                     style={indentStyle}
                 >
                     {hasChildren && (
