@@ -659,6 +659,10 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         y={pan.y}
         onClick={handleStageClick}
         onMouseDown={handleStageMouseDown}
+        onContextMenu={(e) => {
+          e.evt.preventDefault();
+          console.log("Right click on canvas blocked");
+        }}
       >
         <Layer>
           {/* Render hierarchical nodes */}
@@ -682,6 +686,10 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 left: contextMenu.x,
                 top: contextMenu.y,
                 zIndex: 1000,
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                console.log("Right-click blocked!");
               }}
             >
               <div className="context-menu-content">
