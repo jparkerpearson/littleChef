@@ -106,7 +106,16 @@ export function NodeList({ doc, selectedIds, onSelectionChange }: NodeListProps)
                     <span className="node-label">{getNodeLabel(node)}</span>
                     <span className="node-dimensions">
                         {node.width}×{node.height}
-                        {hasChildren && <span className="child-count">({children.length})</span>}
+                        {hasChildren && (
+                            <span className="child-count">
+                                ({children.length})
+                                {node.alignment && node.alignment !== 'none' && (
+                                    <span className="alignment-info">
+                                        {' '}• {node.alignment}
+                                    </span>
+                                )}
+                            </span>
+                        )}
                     </span>
                 </div>
                 {hasChildren && isExpanded && (

@@ -15,6 +15,7 @@ export interface RectNode {
   rotation?: number;
   parentId?: string;
   children?: string[];
+  alignment?: 'none' | 'horizontal' | 'vertical' | 'grid';
 }
 
 export interface TextNode {
@@ -34,6 +35,7 @@ export interface TextNode {
   rotation?: number;
   parentId?: string;
   children?: string[];
+  alignment?: 'none' | 'horizontal' | 'vertical' | 'grid';
 }
 
 export interface ButtonNode {
@@ -55,6 +57,7 @@ export interface ButtonNode {
   rotation?: number;
   parentId?: string;
   children?: string[];
+  alignment?: 'none' | 'horizontal' | 'vertical' | 'grid';
 }
 
 export interface ImageNode {
@@ -69,6 +72,7 @@ export interface ImageNode {
   rotation?: number;
   parentId?: string;
   children?: string[];
+  alignment?: 'none' | 'horizontal' | 'vertical' | 'grid';
 }
 
 export type Node = RectNode | TextNode | ButtonNode | ImageNode;

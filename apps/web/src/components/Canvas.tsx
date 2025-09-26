@@ -1,7 +1,7 @@
 // React-Konva canvas component for Little Chef editor
 import React, { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Text, Group, Circle } from 'react-konva';
-import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants, groupNodes, ungroupNodes } from '@little-chef/dsl';
+import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants, groupNodes, ungroupNodes, calculateAlignedPositions } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface CanvasProps {
@@ -614,11 +614,24 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       return nodeElement;
     }
 
+    // Apply alignment if specified
+    const alignment = node.alignment || 'none';
+    let alignedChildren = children;
+
+    if (alignment !== 'none') {
+      const alignedPositions = calculateAlignedPositions(node, children, alignment);
+      alignedChildren = children.map((child, index) => ({
+        ...child,
+        x: alignedPositions[index].x,
+        y: alignedPositions[index].y
+      }));
+    }
+
     // Render children inside the parent node
     return (
       <Group key={`group-${node.id}`}>
         {nodeElement}
-        {children.map((child: Node) => renderHierarchicalNode(child))}
+        {alignedChildren.map((child: Node) => renderHierarchicalNode(child))}
       </Group>
     );
   };

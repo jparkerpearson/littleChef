@@ -453,6 +453,13 @@ textarea.input {
   border-color: transparent;
 }
 
+.form-help {
+  font-size: 11px;
+  color: var(--gray-600);
+  font-style: italic;
+  margin-top: 4px;
+}
+
 .children-list {
   display: flex;
   flex-direction: column;
@@ -1119,6 +1126,18 @@ textarea.input {
   padding: 2px 8px;
   border-radius: 4px;
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.child-count {
+  font-size: 11px;
+  color: var(--gray-600);
+}
+
+.alignment-info {
+  font-size: 10px;
+  color: var(--brand-teal);
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .node-expand-toggle {

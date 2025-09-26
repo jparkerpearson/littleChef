@@ -1,6 +1,6 @@
 // Inspector panel for editing selected nodes
 import React, { useState, useEffect } from 'react';
-import { Node, Op, getChildNodes, getAllDescendants, Doc } from '@little-chef/dsl';
+import { Node, Op, getChildNodes, getAllDescendants, Doc, applyAlignmentToChildren } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface InspectorProps {
@@ -95,6 +95,37 @@ export function Inspector({ selectedNodes, docId, doc, onDocChange }: InspectorP
               <span className="descendant-count">{allDescendants.length} nodes</span>
             </div>
           )}
+
+          <div className="form-group">
+            <label>Child Alignment</label>
+            <select
+              value={editingNode.alignment || 'none'}
+              onChange={(e) => {
+                const alignment = e.target.value as 'none' | 'horizontal' | 'vertical' | 'grid';
+                updateNode({ alignment });
+
+                // Apply alignment to children if not 'none'
+                if (alignment !== 'none') {
+                  const alignmentOps = applyAlignmentToChildren(doc, editingNode.id);
+                  if (alignmentOps.length > 0) {
+                    onDocChange(alignmentOps);
+                    apiClient.appendOps(docId, alignmentOps).catch(console.error);
+                  }
+                }
+              }}
+            >
+              <option value="none">None (Manual positioning)</option>
+              <option value="horizontal">Horizontal (Row)</option>
+              <option value="vertical">Vertical (Column)</option>
+              <option value="grid">Grid</option>
+            </select>
+            <div className="form-help">
+              {editingNode.alignment === 'none' && 'Children maintain their current positions'}
+              {editingNode.alignment === 'horizontal' && 'Children are arranged in a horizontal row'}
+              {editingNode.alignment === 'vertical' && 'Children are arranged in a vertical column'}
+              {editingNode.alignment === 'grid' && 'Children are arranged in a grid layout'}
+            </div>
+          </div>
         </div>
       )}
 

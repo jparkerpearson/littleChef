@@ -393,3 +393,99 @@ export function ungroupNodes(doc: Doc, groupId: string): Op[] {
 
   return ops;
 }
+
+// Alignment helper functions
+export function calculateAlignedPositions(
+  parentNode: Node,
+  childNodes: Node[],
+  alignment: 'none' | 'horizontal' | 'vertical' | 'grid' = 'none'
+): { x: number; y: number }[] {
+  if (alignment === 'none' || childNodes.length === 0) {
+    return childNodes.map(child => ({ x: child.x, y: child.y }));
+  }
+
+  const parentX = parentNode.x;
+  const parentY = parentNode.y;
+  const parentWidth = parentNode.width;
+  const parentHeight = parentNode.height;
+  const padding = 20; // Padding from parent edges
+
+  switch (alignment) {
+    case 'horizontal': {
+      const totalWidth = childNodes.reduce((sum, child) => sum + child.width, 0);
+      const spacing = childNodes.length > 1
+        ? (parentWidth - totalWidth - (padding * 2)) / (childNodes.length - 1)
+        : 0;
+
+      let currentX = parentX + padding;
+      return childNodes.map(child => {
+        const x = currentX;
+        const y = parentY + (parentHeight - child.height) / 2; // Center vertically
+        currentX += child.width + spacing;
+        return { x, y };
+      });
+    }
+
+    case 'vertical': {
+      const totalHeight = childNodes.reduce((sum, child) => sum + child.height, 0);
+      const spacing = childNodes.length > 1
+        ? (parentHeight - totalHeight - (padding * 2)) / (childNodes.length - 1)
+        : 0;
+
+      let currentY = parentY + padding;
+      return childNodes.map(child => {
+        const x = parentX + (parentWidth - child.width) / 2; // Center horizontally
+        const y = currentY;
+        currentY += child.height + spacing;
+        return { x, y };
+      });
+    }
+
+    case 'grid': {
+      const cols = Math.ceil(Math.sqrt(childNodes.length));
+      const rows = Math.ceil(childNodes.length / cols);
+
+      const cellWidth = (parentWidth - (padding * 2)) / cols;
+      const cellHeight = (parentHeight - (padding * 2)) / rows;
+
+      return childNodes.map((child, index) => {
+        const col = index % cols;
+        const row = Math.floor(index / cols);
+
+        const x = parentX + padding + (col * cellWidth) + (cellWidth - child.width) / 2;
+        const y = parentY + padding + (row * cellHeight) + (cellHeight - child.height) / 2;
+
+        return { x, y };
+      });
+    }
+
+    default:
+      return childNodes.map(child => ({ x: child.x, y: child.y }));
+  }
+}
+
+// Apply alignment to child nodes
+export function applyAlignmentToChildren(doc: Doc, parentId: string): Op[] {
+  const parentNode = doc.nodes.find(n => n.id === parentId);
+  if (!parentNode?.children || parentNode.children.length === 0) {
+    return [];
+  }
+
+  const childNodes = getChildNodes(doc, parentId);
+  const alignment = parentNode.alignment || 'none';
+
+  if (alignment === 'none') {
+    return [];
+  }
+
+  const alignedPositions = calculateAlignedPositions(parentNode, childNodes, alignment);
+
+  return childNodes.map((child, index) => ({
+    t: 'update' as const,
+    id: child.id,
+    patch: {
+      x: Math.round(alignedPositions[index].x),
+      y: Math.round(alignedPositions[index].y)
+    }
+  }));
+}

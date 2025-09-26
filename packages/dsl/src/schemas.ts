@@ -12,6 +12,7 @@ const BaseNodeSchema = z.object({
   height: z.number().int().min(1),
   parentId: z.string().optional(),
   children: z.array(z.string()).optional(),
+  alignment: z.enum(['none', 'horizontal', 'vertical', 'grid']).optional(),
 });
 
 // Node type schemas
