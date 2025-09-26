@@ -1,7 +1,7 @@
 // React-Konva canvas component for Little Chef editor
 import React, { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Text, Group, Circle } from 'react-konva';
-import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants, groupNodes, ungroupNodes, calculateAlignedPositions } from '@little-chef/dsl';
+import { Doc, Node, Op, snapToGrid, createRectNode, createTextNode, createButtonNode, createImageNode, getRootNodes, getChildNodes, getAllDescendants, groupNodes, ungroupNodes, calculateAlignedPositions, canReparent } from '@little-chef/dsl';
 import { apiClient } from '../lib/api';
 
 interface CanvasProps {
@@ -31,6 +31,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   const [editingText, setEditingText] = useState<string | null>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [creatingNode, setCreatingNode] = useState<{ type: string; startX: number; startY: number } | null>(null);
+  const [hoveredParentId, setHoveredParentId] = useState<string | null>(null);
+  const [parentingMode, setParentingMode] = useState(false);
 
   // Handle window resize
   useEffect(() => {
@@ -83,6 +85,12 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             handleUngroupNode(selectedIds[0]);
           }
         }
+      } else if (event.key === 'p' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        setParentingMode(!parentingMode);
+      } else if (event.key === 'Escape') {
+        setParentingMode(false);
+        setHoveredParentId(null);
       }
     };
 
@@ -93,6 +101,17 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   // Handle node selection
   const handleNodeClick = (nodeId: string, event: any) => {
     event.cancelBubble = true;
+
+    if (parentingMode && selectedIds.length === 1 && selectedIds[0] !== nodeId) {
+      // In parenting mode, make the selected node a child of the clicked node
+      const selectedNodeId = selectedIds[0];
+      if (canReparent(doc, selectedNodeId, nodeId)) {
+        handleMakeChild(selectedNodeId, nodeId);
+        setParentingMode(false);
+        onSelectionChange([nodeId]); // Select the new parent
+      }
+      return;
+    }
 
     if (event.evt.shiftKey) {
       // Multi-select with Shift+click
@@ -115,6 +134,23 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const node = doc.nodes.find(n => n.id === nodeId);
     if (node && node.type === 'text') {
       setEditingText(nodeId);
+    }
+  };
+
+  // Handle node mouse enter (for parenting mode visual feedback)
+  const handleNodeMouseEnter = (nodeId: string, event: any) => {
+    if (parentingMode && selectedIds.length === 1 && selectedIds[0] !== nodeId) {
+      const selectedNodeId = selectedIds[0];
+      if (canReparent(doc, selectedNodeId, nodeId)) {
+        setHoveredParentId(nodeId);
+      }
+    }
+  };
+
+  // Handle node mouse leave (for parenting mode visual feedback)
+  const handleNodeMouseLeave = (nodeId: string, event: any) => {
+    if (hoveredParentId === nodeId) {
+      setHoveredParentId(null);
     }
   };
 
@@ -154,6 +190,78 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     } catch (error) {
       console.error('Failed to ungroup node:', error);
     }
+  };
+
+  // Handle making a node a child of another node
+  const handleMakeChild = (childId: string, parentId: string) => {
+    if (!canReparent(doc, childId, parentId)) {
+      console.warn('Cannot reparent: would create circular hierarchy');
+      return;
+    }
+
+    const ops: Op[] = [];
+
+    // Remove child from current parent if it has one
+    const childNode = doc.nodes.find(n => n.id === childId);
+    if (childNode?.parentId) {
+      const currentParent = doc.nodes.find(n => n.id === childNode.parentId);
+      if (currentParent?.children) {
+        ops.push({
+          t: 'update',
+          id: currentParent.id,
+          patch: { children: currentParent.children.filter(id => id !== childId) }
+        });
+      }
+    }
+
+    // Add child to new parent
+    const parentNode = doc.nodes.find(n => n.id === parentId);
+    if (parentNode) {
+      const children = parentNode.children || [];
+      ops.push({
+        t: 'update',
+        id: parentId,
+        patch: { children: [...children, childId] }
+      });
+    }
+
+    // Update child's parentId
+    ops.push({
+      t: 'reparent',
+      id: childId,
+      parentId: parentId
+    });
+
+    onDocChange(ops);
+    apiClient.appendOps(doc.id, ops).catch(console.error);
+  };
+
+  // Handle removing a node from its parent
+  const handleRemoveFromParent = (nodeId: string) => {
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node?.parentId) return;
+
+    const ops: Op[] = [];
+
+    // Remove from parent's children array
+    const parent = doc.nodes.find(n => n.id === node.parentId);
+    if (parent?.children) {
+      ops.push({
+        t: 'update',
+        id: parent.id,
+        patch: { children: parent.children.filter(id => id !== nodeId) }
+      });
+    }
+
+    // Remove parentId from child
+    ops.push({
+      t: 'reparent',
+      id: nodeId,
+      parentId: null
+    });
+
+    onDocChange(ops);
+    apiClient.appendOps(doc.id, ops).catch(console.error);
   };
 
   // Handle right-click context menu
@@ -206,6 +314,9 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         break;
       case 'group':
         handleGroupSelected();
+        break;
+      case 'removeFromParent':
+        handleRemoveFromParent(nodeId);
         break;
     }
   };
@@ -663,8 +774,9 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const isSelected = selectedIds.includes(node.id);
     const isDragging = draggingNodeId === node.id;
     const isResizing = resizeHandle && resizingNodeId === node.id;
-    const strokeColor = isSelected ? '#4c93af' : ('stroke' in node ? node.stroke : undefined) || 'transparent';
-    const strokeWidth = isSelected ? 2 : ('strokeWidth' in node ? node.strokeWidth : undefined) || 0;
+    const isHoveredParent = hoveredParentId === node.id;
+    const strokeColor = isSelected ? '#4c93af' : isHoveredParent ? '#10b981' : ('stroke' in node ? node.stroke : undefined) || 'transparent';
+    const strokeWidth = isSelected ? 2 : isHoveredParent ? 3 : ('strokeWidth' in node ? node.strokeWidth : undefined) || 0;
     const rotation = ('rotation' in node ? node.rotation : undefined) || 0;
 
     // Calculate opacity for dragging effect
@@ -697,6 +809,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                   handleNodeRightClick(node.id, e);
                 }
               }}
+              onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
+              onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
               onDragStart={(e) => handleDragStart(node.id, e)}
               onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
@@ -722,6 +836,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                   handleNodeRightClick(node.id, e);
                 }
               }}
+              onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
+              onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
               onDragStart={(e) => handleDragStart(node.id, e)}
               onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
@@ -770,6 +886,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                   handleNodeRightClick(node.id, e);
                 }
               }}
+              onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
+              onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
               onDragStart={(e) => handleDragStart(node.id, e)}
               onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
@@ -819,6 +937,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                   handleNodeRightClick(node.id, e);
                 }
               }}
+              onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
+              onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
               onDragStart={(e) => handleDragStart(node.id, e)}
               onDragMove={(e) => handleDragMove(node.id, e)}
               onDragEnd={(e) => handleDragEnd(node.id, e)}
@@ -1099,6 +1219,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           const hasParent = node && 'parentId' in node && node.parentId;
           const isGroup = node && node.children && node.children.length > 0;
           const canGroup = selectedIds.length > 1 && selectedIds.includes(contextMenu.nodeId);
+          const canParent = selectedIds.length === 1 && selectedIds[0] === contextMenu.nodeId;
 
           return (
             <div
@@ -1137,6 +1258,22 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                     📦 Group Selected ({selectedIds.length})
                   </button>
                 )}
+                {canParent && (
+                  <button
+                    className="context-menu-item"
+                    onClick={() => setParentingMode(true)}
+                  >
+                    👨‍👩‍👧‍👦 Enter Parenting Mode
+                  </button>
+                )}
+                {hasParent && (
+                  <button
+                    className="context-menu-item"
+                    onClick={() => handleContextMenuAction('removeFromParent', contextMenu.nodeId)}
+                  >
+                    🚪 Remove from Parent
+                  </button>
+                )}
                 <button
                   className="context-menu-item"
                   onClick={() => handleContextMenuAction('delete', contextMenu.nodeId)}
@@ -1169,7 +1306,32 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         >
           {selectedIds.length} nodes selected
           <div style={{ fontSize: '12px', opacity: 0.8, marginTop: '2px' }}>
-            Ctrl+G to group • Ctrl+U to ungroup
+            Ctrl+G to group • Ctrl+U to ungroup • Ctrl+P for parenting
+          </div>
+        </div>
+      )}
+
+      {/* Parenting mode indicator */}
+      {parentingMode && selectedIds.length === 1 && (
+        <div
+          className="parenting-mode-info"
+          style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            background: 'rgba(16, 185, 129, 0.9)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '500',
+            zIndex: 1000,
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+          }}
+        >
+          👨‍👩‍👧‍👦 Parenting Mode Active
+          <div style={{ fontSize: '12px', opacity: 0.8, marginTop: '2px' }}>
+            Click on another node to make it the parent • Esc to cancel
           </div>
         </div>
       )}
