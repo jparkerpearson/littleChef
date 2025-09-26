@@ -1,0 +1,1372 @@
+{
+  "id": "cache-70aa0d66222dd44c8e05fd24bad19224",
+  "timestamp": 1758917571881,
+  "prompt": "Can you generate me a dashboard web app thats used to monitor bussiness insurance applicaitons and help connect them with carriers. there should be lots of sections for dashboards and metrics and listing the current open applications.",
+  "docId": "em2iaq2i0",
+  "docSummary": "Document em2iaq2i0: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "root",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 800,
+        "type": "rect",
+        "fill": "#f3f4f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 80,
+        "parentId": "root",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 32,
+        "parentId": "header",
+        "type": "text",
+        "text": "InsureConnect",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 304,
+        "y": 16,
+        "width": 400,
+        "height": 48,
+        "parentId": "header",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-dashboard",
+        "x": 0,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Dashboard",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-applications",
+        "x": 144,
+        "y": 0,
+        "width": 160,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Applications",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-carriers",
+        "x": 320,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Carriers",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta",
+        "x": 1000,
+        "y": 16,
+        "width": 160,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "New Application",
+        "fill": "#10b981",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "main-content-area",
+        "x": 0,
+        "y": 80,
+        "width": 1200,
+        "height": 720,
+        "parentId": "root",
+        "type": "rect",
+        "fill": "#f3f4f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "dashboard-title",
+        "x": 32,
+        "y": 32,
+        "width": 400,
+        "height": 40,
+        "parentId": "main-content-area",
+        "type": "text",
+        "text": "Business Insurance Dashboard",
+        "fontSize": 32,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metrics-grid",
+        "x": 32,
+        "y": 104,
+        "width": 1136,
+        "height": 160,
+        "parentId": "main-content-area",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-open-apps",
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 160,
+        "parentId": "metrics-grid",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-open-apps-label",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 24,
+        "parentId": "metric-open-apps",
+        "type": "text",
+        "text": "Open Applications",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-open-apps-value",
+        "x": 24,
+        "y": 72,
+        "width": 200,
+        "height": 48,
+        "parentId": "metric-open-apps",
+        "type": "text",
+        "text": "125",
+        "fontSize": 48,
+        "fontFamily": "Inter",
+        "fontWeight": "800",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-new-apps",
+        "x": 288,
+        "y": 0,
+        "width": 256,
+        "height": 160,
+        "parentId": "metrics-grid",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-new-apps-label",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 24,
+        "parentId": "metric-new-apps",
+        "type": "text",
+        "text": "New Applications (Today)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-new-apps-value",
+        "x": 24,
+        "y": 72,
+        "width": 200,
+        "height": 48,
+        "parentId": "metric-new-apps",
+        "type": "text",
+        "text": "15",
+        "fontSize": 48,
+        "fontFamily": "Inter",
+        "fontWeight": "800",
+        "fill": "#34d399",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-assigned-apps",
+        "x": 576,
+        "y": 0,
+        "width": 256,
+        "height": 160,
+        "parentId": "metrics-grid",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-assigned-apps-label",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 24,
+        "parentId": "metric-assigned-apps",
+        "type": "text",
+        "text": "Assigned Applications",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-assigned-apps-value",
+        "x": 24,
+        "y": 72,
+        "width": 200,
+        "height": 48,
+        "parentId": "metric-assigned-apps",
+        "type": "text",
+        "text": "98",
+        "fontSize": 48,
+        "fontFamily": "Inter",
+        "fontWeight": "800",
+        "fill": "#f59e0b",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-carrier-connections",
+        "x": 864,
+        "y": 0,
+        "width": 256,
+        "height": 160,
+        "parentId": "metrics-grid",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-carrier-connections-label",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 24,
+        "parentId": "metric-carrier-connections",
+        "type": "text",
+        "text": "Active Carrier Connections",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "metric-carrier-connections-value",
+        "x": 24,
+        "y": 72,
+        "width": 200,
+        "height": 48,
+        "parentId": "metric-carrier-connections",
+        "type": "text",
+        "text": "45",
+        "fontSize": 48,
+        "fontFamily": "Inter",
+        "fontWeight": "800",
+        "fill": "#6366f1",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "applications-list-section",
+        "x": 32,
+        "y": 304,
+        "width": 1136,
+        "height": 400,
+        "parentId": "main-content-area",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "applications-list-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "applications-list-section",
+        "type": "text",
+        "text": "Current Open Applications",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "application-table-header",
+        "x": 32,
+        "y": 80,
+        "width": 1072,
+        "height": 48,
+        "parentId": "applications-list-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-client",
+        "x": 40,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Client Name",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-type",
+        "x": 232,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Insurance Type",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-status",
+        "x": 392,
+        "y": 16,
+        "width": 104,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Status",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-carrier",
+        "x": 528,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Assigned Carrier",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-date",
+        "x": 720,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Date Submitted",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "table-header-actions",
+        "x": 880,
+        "y": 16,
+        "width": 104,
+        "height": 24,
+        "parentId": "application-table-header",
+        "type": "text",
+        "text": "Actions",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1",
+        "x": 32,
+        "y": 144,
+        "width": 1072,
+        "height": 56,
+        "parentId": "applications-list-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-client",
+        "x": 40,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-1",
+        "type": "text",
+        "text": "Acme Corp",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-type",
+        "x": 232,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-1",
+        "type": "text",
+        "text": "General Liability",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-status",
+        "x": 392,
+        "y": 16,
+        "width": 104,
+        "height": 24,
+        "parentId": "app-row-1",
+        "type": "text",
+        "text": "Pending",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#d97706",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-carrier",
+        "x": 528,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-1",
+        "type": "text",
+        "text": "GlobalInsure",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-date",
+        "x": 720,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-1",
+        "type": "text",
+        "text": "2023-10-26",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-view-button",
+        "x": 880,
+        "y": 8,
+        "width": 80,
+        "height": 44,
+        "parentId": "app-row-1",
+        "type": "button",
+        "label": "View",
+        "fill": "#e0e7ff",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#4f46e5"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-1-assign-button",
+        "x": 984,
+        "y": 8,
+        "width": 88,
+        "height": 44,
+        "parentId": "app-row-1",
+        "type": "button",
+        "label": "Assign",
+        "fill": "#10b981",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2",
+        "x": 32,
+        "y": 200,
+        "width": 1072,
+        "height": 56,
+        "parentId": "applications-list-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-client",
+        "x": 40,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-2",
+        "type": "text",
+        "text": "Beta Industries",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-type",
+        "x": 232,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-2",
+        "type": "text",
+        "text": "Cyber Liability",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-status",
+        "x": 392,
+        "y": 16,
+        "width": 104,
+        "height": 24,
+        "parentId": "app-row-2",
+        "type": "text",
+        "text": "Review",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#eab308",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-carrier",
+        "x": 528,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-2",
+        "type": "text",
+        "text": "SecureNet",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-date",
+        "x": 720,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-2",
+        "type": "text",
+        "text": "2023-10-25",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-view-button",
+        "x": 880,
+        "y": 8,
+        "width": 80,
+        "height": 44,
+        "parentId": "app-row-2",
+        "type": "button",
+        "label": "View",
+        "fill": "#e0e7ff",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#4f46e5"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-2-assign-button",
+        "x": 984,
+        "y": 8,
+        "width": 88,
+        "height": 44,
+        "parentId": "app-row-2",
+        "type": "button",
+        "label": "Assign",
+        "fill": "#10b981",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3",
+        "x": 32,
+        "y": 256,
+        "width": 1072,
+        "height": 56,
+        "parentId": "applications-list-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-client",
+        "x": 40,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-3",
+        "type": "text",
+        "text": "Gamma Solutions",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-type",
+        "x": 232,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-3",
+        "type": "text",
+        "text": "Professional Indemnity",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-status",
+        "x": 392,
+        "y": 16,
+        "width": 104,
+        "height": 24,
+        "parentId": "app-row-3",
+        "type": "text",
+        "text": "Approved",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#10b981",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-carrier",
+        "x": 528,
+        "y": 16,
+        "width": 152,
+        "height": 24,
+        "parentId": "app-row-3",
+        "type": "text",
+        "text": "Apex Underwriters",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-date",
+        "x": 720,
+        "y": 16,
+        "width": 120,
+        "height": 24,
+        "parentId": "app-row-3",
+        "type": "text",
+        "text": "2023-10-24",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-view-button",
+        "x": 880,
+        "y": 8,
+        "width": 80,
+        "height": 44,
+        "parentId": "app-row-3",
+        "type": "button",
+        "label": "View",
+        "fill": "#e0e7ff",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#4f46e5"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-row-3-assign-button",
+        "x": 984,
+        "y": 8,
+        "width": 88,
+        "height": 44,
+        "parentId": "app-row-3",
+        "type": "button",
+        "label": "Assign",
+        "fill": "#10b981",
+        "cornerRadius": 6,
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "carrier-connect-section",
+        "x": 32,
+        "y": 736,
+        "width": 1136,
+        "height": 120,
+        "parentId": "main-content-area",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "carrier-connect-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "carrier-connect-section",
+        "type": "text",
+        "text": "Connect with Carriers",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "carrier-connect-description",
+        "x": 32,
+        "y": 80,
+        "width": 600,
+        "height": 32,
+        "parentId": "carrier-connect-section",
+        "type": "text",
+        "text": "Easily find and connect with suitable insurance carriers for your applications.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "carrier-connect-button",
+        "x": 904,
+        "y": 32,
+        "width": 200,
+        "height": 56,
+        "parentId": "carrier-connect-section",
+        "type": "button",
+        "label": "Browse Carriers",
+        "fill": "#6366f1",
+        "cornerRadius": 8,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "root",
+      "childId": "header"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "nav-menu"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-dashboard"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-applications"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-carriers"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta"
+    },
+    {
+      "t": "addChild",
+      "parentId": "root",
+      "childId": "main-content-area"
+    },
+    {
+      "t": "addChild",
+      "parentId": "main-content-area",
+      "childId": "dashboard-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "main-content-area",
+      "childId": "metrics-grid"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metrics-grid",
+      "childId": "metric-open-apps"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-open-apps",
+      "childId": "metric-open-apps-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-open-apps",
+      "childId": "metric-open-apps-value"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metrics-grid",
+      "childId": "metric-new-apps"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-new-apps",
+      "childId": "metric-new-apps-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-new-apps",
+      "childId": "metric-new-apps-value"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metrics-grid",
+      "childId": "metric-assigned-apps"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-assigned-apps",
+      "childId": "metric-assigned-apps-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-assigned-apps",
+      "childId": "metric-assigned-apps-value"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metrics-grid",
+      "childId": "metric-carrier-connections"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-carrier-connections",
+      "childId": "metric-carrier-connections-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "metric-carrier-connections",
+      "childId": "metric-carrier-connections-value"
+    },
+    {
+      "t": "addChild",
+      "parentId": "main-content-area",
+      "childId": "applications-list-section"
+    },
+    {
+      "t": "addChild",
+      "parentId": "applications-list-section",
+      "childId": "applications-list-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "applications-list-section",
+      "childId": "application-table-header"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-client"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-type"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-status"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-carrier"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-date"
+    },
+    {
+      "t": "addChild",
+      "parentId": "application-table-header",
+      "childId": "table-header-actions"
+    },
+    {
+      "t": "addChild",
+      "parentId": "applications-list-section",
+      "childId": "app-row-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-client"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-type"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-status"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-carrier"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-date"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-view-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-1",
+      "childId": "app-row-1-assign-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "applications-list-section",
+      "childId": "app-row-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-client"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-type"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-status"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-carrier"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-date"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-view-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-2",
+      "childId": "app-row-2-assign-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "applications-list-section",
+      "childId": "app-row-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-client"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-type"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-status"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-carrier"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-date"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-view-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-row-3",
+      "childId": "app-row-3-assign-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "main-content-area",
+      "childId": "carrier-connect-section"
+    },
+    {
+      "t": "addChild",
+      "parentId": "carrier-connect-section",
+      "childId": "carrier-connect-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "carrier-connect-section",
+      "childId": "carrier-connect-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "carrier-connect-section",
+      "childId": "carrier-connect-button"
+    }
+  ],
+  "requestId": "req-1758917557966-ms0h16axt"
+}

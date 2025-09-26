@@ -1,0 +1,962 @@
+{
+  "id": "cache-692f0274306e8fe29b06f703117eb2ef",
+  "timestamp": 1758917794399,
+  "prompt": "Can you generate me a comprehensive web app used to monitor a elegant french restaurant. it should show whats currently being cooked. number of avaialble servers, ingredients etc",
+  "docId": "an2allxgp",
+  "docSummary": "Document an2allxgp: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "app-wrapper",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 2000,
+        "type": "rect",
+        "fill": "#f4f4f4"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 80,
+        "parentId": "app-wrapper",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo-text",
+        "x": 24,
+        "y": 24,
+        "width": 200,
+        "height": 32,
+        "parentId": "header",
+        "type": "text",
+        "text": "Le Petit Chef",
+        "fontSize": 24,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#262626",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 400,
+        "y": 16,
+        "width": 400,
+        "height": 48,
+        "parentId": "header",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-dashboard",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Dashboard",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-orders",
+        "x": 120,
+        "y": 0,
+        "width": 80,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Orders",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-inventory",
+        "x": 224,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Inventory",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-staff",
+        "x": 344,
+        "y": 0,
+        "width": 64,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Staff",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta",
+        "x": 1000,
+        "y": 16,
+        "width": 152,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "Log Out",
+        "fill": "#e11d48",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "dashboard-section",
+        "x": 0,
+        "y": 80,
+        "width": 1200,
+        "height": 1920,
+        "type": "rect",
+        "fill": "#f4f4f4"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "dashboard-title",
+        "x": 40,
+        "y": 40,
+        "width": 504,
+        "height": 48,
+        "parentId": "dashboard-section",
+        "type": "text",
+        "text": "Restaurant Operations Dashboard",
+        "fontSize": 32,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "kitchen-status-card",
+        "x": 40,
+        "y": 120,
+        "width": 560,
+        "height": 320,
+        "parentId": "dashboard-section",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "kitchen-status-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "Kitchen - Currently Cooking",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "cooking-item-1",
+        "x": 32,
+        "y": 88,
+        "width": 400,
+        "height": 24,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "1. Escargots de Bourgogne - 15 min",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "cooking-item-2",
+        "x": 32,
+        "y": 120,
+        "width": 400,
+        "height": 24,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "2. Boeuf Bourguignon - 45 min",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "cooking-item-3",
+        "x": 32,
+        "y": 152,
+        "width": 400,
+        "height": 24,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "3. Creme Brulee - 10 min",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "cooking-item-4",
+        "x": 32,
+        "y": 184,
+        "width": 400,
+        "height": 24,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "4. Coq au Vin - 60 min",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "cooking-item-5",
+        "x": 32,
+        "y": 216,
+        "width": 400,
+        "height": 24,
+        "parentId": "kitchen-status-card",
+        "type": "text",
+        "text": "5. Salade Niçoise - 12 min",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "staff-status-card",
+        "x": 608,
+        "y": 120,
+        "width": 552,
+        "height": 320,
+        "parentId": "dashboard-section",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "staff-status-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Staff - Available Servers",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "server-available-1",
+        "x": 32,
+        "y": 88,
+        "width": 304,
+        "height": 24,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Server: Jean Dubois (On Shift)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#10b981",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "server-available-2",
+        "x": 32,
+        "y": 120,
+        "width": 304,
+        "height": 24,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Server: Marie Leclerc (On Shift)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#10b981",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "server-available-3",
+        "x": 32,
+        "y": 152,
+        "width": 304,
+        "height": 24,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Server: Pierre Dubois (Available)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#3b82f6",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "server-available-4",
+        "x": 32,
+        "y": 184,
+        "width": 304,
+        "height": 24,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Server: Sophie Martin (Available)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#3b82f6",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "server-available-5",
+        "x": 32,
+        "y": 216,
+        "width": 304,
+        "height": 24,
+        "parentId": "staff-status-card",
+        "type": "text",
+        "text": "Server: Antoine Bernard (Busy)",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#eab308",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "inventory-status-card",
+        "x": 40,
+        "y": 480,
+        "width": 560,
+        "height": 320,
+        "parentId": "dashboard-section",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "inventory-status-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "inventory-status-card",
+        "type": "text",
+        "text": "Inventory - Low Stock",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "low-stock-item-1",
+        "x": 32,
+        "y": 88,
+        "width": 400,
+        "height": 24,
+        "parentId": "inventory-status-card",
+        "type": "text",
+        "text": "Truffles: 2 units remaining",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#e11d48",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "low-stock-item-2",
+        "x": 32,
+        "y": 120,
+        "width": 400,
+        "height": 24,
+        "parentId": "inventory-status-card",
+        "type": "text",
+        "text": "Foie Gras: 5 units remaining",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#e11d48",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "low-stock-item-3",
+        "x": 32,
+        "y": 152,
+        "width": 400,
+        "height": 24,
+        "parentId": "inventory-status-card",
+        "type": "text",
+        "text": "Saffron: 10 grams remaining",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#e11d48",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "low-stock-item-4",
+        "x": 32,
+        "y": 184,
+        "width": 400,
+        "height": 24,
+        "parentId": "inventory-status-card",
+        "type": "text",
+        "text": "Champagne: 3 bottles remaining",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#e11d48",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "order-summary-card",
+        "x": 608,
+        "y": 480,
+        "width": 552,
+        "height": 320,
+        "parentId": "dashboard-section",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "order-summary-title",
+        "x": 32,
+        "y": 32,
+        "width": 304,
+        "height": 32,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Order Summary",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "orders-today",
+        "x": 32,
+        "y": 88,
+        "width": 304,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Orders Today: 85",
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "orders-in-progress",
+        "x": 32,
+        "y": 120,
+        "width": 304,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "In Progress: 22",
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "orders-completed",
+        "x": 32,
+        "y": 152,
+        "width": 304,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Completed: 63",
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "recent-orders-title",
+        "x": 32,
+        "y": 208,
+        "width": 200,
+        "height": 32,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Recent Orders:",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "recent-order-1",
+        "x": 32,
+        "y": 248,
+        "width": 400,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Order #1245: 2x Escargots, 1x Boeuf Bourguignon",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "recent-order-2",
+        "x": 32,
+        "y": 272,
+        "width": 400,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Order #1244: 1x Creme Brulee, 1x Salade Niçoise",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "recent-order-3",
+        "x": 32,
+        "y": 296,
+        "width": 400,
+        "height": 24,
+        "parentId": "order-summary-card",
+        "type": "text",
+        "text": "Order #1243: 1x Coq au Vin",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer",
+        "x": 0,
+        "y": 1920,
+        "width": 1200,
+        "height": 80,
+        "parentId": "app-wrapper",
+        "type": "rect",
+        "fill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-text",
+        "x": 0,
+        "y": 24,
+        "width": 1200,
+        "height": 32,
+        "parentId": "footer",
+        "type": "text",
+        "text": "© 2023 Le Petit Chef. All rights reserved.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#e5e7eb",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-wrapper",
+      "childId": "header"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "logo-text"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "nav-menu"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-dashboard"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-orders"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-inventory"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-staff"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta"
+    },
+    {
+      "t": "addChild",
+      "parentId": "dashboard-section",
+      "childId": "dashboard-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "dashboard-section",
+      "childId": "kitchen-status-card"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "kitchen-status-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "cooking-item-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "cooking-item-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "cooking-item-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "cooking-item-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "kitchen-status-card",
+      "childId": "cooking-item-5"
+    },
+    {
+      "t": "addChild",
+      "parentId": "dashboard-section",
+      "childId": "staff-status-card"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "staff-status-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "server-available-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "server-available-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "server-available-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "server-available-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "staff-status-card",
+      "childId": "server-available-5"
+    },
+    {
+      "t": "addChild",
+      "parentId": "dashboard-section",
+      "childId": "inventory-status-card"
+    },
+    {
+      "t": "addChild",
+      "parentId": "inventory-status-card",
+      "childId": "inventory-status-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "inventory-status-card",
+      "childId": "low-stock-item-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "inventory-status-card",
+      "childId": "low-stock-item-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "inventory-status-card",
+      "childId": "low-stock-item-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "inventory-status-card",
+      "childId": "low-stock-item-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "dashboard-section",
+      "childId": "order-summary-card"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "order-summary-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "orders-today"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "orders-in-progress"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "orders-completed"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "recent-orders-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "recent-order-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "recent-order-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "order-summary-card",
+      "childId": "recent-order-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-wrapper",
+      "childId": "footer"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-text"
+    }
+  ],
+  "requestId": "req-1758917785080-i0wo7qz2z"
+}

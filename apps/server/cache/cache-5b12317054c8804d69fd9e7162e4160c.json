@@ -1,0 +1,806 @@
+{
+  "id": "cache-5b12317054c8804d69fd9e7162e4160c",
+  "timestamp": 1758917705114,
+  "prompt": "Can you generate me a sophisticated web app that has a bunch of dashboards for monitoring shipping and logistics. The design should be elegant and slick.",
+  "docId": "h4zk0nncb",
+  "docSummary": "Document h4zk0nncb: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "page-background",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 904,
+        "type": "rect",
+        "fill": "#f4f7f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 80,
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo",
+        "x": 24,
+        "y": 24,
+        "width": 152,
+        "height": 32,
+        "type": "text",
+        "text": "LogiTrack",
+        "fontSize": 24,
+        "fontFamily": "Outfit",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 248,
+        "y": 16,
+        "width": 504,
+        "height": 48,
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-dashboard",
+        "x": 0,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Dashboard",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-routes",
+        "x": 144,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Routes",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-analytics",
+        "x": 264,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Analytics",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-settings",
+        "x": 400,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Settings",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta-login",
+        "x": 952,
+        "y": 16,
+        "width": 104,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "Login",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "textFill": "#1e3a8a"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta-signup",
+        "x": 1064,
+        "y": 16,
+        "width": 120,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "Sign Up",
+        "fill": "#10b981",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-section",
+        "x": 0,
+        "y": 80,
+        "width": 1200,
+        "height": 400,
+        "type": "rect",
+        "fill": "#e0e7ff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-title",
+        "x": 80,
+        "y": 104,
+        "width": 704,
+        "height": 104,
+        "type": "text",
+        "text": "Optimize Your Shipping & Logistics",
+        "fontSize": 52,
+        "fontFamily": "Outfit",
+        "fontWeight": "800",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-subtitle",
+        "x": 80,
+        "y": 224,
+        "width": 600,
+        "height": 72,
+        "type": "text",
+        "text": "Gain real-time visibility, streamline operations, and reduce costs with our advanced analytics platform.",
+        "fontSize": 20,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#475569",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-demo",
+        "x": 80,
+        "y": 312,
+        "width": 200,
+        "height": 56,
+        "type": "button",
+        "label": "Request a Demo",
+        "fill": "#10b981",
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-learn-more",
+        "x": 304,
+        "y": 312,
+        "width": 160,
+        "height": 56,
+        "type": "button",
+        "label": "Learn More",
+        "fill": "transparent",
+        "stroke": "#1e3a8a",
+        "strokeWidth": 2,
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "textFill": "#1e3a8a"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-image-dashboard",
+        "x": 704,
+        "y": 104,
+        "width": 448,
+        "height": 304,
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1507679799980-09a8c1e6f6b8",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-section",
+        "x": 0,
+        "y": 480,
+        "width": 1200,
+        "height": 400,
+        "type": "rect",
+        "fill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-title",
+        "x": 80,
+        "y": 520,
+        "width": 1040,
+        "height": 48,
+        "type": "text",
+        "text": "Powerful Features for Your Business",
+        "fontSize": 36,
+        "fontFamily": "Outfit",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1",
+        "x": 80,
+        "y": 584,
+        "width": 336,
+        "height": 232,
+        "type": "rect",
+        "fill": "#f8fafc",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1-icon",
+        "x": 40,
+        "y": 32,
+        "width": 48,
+        "height": 48,
+        "parentId": "feature-card-1",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/737/737182.png",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1-title",
+        "x": 32,
+        "y": 104,
+        "width": 272,
+        "height": 40,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Real-time Tracking",
+        "fontSize": 24,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1-description",
+        "x": 32,
+        "y": 152,
+        "width": 272,
+        "height": 64,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Monitor your shipments globally with live updates on their status and location.",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#475569",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2",
+        "x": 440,
+        "y": 584,
+        "width": 336,
+        "height": 232,
+        "type": "rect",
+        "fill": "#f8fafc",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2-icon",
+        "x": 40,
+        "y": 32,
+        "width": 48,
+        "height": 48,
+        "parentId": "feature-card-2",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/545/545685.png",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2-title",
+        "x": 32,
+        "y": 104,
+        "width": 272,
+        "height": 40,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Route Optimization",
+        "fontSize": 24,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2-description",
+        "x": 32,
+        "y": 152,
+        "width": 272,
+        "height": 64,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Discover the most efficient routes to save time and fuel for your deliveries.",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#475569",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3",
+        "x": 800,
+        "y": 584,
+        "width": 336,
+        "height": 232,
+        "type": "rect",
+        "fill": "#f8fafc",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3-icon",
+        "x": 40,
+        "y": 32,
+        "width": 48,
+        "height": 48,
+        "parentId": "feature-card-3",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/6790/6790771.png",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3-title",
+        "x": 32,
+        "y": 104,
+        "width": 272,
+        "height": 40,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Cost Analysis",
+        "fontSize": 24,
+        "fontFamily": "Outfit",
+        "fontWeight": "600",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3-description",
+        "x": 32,
+        "y": 152,
+        "width": 272,
+        "height": 64,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Understand your logistics expenses with detailed reports and identify areas for savings.",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#475569",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-section",
+        "x": 0,
+        "y": 880,
+        "width": 1200,
+        "height": 352,
+        "type": "rect",
+        "fill": "#e0e7ff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-image",
+        "x": 80,
+        "y": 48,
+        "width": 504,
+        "height": 248,
+        "parentId": "about-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1533755042378-f01120b2c858",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-title",
+        "x": 648,
+        "y": 64,
+        "width": 472,
+        "height": 48,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "About LogiTrack",
+        "fontSize": 36,
+        "fontFamily": "Outfit",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-description",
+        "x": 648,
+        "y": 120,
+        "width": 472,
+        "height": 152,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "We are a team of logistics experts and software engineers dedicated to revolutionizing how businesses manage their supply chains. Our mission is to provide cutting-edge technology that empowers you to make smarter, faster, and more profitable decisions.",
+        "fontSize": 18,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#475569",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer",
+        "x": 0,
+        "y": 1232,
+        "width": 1200,
+        "height": 152,
+        "type": "rect",
+        "fill": "#1e3a8a"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-logo",
+        "x": 80,
+        "y": 48,
+        "width": 152,
+        "height": 32,
+        "parentId": "footer",
+        "type": "text",
+        "text": "LogiTrack",
+        "fontSize": 24,
+        "fontFamily": "Outfit",
+        "fontWeight": "700",
+        "fill": "#ffffff",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav",
+        "x": 304,
+        "y": 48,
+        "width": 600,
+        "height": 48,
+        "parentId": "footer",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-privacy",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "footer-nav",
+        "type": "button",
+        "label": "Privacy Policy",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-terms",
+        "x": 120,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "footer-nav",
+        "type": "button",
+        "label": "Terms of Service",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-contact",
+        "x": 240,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "footer-nav",
+        "type": "button",
+        "label": "Contact Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Outfit",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-copyright",
+        "x": 80,
+        "y": 104,
+        "width": 400,
+        "height": 24,
+        "parentId": "footer",
+        "type": "text",
+        "text": "© 2023 LogiTrack. All rights reserved.",
+        "fontSize": 14,
+        "fontFamily": "Outfit",
+        "fontWeight": "400",
+        "fill": "#e5e7eb",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-dashboard"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-routes"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-analytics"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-settings"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta-login"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta-signup"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-card-1-icon"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-card-1-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-card-1-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-card-2-icon"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-card-2-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-card-2-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-card-3-icon"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-card-3-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-card-3-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-nav"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav",
+      "childId": "footer-nav-privacy"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav",
+      "childId": "footer-nav-terms"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav",
+      "childId": "footer-nav-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-copyright"
+    }
+  ],
+  "requestId": "req-1758917696442-8bbb3d4m6"
+}

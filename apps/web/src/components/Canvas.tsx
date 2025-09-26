@@ -758,7 +758,16 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         {renderNode({ ...node, x: 0, y: 0 })}
         {alignedChildren.map((child: Node) => {
           // Child nodes are positioned relative to this node's top-left corner (0,0 in the group)
-          return renderNodeWithChildren(child, { x: 0, y: 0 });
+          // Since parent is rendered at (0,0) with center-based positioning, we need to offset children
+          // by half the parent's dimensions to align their top-left with parent's top-left
+          // All nodes now use center-based positioning, so they all need the same offset calculation
+          const childOffsetX = -node.width / 2 + child.width / 2;
+          const childOffsetY = -node.height / 2 + child.height / 2;
+
+          return renderNodeWithChildren(child, {
+            x: childOffsetX,
+            y: childOffsetY
+          });
         })}
       </Group>
     );
@@ -800,7 +809,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               offsetX={node.width / 2}
               offsetY={node.height / 2}
               opacity={opacity}
-              draggable
+              draggable={true}
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
               onDblClick={(e) => handleNodeDoubleClick(node.id, e)}
@@ -819,15 +828,24 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
         case 'text':
           return (
-            <Group
+            <Text
               key={node.id}
               x={node.x}
               y={node.y}
+              width={node.width}
+              height={node.height}
+              text={node.text}
+              fontSize={node.fontSize}
+              fontFamily={node.fontFamily}
+              fontWeight={node.fontWeight}
+              fill={node.fill}
+              align={node.align}
+              verticalAlign={node.verticalAlign}
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
               opacity={opacity}
-              draggable
+              draggable={true}
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
               onDblClick={(e) => handleNodeDoubleClick(node.id, e)}
@@ -838,33 +856,53 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               }}
               onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
               onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
-              onDragStart={(e) => handleDragStart(node.id, e)}
-              onDragMove={(e) => handleDragMove(node.id, e)}
-              onDragEnd={(e) => handleDragEnd(node.id, e)}
-            >
-              <Rect
-                x={-node.width / 2}
-                y={-node.height / 2}
-                width={node.width}
-                height={node.height}
-                fill="transparent"
-                stroke={strokeColor}
-                strokeWidth={strokeWidth}
-              />
-              <Text
-                x={-node.width / 2}
-                y={-node.height / 2}
-                width={node.width}
-                height={node.height}
-                text={node.text}
-                fontSize={node.fontSize}
-                fontFamily={node.fontFamily}
-                fontWeight={node.fontWeight}
-                fill={node.fill}
-                align={node.align}
-                verticalAlign={node.verticalAlign}
-              />
-            </Group>
+              onDragStart={(e) => {
+                e.cancelBubble = true;
+                // Select the node if it's not already selected
+                if (!selectedIds.includes(node.id)) {
+                  onSelectionChange([node.id]);
+                }
+              }}
+              onDragEnd={(e) => {
+                e.cancelBubble = true;
+                // Update the node position in the document
+                const newX = snapToGrid(e.target.x());
+                const newY = snapToGrid(e.target.y());
+
+                if (newX !== node.x || newY !== node.y) {
+                  const deltaX = newX - node.x;
+                  const deltaY = newY - node.y;
+
+                  const ops: Op[] = [];
+
+                  // Update the dragged node
+                  ops.push({
+                    t: 'update',
+                    id: node.id,
+                    patch: { x: newX, y: newY }
+                  });
+
+                  // Update all descendant nodes with the same delta
+                  const descendants = getAllDescendants(doc, node.id);
+                  descendants.forEach((descendant: Node) => {
+                    ops.push({
+                      t: 'update',
+                      id: descendant.id,
+                      patch: {
+                        x: descendant.x + deltaX,
+                        y: descendant.y + deltaY
+                      }
+                    });
+                  });
+
+                  // Send operations to parent
+                  onDocChange(ops);
+
+                  // Send to server
+                  apiClient.appendOps(doc.id, ops).catch(console.error);
+                }
+              }}
+            />
           );
 
         case 'button':
@@ -874,10 +912,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               x={node.x}
               y={node.y}
               rotation={rotation}
-              offsetX={node.width / 2}
-              offsetY={node.height / 2}
               opacity={opacity}
-              draggable
+              draggable={true}
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
               onDblClick={(e) => handleNodeDoubleClick(node.id, e)}
@@ -888,23 +924,68 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               }}
               onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
               onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
-              onDragStart={(e) => handleDragStart(node.id, e)}
-              onDragMove={(e) => handleDragMove(node.id, e)}
-              onDragEnd={(e) => handleDragEnd(node.id, e)}
+              onDragStart={(e) => {
+                e.cancelBubble = true;
+                // Select the node if it's not already selected
+                if (!selectedIds.includes(node.id)) {
+                  onSelectionChange([node.id]);
+                }
+              }}
+              onDragEnd={(e) => {
+                e.cancelBubble = true;
+                // Update the node position in the document
+                const newX = snapToGrid(e.target.x());
+                const newY = snapToGrid(e.target.y());
+
+                if (newX !== node.x || newY !== node.y) {
+                  const deltaX = newX - node.x;
+                  const deltaY = newY - node.y;
+
+                  const ops: Op[] = [];
+
+                  // Update the dragged node
+                  ops.push({
+                    t: 'update',
+                    id: node.id,
+                    patch: { x: newX, y: newY }
+                  });
+
+                  // Update all descendant nodes with the same delta
+                  const descendants = getAllDescendants(doc, node.id);
+                  descendants.forEach((descendant: Node) => {
+                    ops.push({
+                      t: 'update',
+                      id: descendant.id,
+                      patch: {
+                        x: descendant.x + deltaX,
+                        y: descendant.y + deltaY
+                      }
+                    });
+                  });
+
+                  // Send operations to parent
+                  onDocChange(ops);
+
+                  // Send to server
+                  apiClient.appendOps(doc.id, ops).catch(console.error);
+                }
+              }}
             >
               <Rect
-                x={-node.width / 2}
-                y={-node.height / 2}
+                x={0}
+                y={0}
                 width={node.width}
                 height={node.height}
                 fill={node.fill}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
                 cornerRadius={node.cornerRadius || 8}
+                offsetX={node.width / 2}
+                offsetY={node.height / 2}
               />
               <Text
-                x={-node.width / 2}
-                y={-node.height / 2}
+                x={0}
+                y={0}
                 width={node.width}
                 height={node.height}
                 text={node.label}
@@ -914,7 +995,132 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
                 fill={node.textFill}
                 align="center"
                 verticalAlign="middle"
+                offsetX={node.width / 2}
+                offsetY={node.height / 2}
               />
+              {/* Resize handles for button nodes - positioned relative to the Group */}
+              {isSelected && (
+                <>
+                  {/* Rotation handle */}
+                  <Circle
+                    x={0}
+                    y={-node.height / 2 - 20}
+                    radius={6}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={2}
+                    draggable
+                    onDragMove={(e) => handleRotationDrag(node.id, e)}
+                    onDragEnd={handleRotationDragEnd}
+                  />
+                  {/* Corner handles */}
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'nw', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'ne', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'sw', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'se', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  {/* Edge handles */}
+                  <Rect
+                    x={-4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'n', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 's', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={-4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'w', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={-4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'e', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                </>
+              )}
             </Group>
           );
 
@@ -925,10 +1131,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               x={node.x}
               y={node.y}
               rotation={rotation}
-              offsetX={node.width / 2}
-              offsetY={node.height / 2}
               opacity={opacity}
-              draggable
+              draggable={true}
               onClick={(e) => handleNodeClick(node.id, e)}
               onTap={(e) => handleNodeClick(node.id, e)}
               onDblClick={(e) => handleNodeDoubleClick(node.id, e)}
@@ -939,29 +1143,199 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               }}
               onMouseEnter={(e) => handleNodeMouseEnter(node.id, e)}
               onMouseLeave={(e) => handleNodeMouseLeave(node.id, e)}
-              onDragStart={(e) => handleDragStart(node.id, e)}
-              onDragMove={(e) => handleDragMove(node.id, e)}
-              onDragEnd={(e) => handleDragEnd(node.id, e)}
+              onDragStart={(e) => {
+                e.cancelBubble = true;
+                // Select the node if it's not already selected
+                if (!selectedIds.includes(node.id)) {
+                  onSelectionChange([node.id]);
+                }
+              }}
+              onDragEnd={(e) => {
+                e.cancelBubble = true;
+                // Update the node position in the document
+                const newX = snapToGrid(e.target.x());
+                const newY = snapToGrid(e.target.y());
+
+                if (newX !== node.x || newY !== node.y) {
+                  const deltaX = newX - node.x;
+                  const deltaY = newY - node.y;
+
+                  const ops: Op[] = [];
+
+                  // Update the dragged node
+                  ops.push({
+                    t: 'update',
+                    id: node.id,
+                    patch: { x: newX, y: newY }
+                  });
+
+                  // Update all descendant nodes with the same delta
+                  const descendants = getAllDescendants(doc, node.id);
+                  descendants.forEach((descendant: Node) => {
+                    ops.push({
+                      t: 'update',
+                      id: descendant.id,
+                      patch: {
+                        x: descendant.x + deltaX,
+                        y: descendant.y + deltaY
+                      }
+                    });
+                  });
+
+                  // Send operations to parent
+                  onDocChange(ops);
+
+                  // Send to server
+                  apiClient.appendOps(doc.id, ops).catch(console.error);
+                }
+              }}
             >
               <Rect
-                x={-node.width / 2}
-                y={-node.height / 2}
+                x={0}
+                y={0}
                 width={node.width}
                 height={node.height}
                 fill="#f0f0f0"
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
                 cornerRadius={node.cornerRadius || 0}
+                offsetX={node.width / 2}
+                offsetY={node.height / 2}
               />
               <Text
-                x={-node.width / 2}
+                x={0}
                 y={-10}
                 width={node.width}
                 text="Image"
                 fontSize={14}
                 fill="#666"
                 align="center"
+                offsetX={node.width / 2}
+                offsetY={0}
               />
+              {/* Resize handles for image nodes - positioned relative to the Group */}
+              {isSelected && (
+                <>
+                  {/* Rotation handle */}
+                  <Circle
+                    x={0}
+                    y={-node.height / 2 - 20}
+                    radius={6}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={2}
+                    draggable
+                    onDragMove={(e) => handleRotationDrag(node.id, e)}
+                    onDragEnd={handleRotationDragEnd}
+                  />
+                  {/* Corner handles */}
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'nw', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'ne', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'sw', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'se', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  {/* Edge handles */}
+                  <Rect
+                    x={-4}
+                    y={-node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'n', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-4}
+                    y={node.height / 2 - 4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 's', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={-node.width / 2 - 4}
+                    y={-4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'w', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                  <Rect
+                    x={node.width / 2 - 4}
+                    y={-4}
+                    width={8}
+                    height={8}
+                    fill="#4c93af"
+                    stroke="#ffffff"
+                    strokeWidth={1}
+                    draggable
+                    onDragStart={(e) => handleResizeStart(node.id, 'e', e)}
+                    onDragMove={(e) => handleResizeMove(node.id, e)}
+                    onDragEnd={(e) => handleResizeEnd(node.id, e)}
+                  />
+                </>
+              )}
             </Group>
           );
 
@@ -1347,8 +1721,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
               className="text-edit-overlay"
               style={{
                 position: 'absolute',
-                left: (node.x + pan.x) * zoom,
-                top: (node.y + pan.y) * zoom,
+                left: (node.x - node.width / 2 + pan.x) * zoom,
+                top: (node.y - node.height / 2 + pan.y) * zoom,
                 width: node.width * zoom,
                 height: node.height * zoom,
                 zIndex: 1001,

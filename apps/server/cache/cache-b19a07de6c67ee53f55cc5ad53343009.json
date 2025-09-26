@@ -1,0 +1,1667 @@
+{
+  "id": "cache-b19a07de6c67ee53f55cc5ad53343009",
+  "timestamp": 1758918450496,
+  "prompt": "Generate me an elegant website for a fake law firm run by zoo animals. The website should be elegant and sophisticad and include 6 different sections.",
+  "docId": "1nqoxbdxw",
+  "docSummary": "Document 1nqoxbdxw: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "page-background",
+        "x": 0,
+        "y": 0,
+        "width": 1408,
+        "height": 7568,
+        "type": "rect",
+        "fill": "#f3f4f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1408,
+        "height": 96,
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo",
+        "x": 48,
+        "y": 32,
+        "width": 248,
+        "height": 40,
+        "type": "text",
+        "text": "Paws & Prose Legal",
+        "fontSize": 28,
+        "fontFamily": "Lora",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 400,
+        "y": 32,
+        "width": 704,
+        "height": 32,
+        "parentId": "header",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-home",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 44,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Home",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-about",
+        "x": 120,
+        "y": 0,
+        "width": 120,
+        "height": 44,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "About Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-services",
+        "x": 264,
+        "y": 0,
+        "width": 144,
+        "height": 44,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Our Services",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-team",
+        "x": 424,
+        "y": 0,
+        "width": 104,
+        "height": 44,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Our Team",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-contact",
+        "x": 544,
+        "y": 0,
+        "width": 120,
+        "height": 44,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Contact Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta",
+        "x": 1200,
+        "y": 24,
+        "width": 160,
+        "height": 48,
+        "parentId": "header",
+        "type": "button",
+        "label": "Schedule a Consultation",
+        "fill": "#2563eb",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-section",
+        "x": 0,
+        "y": 96,
+        "width": 1408,
+        "height": 600,
+        "type": "rect",
+        "fill": "#e0f2fe"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-title",
+        "x": 80,
+        "y": 120,
+        "width": 704,
+        "height": 120,
+        "type": "text",
+        "text": "Justice Tailored for Every Creature",
+        "fontSize": 64,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "900",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-subtitle",
+        "x": 80,
+        "y": 264,
+        "width": 600,
+        "height": 72,
+        "parentId": "hero-section",
+        "type": "text",
+        "text": "From the smallest shrew to the mightiest bear, we offer unparalleled legal representation.",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#4b5563",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-primary",
+        "x": 80,
+        "y": 384,
+        "width": 200,
+        "height": 56,
+        "parentId": "hero-section",
+        "type": "button",
+        "label": "Explore Our Practice Areas",
+        "fill": "#10b981",
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-secondary",
+        "x": 304,
+        "y": 384,
+        "width": 160,
+        "height": 56,
+        "parentId": "hero-section",
+        "type": "button",
+        "label": "Meet Our Advocates",
+        "fill": "transparent",
+        "stroke": "#2563eb",
+        "strokeWidth": 2,
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#1e3a8a"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-image",
+        "x": 800,
+        "y": 104,
+        "width": 528,
+        "height": 400,
+        "parentId": "hero-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1548507301-94c4b82b7b3c",
+        "cornerRadius": 24
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "services-section",
+        "x": 0,
+        "y": 696,
+        "width": 1408,
+        "height": 800,
+        "type": "rect",
+        "fill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "services-title",
+        "x": 80,
+        "y": 80,
+        "width": 600,
+        "height": 64,
+        "parentId": "services-section",
+        "type": "text",
+        "text": "Areas of Expertise",
+        "fontSize": 56,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-card-1",
+        "x": 80,
+        "y": 160,
+        "width": 360,
+        "height": 304,
+        "parentId": "services-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-icon-1",
+        "x": 40,
+        "y": 40,
+        "width": 64,
+        "height": 64,
+        "parentId": "service-card-1",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/1040/1040403.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-title-1",
+        "x": 40,
+        "y": 128,
+        "width": 280,
+        "height": 40,
+        "parentId": "service-card-1",
+        "type": "text",
+        "text": "Wildlife Disputes",
+        "fontSize": 28,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-description-1",
+        "x": 40,
+        "y": 192,
+        "width": 280,
+        "height": 88,
+        "parentId": "service-card-1",
+        "type": "text",
+        "text": "Navigating the complex laws surrounding territorial boundaries and resource allocation for animal communities.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-card-2",
+        "x": 480,
+        "y": 160,
+        "width": 360,
+        "height": 304,
+        "parentId": "services-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-icon-2",
+        "x": 40,
+        "y": 40,
+        "width": 64,
+        "height": 64,
+        "parentId": "service-card-2",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/2683/2683313.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-title-2",
+        "x": 40,
+        "y": 128,
+        "width": 280,
+        "height": 40,
+        "parentId": "service-card-2",
+        "type": "text",
+        "text": "Habitation Rights",
+        "fontSize": 28,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-description-2",
+        "x": 40,
+        "y": 192,
+        "width": 280,
+        "height": 88,
+        "parentId": "service-card-2",
+        "type": "text",
+        "text": "Ensuring fair access and protection for dens, nests, and burrows against encroachment.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-card-3",
+        "x": 880,
+        "y": 160,
+        "width": 360,
+        "height": 304,
+        "parentId": "services-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-icon-3",
+        "x": 40,
+        "y": 40,
+        "width": 64,
+        "height": 64,
+        "parentId": "service-card-3",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/3757/3757101.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-title-3",
+        "x": 40,
+        "y": 128,
+        "width": 280,
+        "height": 40,
+        "parentId": "service-card-3",
+        "type": "text",
+        "text": "Inter-Species Contracts",
+        "fontSize": 28,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "service-description-3",
+        "x": 40,
+        "y": 192,
+        "width": 280,
+        "height": 88,
+        "parentId": "service-card-3",
+        "type": "text",
+        "text": "Crafting legally binding agreements for foraging rights, migration paths, and shared resources.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-section",
+        "x": 0,
+        "y": 1496,
+        "width": 1408,
+        "height": 704,
+        "type": "rect",
+        "fill": "#f3f4f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-title",
+        "x": 80,
+        "y": 80,
+        "width": 600,
+        "height": 64,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "Our Commitment to the Animal Kingdom",
+        "fontSize": 56,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-image",
+        "x": 800,
+        "y": 104,
+        "width": 528,
+        "height": 400,
+        "parentId": "about-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1502733248427-8377f028662b",
+        "cornerRadius": 24
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-text",
+        "x": 80,
+        "y": 184,
+        "width": 600,
+        "height": 304,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "Founded by a consortium of esteemed legal minds from diverse zoological backgrounds, Paws & Prose Legal is dedicated to upholding the rights and ensuring the well-being of all creatures under the law. We understand the unique challenges faced by different species and strive to provide empathetic, informed, and robust legal counsel. Our firm believes in a world where every inhabitant, great or small, has access to justice.",
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#4b5563",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "team-section",
+        "x": 0,
+        "y": 2200,
+        "width": 1408,
+        "height": 904,
+        "type": "rect",
+        "fill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "team-title",
+        "x": 80,
+        "y": 80,
+        "width": 600,
+        "height": 64,
+        "parentId": "team-section",
+        "type": "text",
+        "text": "Meet Our Esteemed Advocates",
+        "fontSize": 56,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-card-1",
+        "x": 80,
+        "y": 160,
+        "width": 280,
+        "height": 320,
+        "parentId": "team-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-photo-1",
+        "x": 40,
+        "y": 40,
+        "width": 200,
+        "height": 200,
+        "parentId": "advocate-card-1",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/2780/2780315.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-name-1",
+        "x": 40,
+        "y": 264,
+        "width": 200,
+        "height": 32,
+        "parentId": "advocate-card-1",
+        "type": "text",
+        "text": "Reginald Bear",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-title-1",
+        "x": 40,
+        "y": 304,
+        "width": 200,
+        "height": 24,
+        "parentId": "advocate-card-1",
+        "type": "text",
+        "text": "Senior Partner",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-card-2",
+        "x": 400,
+        "y": 160,
+        "width": 280,
+        "height": 320,
+        "parentId": "team-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-photo-2",
+        "x": 40,
+        "y": 40,
+        "width": 200,
+        "height": 200,
+        "parentId": "advocate-card-2",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/3227/3227349.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-name-2",
+        "x": 40,
+        "y": 264,
+        "width": 200,
+        "height": 32,
+        "parentId": "advocate-card-2",
+        "type": "text",
+        "text": "Penelope Penguin",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-title-2",
+        "x": 40,
+        "y": 304,
+        "width": 200,
+        "height": 24,
+        "parentId": "advocate-card-2",
+        "type": "text",
+        "text": "Lead Counsel",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-card-3",
+        "x": 720,
+        "y": 160,
+        "width": 280,
+        "height": 320,
+        "parentId": "team-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-photo-3",
+        "x": 40,
+        "y": 40,
+        "width": 200,
+        "height": 200,
+        "parentId": "advocate-card-3",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/7178/7178511.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-name-3",
+        "x": 40,
+        "y": 264,
+        "width": 200,
+        "height": 32,
+        "parentId": "advocate-card-3",
+        "type": "text",
+        "text": "Professor Hoot",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-title-3",
+        "x": 40,
+        "y": 304,
+        "width": 200,
+        "height": 24,
+        "parentId": "advocate-card-3",
+        "type": "text",
+        "text": "Special Counsel",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-card-4",
+        "x": 1040,
+        "y": 160,
+        "width": 280,
+        "height": 320,
+        "parentId": "team-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-photo-4",
+        "x": 40,
+        "y": 40,
+        "width": 200,
+        "height": 200,
+        "parentId": "advocate-card-4",
+        "type": "image",
+        "src": "https://cdn-icons-png.flaticon.com/512/4136/4136101.png",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-name-4",
+        "x": 40,
+        "y": 264,
+        "width": 200,
+        "height": 32,
+        "parentId": "advocate-card-4",
+        "type": "text",
+        "text": "Ferdinand Fox",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "advocate-title-4",
+        "x": 40,
+        "y": 304,
+        "width": 200,
+        "height": 24,
+        "parentId": "advocate-card-4",
+        "type": "text",
+        "text": "Associate Attorney",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-section",
+        "x": 0,
+        "y": 3096,
+        "width": 1408,
+        "height": 800,
+        "type": "rect",
+        "fill": "#e0f2fe"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-title",
+        "x": 80,
+        "y": 80,
+        "width": 600,
+        "height": 64,
+        "parentId": "contact-section",
+        "type": "text",
+        "text": "Get in Touch",
+        "fontSize": 56,
+        "fontFamily": "Playfair Display",
+        "fontWeight": "700",
+        "fill": "#1e3a8a",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-form-container",
+        "x": 80,
+        "y": 160,
+        "width": 600,
+        "height": 560,
+        "parentId": "contact-section",
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-name-label",
+        "x": 40,
+        "y": 40,
+        "width": 104,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Name",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-name-input",
+        "x": 40,
+        "y": 72,
+        "width": 520,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-label",
+        "x": 40,
+        "y": 152,
+        "width": 104,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Email",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-input",
+        "x": 40,
+        "y": 184,
+        "width": 520,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-subject-label",
+        "x": 40,
+        "y": 264,
+        "width": 104,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Subject",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-subject-input",
+        "x": 40,
+        "y": 296,
+        "width": 520,
+        "height": 48,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-message-label",
+        "x": 40,
+        "y": 368,
+        "width": 152,
+        "height": 24,
+        "parentId": "contact-form-container",
+        "type": "text",
+        "text": "Your Message",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-message-input",
+        "x": 40,
+        "y": 400,
+        "width": 520,
+        "height": 120,
+        "parentId": "contact-form-container",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-submit-button",
+        "x": 40,
+        "y": 528,
+        "width": 184,
+        "height": 56,
+        "parentId": "contact-form-container",
+        "type": "button",
+        "label": "Send Message",
+        "fill": "#2563eb",
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-info-container",
+        "x": 800,
+        "y": 160,
+        "width": 528,
+        "height": 400,
+        "parentId": "contact-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-phone-label",
+        "x": 40,
+        "y": 40,
+        "width": 120,
+        "height": 24,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Phone:",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-phone-number",
+        "x": 184,
+        "y": 40,
+        "width": 304,
+        "height": 24,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "+1 (800) WILD-LAW",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-label-2",
+        "x": 40,
+        "y": 88,
+        "width": 120,
+        "height": 24,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Email:",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-email-address",
+        "x": 184,
+        "y": 88,
+        "width": 304,
+        "height": 24,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "info@pawsandproselaw.com",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-address-label",
+        "x": 40,
+        "y": 144,
+        "width": 120,
+        "height": 24,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "Address:",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#374151",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-address",
+        "x": 184,
+        "y": 144,
+        "width": 304,
+        "height": 72,
+        "parentId": "contact-info-container",
+        "type": "text",
+        "text": "123 Savannah Lane, Jungle City, GC 98765",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-map-placeholder",
+        "x": 40,
+        "y": 240,
+        "width": 448,
+        "height": 240,
+        "parentId": "contact-info-container",
+        "type": "rect",
+        "fill": "#d1d5db",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-section",
+        "x": 0,
+        "y": 3896,
+        "width": 1408,
+        "height": 160,
+        "type": "rect",
+        "fill": "#1e3a8a"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-logo",
+        "x": 48,
+        "y": 56,
+        "width": 248,
+        "height": 48,
+        "parentId": "footer-section",
+        "type": "text",
+        "text": "Paws & Prose Legal",
+        "fontSize": 28,
+        "fontFamily": "Lora",
+        "fontWeight": "700",
+        "fill": "#ffffff",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-copyright",
+        "x": 400,
+        "y": 64,
+        "width": 400,
+        "height": 32,
+        "parentId": "footer-section",
+        "type": "text",
+        "text": "© 2023 Paws & Prose Legal. All rights reserved.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#e0e0e0",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav",
+        "x": 1000,
+        "y": 56,
+        "width": 304,
+        "height": 48,
+        "parentId": "footer-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-privacy",
+        "x": 0,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "footer-nav",
+        "type": "button",
+        "label": "Privacy Policy",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-nav-terms",
+        "x": 144,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "footer-nav",
+        "type": "button",
+        "label": "Terms of Service",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "nav-menu"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-home"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-about"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-services"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-team"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "header",
+      "childId": "header-cta"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-subtitle"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-cta-primary"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-cta-secondary"
+    },
+    {
+      "t": "addChild",
+      "parentId": "hero-section",
+      "childId": "hero-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "services-section",
+      "childId": "services-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "services-section",
+      "childId": "service-card-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-1",
+      "childId": "service-icon-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-1",
+      "childId": "service-title-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-1",
+      "childId": "service-description-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "services-section",
+      "childId": "service-card-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-2",
+      "childId": "service-icon-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-2",
+      "childId": "service-title-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-2",
+      "childId": "service-description-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "services-section",
+      "childId": "service-card-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-3",
+      "childId": "service-icon-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-3",
+      "childId": "service-title-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "service-card-3",
+      "childId": "service-description-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-text"
+    },
+    {
+      "t": "addChild",
+      "parentId": "team-section",
+      "childId": "team-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "team-section",
+      "childId": "advocate-card-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-1",
+      "childId": "advocate-photo-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-1",
+      "childId": "advocate-name-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-1",
+      "childId": "advocate-title-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "team-section",
+      "childId": "advocate-card-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-2",
+      "childId": "advocate-photo-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-2",
+      "childId": "advocate-name-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-2",
+      "childId": "advocate-title-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "team-section",
+      "childId": "advocate-card-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-3",
+      "childId": "advocate-photo-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-3",
+      "childId": "advocate-name-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-3",
+      "childId": "advocate-title-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "team-section",
+      "childId": "advocate-card-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-4",
+      "childId": "advocate-photo-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-4",
+      "childId": "advocate-name-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "advocate-card-4",
+      "childId": "advocate-title-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-form-container"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-name-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-name-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-email-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-email-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-subject-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-subject-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-message-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-message-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form-container",
+      "childId": "contact-submit-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-info-container"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-phone-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-phone-number"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-email-label-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-email-address"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-address-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-address"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-info-container",
+      "childId": "contact-map-placeholder"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-section",
+      "childId": "footer-logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-section",
+      "childId": "footer-copyright"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-section",
+      "childId": "footer-nav"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav",
+      "childId": "footer-nav-privacy"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-nav",
+      "childId": "footer-nav-terms"
+    }
+  ],
+  "requestId": "req-1758918431586-tg84jf7fu"
+}

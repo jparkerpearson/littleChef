@@ -1,0 +1,835 @@
+{
+  "id": "cache-4756113351ea865e4ea2186b8d15dcdd",
+  "timestamp": 1758918349054,
+  "prompt": "Generate me a web app that is used to manage ongoing analytics about running kubernetes clusters. Feel free to keep the charts and graphs as images. It should be well built out with lots of sections.",
+  "docId": "b20xv0tfp",
+  "docSummary": "Document b20xv0tfp: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "app-header",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 80,
+        "type": "rect",
+        "fill": "#ffffff",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-logo",
+        "x": 24,
+        "y": 24,
+        "width": 248,
+        "height": 32,
+        "parentId": "app-header",
+        "type": "text",
+        "text": "KubeStats",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-nav",
+        "x": 304,
+        "y": 16,
+        "width": 504,
+        "height": 48,
+        "parentId": "app-header",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-dashboard",
+        "x": 0,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "app-nav",
+        "type": "button",
+        "label": "Dashboard",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-clusters",
+        "x": 144,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "app-nav",
+        "type": "button",
+        "label": "Clusters",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-settings",
+        "x": 264,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "app-nav",
+        "type": "button",
+        "label": "Settings",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#374151"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-cta-login",
+        "x": 1000,
+        "y": 16,
+        "width": 104,
+        "height": 48,
+        "parentId": "app-header",
+        "type": "button",
+        "label": "Log In",
+        "fill": "transparent",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#3b82f6"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "app-hero",
+        "x": 0,
+        "y": 80,
+        "width": 1200,
+        "height": 320,
+        "type": "rect",
+        "fill": "#f9fafb"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-title",
+        "x": 104,
+        "y": 104,
+        "width": 704,
+        "height": 72,
+        "parentId": "app-hero",
+        "type": "text",
+        "text": "Real-time Kubernetes Cluster Analytics",
+        "fontSize": 48,
+        "fontFamily": "Inter",
+        "fontWeight": "800",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-subtitle",
+        "x": 104,
+        "y": 200,
+        "width": 504,
+        "height": 64,
+        "parentId": "app-hero",
+        "type": "text",
+        "text": "Gain deep insights into your Kubernetes clusters' performance, health, and resource utilization.",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-get-started",
+        "x": 104,
+        "y": 280,
+        "width": 184,
+        "height": 56,
+        "parentId": "app-hero",
+        "type": "button",
+        "label": "Get Started Free",
+        "fill": "#2563eb",
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-learn-more",
+        "x": 304,
+        "y": 280,
+        "width": 152,
+        "height": 56,
+        "parentId": "app-hero",
+        "type": "button",
+        "label": "Learn More",
+        "fill": "transparent",
+        "stroke": "#d1d5db",
+        "strokeWidth": 1,
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#1f2937"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-image",
+        "x": 720,
+        "y": 104,
+        "width": 400,
+        "height": 256,
+        "parentId": "app-hero",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1580894742597-87bb403015e2",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-section",
+        "x": 0,
+        "y": 400,
+        "width": 1200,
+        "height": 600,
+        "type": "rect",
+        "fill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-title",
+        "x": 104,
+        "y": 48,
+        "width": 1000,
+        "height": 40,
+        "parentId": "features-section",
+        "type": "text",
+        "text": "Powerful Features for Your Clusters",
+        "fontSize": 36,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1",
+        "x": 104,
+        "y": 120,
+        "width": 320,
+        "height": 320,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-1",
+        "x": 144,
+        "y": 160,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-1",
+        "type": "image",
+        "src": "https://icons.veryicon.com/png/128/business/line-business-icons/chart-13.png"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-1",
+        "x": 144,
+        "y": 248,
+        "width": 232,
+        "height": 32,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Performance Monitoring",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-description-1",
+        "x": 144,
+        "y": 288,
+        "width": 232,
+        "height": 72,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Track CPU, memory, network, and disk usage with detailed metrics and customizable dashboards.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2",
+        "x": 440,
+        "y": 120,
+        "width": 320,
+        "height": 320,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-2",
+        "x": 488,
+        "y": 160,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-2",
+        "type": "image",
+        "src": "https://icons.veryicon.com/png/128/miscellaneous/awesome-line-icons/server-1.png"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-2",
+        "x": 488,
+        "y": 248,
+        "width": 232,
+        "height": 32,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Cluster Health",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-description-2",
+        "x": 488,
+        "y": 288,
+        "width": 232,
+        "height": 72,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Monitor the health of your nodes, pods, and services. Receive alerts for critical issues.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3",
+        "x": 784,
+        "y": 120,
+        "width": 320,
+        "height": 320,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#f9fafb",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 1,
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-3",
+        "x": 824,
+        "y": 160,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-3",
+        "type": "image",
+        "src": "https://icons.veryicon.com/png/128/miscellaneous/line-icons-pro/cloud-computing-2.png"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-3",
+        "x": 824,
+        "y": 248,
+        "width": 232,
+        "height": 32,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Resource Optimization",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-description-3",
+        "x": 824,
+        "y": 288,
+        "width": 232,
+        "height": 72,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Identify resource bottlenecks and optimize your cluster for better efficiency and cost savings.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-section",
+        "x": 0,
+        "y": 1000,
+        "width": 1200,
+        "height": 400,
+        "type": "rect",
+        "fill": "#f8fafc"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-image",
+        "x": 104,
+        "y": 104,
+        "width": 504,
+        "height": 304,
+        "parentId": "about-section",
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1518770660439-4636190af475",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-title",
+        "x": 664,
+        "y": 104,
+        "width": 440,
+        "height": 48,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "About KubeStats",
+        "fontSize": 36,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#1f2937",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-description",
+        "x": 664,
+        "y": 160,
+        "width": 440,
+        "height": 160,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "KubeStats is dedicated to providing developers and operations teams with the clarity they need to manage complex Kubernetes environments. Our platform offers comprehensive monitoring, alerting, and optimization tools to ensure your clusters are running smoothly and efficiently.",
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#6b7280",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-cta",
+        "x": 664,
+        "y": 328,
+        "width": 184,
+        "height": 56,
+        "parentId": "about-section",
+        "type": "button",
+        "label": "Request a Demo",
+        "fill": "#10b981",
+        "cornerRadius": 12,
+        "fontSize": 18,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#ffffff"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer",
+        "x": 0,
+        "y": 1400,
+        "width": 1200,
+        "height": 120,
+        "type": "rect",
+        "fill": "#1f2937"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-logo",
+        "x": 24,
+        "y": 48,
+        "width": 152,
+        "height": 24,
+        "parentId": "footer",
+        "type": "text",
+        "text": "KubeStats",
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#ffffff",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-links",
+        "x": 400,
+        "y": 32,
+        "width": 400,
+        "height": 56,
+        "parentId": "footer",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-link-privacy",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 56,
+        "parentId": "footer-links",
+        "type": "button",
+        "label": "Privacy",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "textFill": "#d1d5db"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-link-terms",
+        "x": 120,
+        "y": 0,
+        "width": 104,
+        "height": 56,
+        "parentId": "footer-links",
+        "type": "button",
+        "label": "Terms",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "textFill": "#d1d5db"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-link-contact",
+        "x": 240,
+        "y": 0,
+        "width": 120,
+        "height": 56,
+        "parentId": "footer-links",
+        "type": "button",
+        "label": "Contact Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "textFill": "#d1d5db"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-copyright",
+        "x": 104,
+        "y": 80,
+        "width": 1000,
+        "height": 24,
+        "parentId": "footer",
+        "type": "text",
+        "text": "© 2023 KubeStats. All rights reserved.",
+        "fontSize": 14,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#9ca3af",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-header",
+      "childId": "app-logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-header",
+      "childId": "app-nav"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-nav",
+      "childId": "nav-dashboard"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-nav",
+      "childId": "nav-clusters"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-nav",
+      "childId": "nav-settings"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-header",
+      "childId": "app-cta-login"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-hero",
+      "childId": "hero-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-hero",
+      "childId": "hero-subtitle"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-hero",
+      "childId": "hero-cta-get-started"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-hero",
+      "childId": "hero-cta-learn-more"
+    },
+    {
+      "t": "addChild",
+      "parentId": "app-hero",
+      "childId": "hero-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "features-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-icon-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-title-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-description-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-icon-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-title-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-description-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-icon-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-title-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-description-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-image"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-description"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-cta"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-logo"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-links"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-links",
+      "childId": "footer-link-privacy"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-links",
+      "childId": "footer-link-terms"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer-links",
+      "childId": "footer-link-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-copyright"
+    }
+  ],
+  "requestId": "req-1758918340446-sy7yyl5xi"
+}

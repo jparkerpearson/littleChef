@@ -1,0 +1,1262 @@
+{
+  "id": "cache-88d6f0ebe4f9902a2c3939085ad46e87",
+  "timestamp": 1758918224887,
+  "prompt": "Generate a website for a company that designs productivity software that manages fishing trips, ice sculpting contests and migration cycles for penguins. Make the site elegant and sophisticated. Include an about us section, a history section, and maybe some other sections as well.",
+  "docId": "4953scjfp",
+  "docSummary": "Document 4953scjfp: 800x600px, 0 nodes ()",
+  "ops": [
+    {
+      "t": "add",
+      "node": {
+        "id": "body",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 3000,
+        "type": "rect",
+        "fill": "#f8f9fa"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header",
+        "x": 0,
+        "y": 0,
+        "width": 1200,
+        "height": 80,
+        "type": "rect",
+        "fill": "white",
+        "stroke": "#e0e0e0",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "logo",
+        "x": 32,
+        "y": 24,
+        "width": 200,
+        "height": 32,
+        "type": "text",
+        "text": "ChronoFlora",
+        "fontSize": 28,
+        "fontFamily": "Montserrat",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-menu",
+        "x": 304,
+        "y": 16,
+        "width": 704,
+        "height": 48,
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-home",
+        "x": 0,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Home",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#34495e"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-about",
+        "x": 120,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "About Us",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#34495e"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-history",
+        "x": 240,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "History",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#34495e"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-features",
+        "x": 360,
+        "y": 0,
+        "width": 120,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Features",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#34495e"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "nav-contact",
+        "x": 504,
+        "y": 0,
+        "width": 104,
+        "height": 48,
+        "parentId": "nav-menu",
+        "type": "button",
+        "label": "Contact",
+        "fill": "transparent",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "textFill": "#34495e"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "header-cta",
+        "x": 1000,
+        "y": 16,
+        "width": 160,
+        "height": 48,
+        "type": "button",
+        "label": "Request Demo",
+        "fill": "#2980b9",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-section",
+        "x": 0,
+        "y": 80,
+        "width": 1200,
+        "height": 504,
+        "type": "rect",
+        "fill": "#eaf2f8"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-title",
+        "x": 80,
+        "y": 120,
+        "width": 600,
+        "height": 104,
+        "type": "text",
+        "text": "Master Your World: From Tides to Ice to Arctic Birds",
+        "fontSize": 56,
+        "fontFamily": "Merriweather",
+        "fontWeight": "700",
+        "fill": "#1a252f",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-subtitle",
+        "x": 80,
+        "y": 240,
+        "width": 552,
+        "height": 80,
+        "type": "text",
+        "text": "ChronoFlora unifies complex scheduling and management for unique industries. Optimize fishing trips, organize ice festivals, and track penguin migrations with unparalleled precision.",
+        "fontSize": 20,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-primary",
+        "x": 80,
+        "y": 344,
+        "width": 200,
+        "height": 64,
+        "type": "button",
+        "label": "Explore Features",
+        "fill": "#2c3e50",
+        "cornerRadius": 10,
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-cta-secondary",
+        "x": 304,
+        "y": 344,
+        "width": 184,
+        "height": 64,
+        "type": "button",
+        "label": "Learn More",
+        "fill": "transparent",
+        "stroke": "#2c3e50",
+        "strokeWidth": 2,
+        "cornerRadius": 10,
+        "fontSize": 20,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "#2c3e50"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "hero-image-placeholder",
+        "x": 704,
+        "y": 104,
+        "width": 400,
+        "height": 304,
+        "type": "rect",
+        "fill": "#bdc3c7",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-section",
+        "x": 0,
+        "y": 584,
+        "width": 1200,
+        "height": 800,
+        "type": "rect",
+        "fill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "features-title",
+        "x": 0,
+        "y": 48,
+        "width": 1200,
+        "height": 48,
+        "type": "text",
+        "text": "Core Capabilities",
+        "fontSize": 40,
+        "fontFamily": "Montserrat",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-1",
+        "x": 80,
+        "y": 120,
+        "width": 352,
+        "height": 304,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#ecf0f1",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-1",
+        "x": 32,
+        "y": 32,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-1",
+        "type": "rect",
+        "fill": "#3498db",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-1",
+        "x": 32,
+        "y": 120,
+        "width": 288,
+        "height": 40,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Marine Expeditions",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-desc-1",
+        "x": 32,
+        "y": 176,
+        "width": 288,
+        "height": 96,
+        "parentId": "feature-card-1",
+        "type": "text",
+        "text": "Plan and track fishing charters, crew schedules, and catch logs. Optimize routes based on weather and marine life patterns.",
+        "fontSize": 16,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#7f8c8d",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-2",
+        "x": 464,
+        "y": 120,
+        "width": 352,
+        "height": 304,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#ecf0f1",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-2",
+        "x": 32,
+        "y": 32,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-2",
+        "type": "rect",
+        "fill": "#e67e22",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-2",
+        "x": 32,
+        "y": 120,
+        "width": 288,
+        "height": 40,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Winter Sculptures",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-desc-2",
+        "x": 32,
+        "y": 176,
+        "width": 288,
+        "height": 96,
+        "parentId": "feature-card-2",
+        "type": "text",
+        "text": "Manage ice sculpting contests, artist applications, venue setup, and judging criteria. Ensure smooth operation from registration to awards.",
+        "fontSize": 16,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#7f8c8d",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-card-3",
+        "x": 840,
+        "y": 120,
+        "width": 352,
+        "height": 304,
+        "parentId": "features-section",
+        "type": "rect",
+        "fill": "#ecf0f1",
+        "cornerRadius": 12
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-icon-3",
+        "x": 32,
+        "y": 32,
+        "width": 64,
+        "height": 64,
+        "parentId": "feature-card-3",
+        "type": "rect",
+        "fill": "#9b59b6",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-title-3",
+        "x": 32,
+        "y": 120,
+        "width": 288,
+        "height": 40,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Penguin Expeditions",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "feature-desc-3",
+        "x": 32,
+        "y": 176,
+        "width": 288,
+        "height": 96,
+        "parentId": "feature-card-3",
+        "type": "text",
+        "text": "Monitor penguin colony movements, breeding cycles, and environmental impacts. Facilitate research and conservation efforts effectively.",
+        "fontSize": 16,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#7f8c8d",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-section",
+        "x": 0,
+        "y": 1384,
+        "width": 1200,
+        "height": 704,
+        "type": "rect",
+        "fill": "#f8f9fa"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-title",
+        "x": 80,
+        "y": 48,
+        "width": 504,
+        "height": 64,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "About ChronoFlora",
+        "fontSize": 48,
+        "fontFamily": "Montserrat",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-text-1",
+        "x": 80,
+        "y": 128,
+        "width": 504,
+        "height": 120,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "Founded by a diverse team of marine biologists, event organizers, and data scientists, ChronoFlora was born from a shared passion for bringing order to complex, dynamic environments.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-text-2",
+        "x": 80,
+        "y": 272,
+        "width": 504,
+        "height": 184,
+        "parentId": "about-section",
+        "type": "text",
+        "text": "We recognized the unique challenges faced by industries that depend on precise timing, resource management, and understanding natural cycles. Our mission is to provide sophisticated yet intuitive software that empowers these industries to thrive, innovate, and achieve their goals with confidence.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "about-image-placeholder",
+        "x": 648,
+        "y": 120,
+        "width": 448,
+        "height": 352,
+        "parentId": "about-section",
+        "type": "rect",
+        "fill": "#95a5a6",
+        "cornerRadius": 16
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "history-section",
+        "x": 0,
+        "y": 2080,
+        "width": 1200,
+        "height": 704,
+        "type": "rect",
+        "fill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "history-title",
+        "x": 80,
+        "y": 48,
+        "width": 504,
+        "height": 64,
+        "parentId": "history-section",
+        "type": "text",
+        "text": "Our Journey",
+        "fontSize": 48,
+        "fontFamily": "Montserrat",
+        "fontWeight": "700",
+        "fill": "#2c3e50",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-item-1",
+        "x": 80,
+        "y": 128,
+        "width": 1040,
+        "height": 104,
+        "parentId": "history-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-year-1",
+        "x": 0,
+        "y": 40,
+        "width": 80,
+        "height": 32,
+        "parentId": "timeline-item-1",
+        "type": "text",
+        "text": "2018",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#34495e",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-desc-1",
+        "x": 120,
+        "y": 0,
+        "width": 920,
+        "height": 104,
+        "parentId": "timeline-item-1",
+        "type": "text",
+        "text": "Initial concept development driven by observations in the fishing industry's complex scheduling needs.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-item-2",
+        "x": 80,
+        "y": 240,
+        "width": 1040,
+        "height": 104,
+        "parentId": "history-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-year-2",
+        "x": 0,
+        "y": 40,
+        "width": 80,
+        "height": 32,
+        "parentId": "timeline-item-2",
+        "type": "text",
+        "text": "2020",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#34495e",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-desc-2",
+        "x": 120,
+        "y": 0,
+        "width": 920,
+        "height": 104,
+        "parentId": "timeline-item-2",
+        "type": "text",
+        "text": "Expanded scope to include event management, beginning with a pilot program for a major ice sculpting festival.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-item-3",
+        "x": 80,
+        "y": 352,
+        "width": 1040,
+        "height": 104,
+        "parentId": "history-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-year-3",
+        "x": 0,
+        "y": 40,
+        "width": 80,
+        "height": 32,
+        "parentId": "timeline-item-3",
+        "type": "text",
+        "text": "2022",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#34495e",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-desc-3",
+        "x": 120,
+        "y": 0,
+        "width": 920,
+        "height": 104,
+        "parentId": "timeline-item-3",
+        "type": "text",
+        "text": "Integration of ecological tracking features, inspired by the challenges of monitoring penguin migration patterns.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-item-4",
+        "x": 80,
+        "y": 464,
+        "width": 1040,
+        "height": 104,
+        "parentId": "history-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-year-4",
+        "x": 0,
+        "y": 40,
+        "width": 80,
+        "height": 32,
+        "parentId": "timeline-item-4",
+        "type": "text",
+        "text": "Present",
+        "fontSize": 24,
+        "fontFamily": "Inter",
+        "fontWeight": "700",
+        "fill": "#34495e",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "timeline-desc-4",
+        "x": 120,
+        "y": 0,
+        "width": 920,
+        "height": 104,
+        "parentId": "timeline-item-4",
+        "type": "text",
+        "text": "Launched ChronoFlora as a comprehensive solution, serving diverse clients across specialized industries.",
+        "fontSize": 18,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#5e6c7a",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-section",
+        "x": 0,
+        "y": 2784,
+        "width": 1200,
+        "height": 400,
+        "type": "rect",
+        "fill": "#2c3e50"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-title",
+        "x": 0,
+        "y": 48,
+        "width": 1200,
+        "height": 64,
+        "parentId": "contact-section",
+        "type": "text",
+        "text": "Get In Touch",
+        "fontSize": 48,
+        "fontFamily": "Montserrat",
+        "fontWeight": "700",
+        "fill": "white",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-subtitle",
+        "x": 0,
+        "y": 128,
+        "width": 1200,
+        "height": 48,
+        "parentId": "contact-section",
+        "type": "text",
+        "text": "Have a project or a question? Let us know how we can help.",
+        "fontSize": 20,
+        "fontFamily": "Lato",
+        "fontWeight": "400",
+        "fill": "#bdc3c7",
+        "align": "center",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "contact-form",
+        "x": 304,
+        "y": 200,
+        "width": 600,
+        "height": 200,
+        "parentId": "contact-section",
+        "type": "rect",
+        "fill": "transparent"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-name-input",
+        "x": 0,
+        "y": 0,
+        "width": 280,
+        "height": 48,
+        "parentId": "contact-form",
+        "type": "rect",
+        "fill": "#34495e",
+        "stroke": "#7f8c8d",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-name-label",
+        "x": 16,
+        "y": 16,
+        "width": 152,
+        "height": 16,
+        "parentId": "form-name-input",
+        "type": "text",
+        "text": "Your Name",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#ecf0f1",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-email-input",
+        "x": 320,
+        "y": 0,
+        "width": 280,
+        "height": 48,
+        "parentId": "contact-form",
+        "type": "rect",
+        "fill": "#34495e",
+        "stroke": "#7f8c8d",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-email-label",
+        "x": 16,
+        "y": 16,
+        "width": 152,
+        "height": 16,
+        "parentId": "form-email-input",
+        "type": "text",
+        "text": "Your Email",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#ecf0f1",
+        "align": "left",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-message-input",
+        "x": 0,
+        "y": 80,
+        "width": 600,
+        "height": 120,
+        "parentId": "contact-form",
+        "type": "rect",
+        "fill": "#34495e",
+        "stroke": "#7f8c8d",
+        "strokeWidth": 1,
+        "cornerRadius": 8
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-message-label",
+        "x": 16,
+        "y": 16,
+        "width": 200,
+        "height": 16,
+        "parentId": "form-message-input",
+        "type": "text",
+        "text": "Your Message",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "500",
+        "fill": "#ecf0f1",
+        "align": "left",
+        "verticalAlign": "top"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "form-submit-button",
+        "x": 232,
+        "y": 152,
+        "width": 136,
+        "height": 48,
+        "parentId": "contact-form",
+        "type": "button",
+        "label": "Send Message",
+        "fill": "#2980b9",
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "600",
+        "textFill": "white"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer",
+        "x": 0,
+        "y": 3184,
+        "width": 1200,
+        "height": 104,
+        "type": "rect",
+        "fill": "#1a252f"
+      }
+    },
+    {
+      "t": "add",
+      "node": {
+        "id": "footer-text",
+        "x": 0,
+        "y": 32,
+        "width": 1200,
+        "height": 32,
+        "parentId": "footer",
+        "type": "text",
+        "text": "© 2023 ChronoFlora. All rights reserved.",
+        "fontSize": 16,
+        "fontFamily": "Inter",
+        "fontWeight": "400",
+        "fill": "#bdc3c7",
+        "align": "center",
+        "verticalAlign": "middle"
+      }
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-home"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-about"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-history"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-features"
+    },
+    {
+      "t": "addChild",
+      "parentId": "nav-menu",
+      "childId": "nav-contact"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-icon-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-title-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-1",
+      "childId": "feature-desc-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-icon-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-title-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-2",
+      "childId": "feature-desc-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "features-section",
+      "childId": "feature-card-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-icon-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-title-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "feature-card-3",
+      "childId": "feature-desc-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-text-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-text-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "about-section",
+      "childId": "about-image-placeholder"
+    },
+    {
+      "t": "addChild",
+      "parentId": "history-section",
+      "childId": "history-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "history-section",
+      "childId": "timeline-item-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-1",
+      "childId": "timeline-year-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-1",
+      "childId": "timeline-desc-1"
+    },
+    {
+      "t": "addChild",
+      "parentId": "history-section",
+      "childId": "timeline-item-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-2",
+      "childId": "timeline-year-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-2",
+      "childId": "timeline-desc-2"
+    },
+    {
+      "t": "addChild",
+      "parentId": "history-section",
+      "childId": "timeline-item-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-3",
+      "childId": "timeline-year-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-3",
+      "childId": "timeline-desc-3"
+    },
+    {
+      "t": "addChild",
+      "parentId": "history-section",
+      "childId": "timeline-item-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-4",
+      "childId": "timeline-year-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "timeline-item-4",
+      "childId": "timeline-desc-4"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-title"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-subtitle"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-section",
+      "childId": "contact-form"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form",
+      "childId": "form-name-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "form-name-input",
+      "childId": "form-name-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form",
+      "childId": "form-email-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "form-email-input",
+      "childId": "form-email-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form",
+      "childId": "form-message-input"
+    },
+    {
+      "t": "addChild",
+      "parentId": "form-message-input",
+      "childId": "form-message-label"
+    },
+    {
+      "t": "addChild",
+      "parentId": "contact-form",
+      "childId": "form-submit-button"
+    },
+    {
+      "t": "addChild",
+      "parentId": "footer",
+      "childId": "footer-text"
+    }
+  ],
+  "requestId": "req-1758918210897-3cybdkdhn"
+}
