@@ -21,10 +21,16 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [dragCurrent, setDragCurrent] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [rotationHandle, setRotationHandle] = useState<string | null>(null);
+  const [resizeHandle, setResizeHandle] = useState<string | null>(null);
+  const [resizingNodeId, setResizingNodeId] = useState<string | null>(null);
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [resizeCurrent, setResizeCurrent] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; nodeId: string } | null>(null);
   const [editingText, setEditingText] = useState<string | null>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
+  const [creatingNode, setCreatingNode] = useState<{ type: string; startX: number; startY: number } | null>(null);
 
   // Handle window resize
   useEffect(() => {
@@ -242,14 +248,84 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     }
   };
 
-  // Handle stage mouse down (for right-click prevention on empty areas)
+  // Handle stage mouse down (for initial node creation with drag)
   const handleStageMouseDown = (event: any) => {
-    // Only handle right-clicks on empty areas (directly on stage)
-    if (event.evt.button === 2 && event.target === stageRef.current) {
+    // Only handle left-clicks on empty areas (directly on stage)
+    if (event.evt.button === 0 && event.target === stageRef.current && creationMode !== 'none') {
+      const stage = event.target.getStage();
+      const pointerPosition = stage.getPointerPosition();
+      const x = (pointerPosition.x - pan.x) / zoom;
+      const y = (pointerPosition.y - pan.y) / zoom;
+
+      setCreatingNode({ type: creationMode, startX: x, startY: y });
+    } else if (event.evt.button === 2 && event.target === stageRef.current) {
       event.evt.preventDefault();
       setContextMenu(null); // Close any existing context menu
     }
   };
+
+  // Handle stage mouse move (for initial node creation with drag)
+  const handleStageMouseMove = (event: any) => {
+    if (!creatingNode) return;
+
+    const stage = event.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
+    const x = (pointerPosition.x - pan.x) / zoom;
+    const y = (pointerPosition.y - pan.y) / zoom;
+
+    // Update the creating node dimensions
+    const width = Math.max(20, Math.abs(x - creatingNode.startX));
+    const height = Math.max(20, Math.abs(y - creatingNode.startY));
+    const nodeX = Math.min(creatingNode.startX, x);
+    const nodeY = Math.min(creatingNode.startY, y);
+
+    // Update the preview (we'll handle this in the render)
+    setResizeCurrent({ x: nodeX, y: nodeY, width, height });
+  };
+
+  // Handle stage mouse up (for initial node creation with drag)
+  const handleStageMouseUp = (event: any) => {
+    if (!creatingNode) return;
+
+    const stage = event.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
+    const x = (pointerPosition.x - pan.x) / zoom;
+    const y = (pointerPosition.y - pan.y) / zoom;
+
+    const width = Math.max(20, Math.abs(x - creatingNode.startX));
+    const height = Math.max(20, Math.abs(y - creatingNode.startY));
+    const nodeX = snapToGrid(Math.min(creatingNode.startX, x));
+    const nodeY = snapToGrid(Math.min(creatingNode.startY, y));
+    const nodeWidth = snapToGrid(width);
+    const nodeHeight = snapToGrid(height);
+
+    let newNode: Node;
+    switch (creatingNode.type) {
+      case 'rect':
+        newNode = createRectNode({ x: nodeX, y: nodeY, width: nodeWidth, height: nodeHeight });
+        break;
+      case 'text':
+        newNode = createTextNode({ x: nodeX, y: nodeY, width: nodeWidth, height: nodeHeight });
+        break;
+      case 'button':
+        newNode = createButtonNode({ x: nodeX, y: nodeY, width: nodeWidth, height: nodeHeight });
+        break;
+      case 'image':
+        newNode = createImageNode({ x: nodeX, y: nodeY, width: nodeWidth, height: nodeHeight });
+        break;
+      default:
+        setCreatingNode(null);
+        return;
+    }
+
+    const op: Op = { t: 'add', node: newNode };
+    onDocChange([op]);
+    apiClient.appendOps(doc.id, [op]).catch(console.error);
+    onSelectionChange([newNode.id]);
+    onCreationModeChange?.('none');
+    setCreatingNode(null);
+  };
+
 
   // Handle drag start
   const handleDragStart = (nodeId: string, event: any) => {
@@ -272,31 +348,41 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       return;
     }
 
-    // Use the node's current position as the drag start position
-    const topLeftX = node.x;
-    const topLeftY = node.y;
+    // Get the stage and pointer position
+    const stage = event.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
 
-    setDragStart({ x: topLeftX, y: topLeftY });
-    setDragCurrent({ x: topLeftX, y: topLeftY });
+    // Calculate position relative to the document (accounting for zoom and pan)
+    const pointerX = (pointerPosition.x - pan.x) / zoom;
+    const pointerY = (pointerPosition.y - pan.y) / zoom;
+
+    // Calculate the offset from the node's top-left corner to where the user clicked
+    const offsetX = pointerX - node.x;
+    const offsetY = pointerY - node.y;
+
+    // Store the node's current position and the click offset
+    setDragStart({ x: node.x, y: node.y });
+    setDragCurrent({ x: node.x, y: node.y });
+    setDragOffset({ x: offsetX, y: offsetY });
   };
 
   // Handle drag move
   const handleDragMove = (nodeId: string, event: any) => {
     if (!dragging || draggingNodeId !== nodeId) return;
 
-    // Get the node to access its dimensions
-    const node = doc.nodes.find(n => n.id === nodeId);
-    if (!node) return;
-
     // Get the stage and pointer position
     const stage = event.target.getStage();
     const pointerPosition = stage.getPointerPosition();
 
     // Calculate position relative to the document (accounting for zoom and pan)
-    const x = (pointerPosition.x - pan.x) / zoom;
-    const y = (pointerPosition.y - pan.y) / zoom;
+    const pointerX = (pointerPosition.x - pan.x) / zoom;
+    const pointerY = (pointerPosition.y - pan.y) / zoom;
 
-    setDragCurrent({ x, y });
+    // Calculate the new node position by subtracting the click offset
+    const newX = pointerX - dragOffset.x;
+    const newY = pointerY - dragOffset.y;
+
+    setDragCurrent({ x: newX, y: newY });
   };
 
   // Handle drag end
@@ -389,6 +475,119 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     setRotationHandle(null);
   };
 
+  // Handle resize handle drag start
+  const handleResizeStart = (nodeId: string, handleType: string, event: any) => {
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    setResizeHandle(handleType);
+    setResizingNodeId(nodeId);
+    setResizeStart({ x: node.x, y: node.y, width: node.width, height: node.height });
+    setResizeCurrent({ x: node.x, y: node.y, width: node.width, height: node.height });
+  };
+
+  // Handle resize handle drag move
+  const handleResizeMove = (nodeId: string, event: any) => {
+    if (!resizeHandle) return;
+
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    const stage = event.target.getStage();
+    const pointerPosition = stage.getPointerPosition();
+    const x = (pointerPosition.x - pan.x) / zoom;
+    const y = (pointerPosition.y - pan.y) / zoom;
+
+    let newX = resizeStart.x;
+    let newY = resizeStart.y;
+    let newWidth = resizeStart.width;
+    let newHeight = resizeStart.height;
+
+    // Calculate new dimensions based on handle type
+    switch (resizeHandle) {
+      case 'nw': // Top-left corner
+        newX = x;
+        newY = y;
+        newWidth = resizeStart.width + (resizeStart.x - x);
+        newHeight = resizeStart.height + (resizeStart.y - y);
+        break;
+      case 'ne': // Top-right corner
+        newY = y;
+        newWidth = x - resizeStart.x;
+        newHeight = resizeStart.height + (resizeStart.y - y);
+        break;
+      case 'sw': // Bottom-left corner
+        newX = x;
+        newWidth = resizeStart.width + (resizeStart.x - x);
+        newHeight = y - resizeStart.y;
+        break;
+      case 'se': // Bottom-right corner
+        newWidth = x - resizeStart.x;
+        newHeight = y - resizeStart.y;
+        break;
+      case 'n': // Top edge
+        newY = y;
+        newHeight = resizeStart.height + (resizeStart.y - y);
+        break;
+      case 's': // Bottom edge
+        newHeight = y - resizeStart.y;
+        break;
+      case 'w': // Left edge
+        newX = x;
+        newWidth = resizeStart.width + (resizeStart.x - x);
+        break;
+      case 'e': // Right edge
+        newWidth = x - resizeStart.x;
+        break;
+    }
+
+    // Apply minimum size constraints
+    const minSize = 20;
+    if (newWidth < minSize) {
+      if (resizeHandle.includes('w')) {
+        newX = resizeStart.x + resizeStart.width - minSize;
+      }
+      newWidth = minSize;
+    }
+    if (newHeight < minSize) {
+      if (resizeHandle.includes('n')) {
+        newY = resizeStart.y + resizeStart.height - minSize;
+      }
+      newHeight = minSize;
+    }
+
+    setResizeCurrent({ x: newX, y: newY, width: newWidth, height: newHeight });
+  };
+
+  // Handle resize handle drag end
+  const handleResizeEnd = (nodeId: string, event: any) => {
+    if (!resizeHandle) return;
+
+    const node = doc.nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    // Snap to grid
+    const newX = snapToGrid(resizeCurrent.x);
+    const newY = snapToGrid(resizeCurrent.y);
+    const newWidth = snapToGrid(resizeCurrent.width);
+    const newHeight = snapToGrid(resizeCurrent.height);
+
+    // Only update if dimensions actually changed
+    if (newX !== node.x || newY !== node.y || newWidth !== node.width || newHeight !== node.height) {
+      const op: Op = {
+        t: 'update',
+        id: nodeId,
+        patch: { x: newX, y: newY, width: newWidth, height: newHeight }
+      };
+
+      onDocChange([op]);
+      apiClient.appendOps(doc.id, [op]).catch(console.error);
+    }
+
+    setResizeHandle(null);
+    setResizingNodeId(null);
+  };
+
   // Render hierarchical nodes recursively
   const renderHierarchicalNode = (node: Node): React.ReactNode => {
     const children = getChildNodes(doc, node.id);
@@ -411,6 +610,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
   const renderNode = (node: Node) => {
     const isSelected = selectedIds.includes(node.id);
     const isDragging = draggingNodeId === node.id;
+    const isResizing = resizeHandle && resizingNodeId === node.id;
     const strokeColor = isSelected ? '#4c93af' : ('stroke' in node ? node.stroke : undefined) || 'transparent';
     const strokeWidth = isSelected ? 2 : ('strokeWidth' in node ? node.strokeWidth : undefined) || 0;
     const rotation = ('rotation' in node ? node.rotation : undefined) || 0;
@@ -598,11 +798,15 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       }
     })();
 
-    // Add rotation handle for selected nodes
+    // Add rotation handle and resize handles for selected nodes
     if (isSelected) {
+      const handleSize = 8;
+      const handleOffset = handleSize / 2;
+
       return (
         <Group key={`${node.id}-selection`}>
           {nodeElement}
+          {/* Rotation handle */}
           <Circle
             x={node.x + node.width / 2}
             y={node.y - 20}
@@ -613,6 +817,115 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             draggable
             onDragMove={(e) => handleRotationDrag(node.id, e)}
             onDragEnd={handleRotationDragEnd}
+          />
+
+          {/* Resize handles */}
+          {/* Corner handles */}
+          <Rect
+            x={node.x - handleOffset}
+            y={node.y - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'nw', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x + node.width - handleOffset}
+            y={node.y - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'ne', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x - handleOffset}
+            y={node.y + node.height - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'sw', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x + node.width - handleOffset}
+            y={node.y + node.height - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'se', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+
+          {/* Edge handles */}
+          <Rect
+            x={node.x + node.width / 2 - handleOffset}
+            y={node.y - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'n', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x + node.width / 2 - handleOffset}
+            y={node.y + node.height - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 's', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x - handleOffset}
+            y={node.y + node.height / 2 - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'w', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x + node.width - handleOffset}
+            y={node.y + node.height / 2 - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
+            onDragStart={(e) => handleResizeStart(node.id, 'e', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
         </Group>
       );
@@ -644,6 +957,34 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       );
     }
 
+    // Add preview rectangle when resizing
+    if (isResizing) {
+      const snappedX = snapToGrid(resizeCurrent.x);
+      const snappedY = snapToGrid(resizeCurrent.y);
+      const snappedWidth = snapToGrid(resizeCurrent.width);
+      const snappedHeight = snapToGrid(resizeCurrent.height);
+
+      return (
+        <Group key={`${node.id}-resizing`}>
+          {nodeElement}
+          <Rect
+            x={snappedX + snappedWidth / 2}
+            y={snappedY + snappedHeight / 2}
+            width={snappedWidth}
+            height={snappedHeight}
+            fill="transparent"
+            stroke="#4c93af"
+            strokeWidth={2}
+            cornerRadius={node.type === 'rect' ? node.cornerRadius || 0 : 0}
+            offsetX={snappedWidth / 2}
+            offsetY={snappedHeight / 2}
+            dash={[5, 5]}
+            opacity={0.8}
+          />
+        </Group>
+      );
+    }
+
     return nodeElement;
   };
 
@@ -659,14 +1000,42 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         y={pan.y}
         onClick={handleStageClick}
         onMouseDown={handleStageMouseDown}
+        onMouseMove={handleStageMouseMove}
+        onMouseUp={handleStageMouseUp}
         onContextMenu={(e) => {
           e.evt.preventDefault();
           console.log("Right click on canvas blocked");
         }}
       >
         <Layer>
+          {/* Canvas background */}
+          <Rect
+            x={0}
+            y={0}
+            width={canvasSize.width / zoom}
+            height={canvasSize.height / zoom}
+            fill="#f8f9fa"
+          />
           {/* Render hierarchical nodes */}
           {getRootNodes(doc).map(node => renderHierarchicalNode(node))}
+
+          {/* Render preview for initial node creation */}
+          {creatingNode && (
+            <Rect
+              x={resizeCurrent.x + resizeCurrent.width / 2}
+              y={resizeCurrent.y + resizeCurrent.height / 2}
+              width={resizeCurrent.width}
+              height={resizeCurrent.height}
+              fill="transparent"
+              stroke="#4c93af"
+              strokeWidth={2}
+              cornerRadius={creatingNode.type === 'rect' ? 8 : 0}
+              offsetX={resizeCurrent.width / 2}
+              offsetY={resizeCurrent.height / 2}
+              dash={[5, 5]}
+              opacity={0.8}
+            />
+          )}
         </Layer>
 
       </Stage>

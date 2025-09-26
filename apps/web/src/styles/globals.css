@@ -1176,3 +1176,36 @@ textarea.input {
     max-height: 200px;
   }
 }
+
+/* Resize handle cursor styles */
+.resize-handle-nw {
+  cursor: nw-resize !important;
+}
+
+.resize-handle-ne {
+  cursor: ne-resize !important;
+}
+
+.resize-handle-sw {
+  cursor: sw-resize !important;
+}
+
+.resize-handle-se {
+  cursor: se-resize !important;
+}
+
+.resize-handle-n {
+  cursor: n-resize !important;
+}
+
+.resize-handle-s {
+  cursor: s-resize !important;
+}
+
+.resize-handle-w {
+  cursor: w-resize !important;
+}
+
+.resize-handle-e {
+  cursor: e-resize !important;
+}

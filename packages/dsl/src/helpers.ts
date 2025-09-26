@@ -138,6 +138,8 @@ export function createRectNode(options: {
   cornerRadius?: number;
   rotation?: number;
 }): RectNode {
+  console.log('creating rectangle node')
+  console.log('fill', options.fill);
   return {
     id: generateId(),
     type: 'rect',
@@ -145,7 +147,7 @@ export function createRectNode(options: {
     y: options.y,
     width: options.width || 100,
     height: options.height || 100,
-    fill: options.fill || '#3b82f6',
+    fill: '#ffffff',
     stroke: options.stroke,
     strokeWidth: options.strokeWidth,
     cornerRadius: options.cornerRadius,
