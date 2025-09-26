@@ -1,0 +1,198 @@
+{
+    "id": "cache-simple-landing",
+    "timestamp": 1758908881854,
+    "prompt": "Create a simple landing page for a coffee shop",
+    "docId": "simple-coffee",
+    "docSummary": "Document simple-coffee: 800x600px, 5 nodes (header, hero, footer)",
+    "ops": [
+        {
+            "t": "add",
+            "node": {
+                "id": "page-wrapper",
+                "x": 0,
+                "y": 0,
+                "width": 1200,
+                "height": 800,
+                "type": "rect",
+                "fill": "white"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "header",
+                "x": 0,
+                "y": 0,
+                "width": 1200,
+                "height": 60,
+                "parentId": "page-wrapper",
+                "type": "rect",
+                "fill": "#8B4513",
+                "stroke": "#654321",
+                "strokeWidth": 1
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "logo",
+                "x": 40,
+                "y": 15,
+                "width": 200,
+                "height": 30,
+                "parentId": "header",
+                "type": "text",
+                "text": "☕ Brew & Bean",
+                "fontSize": 24,
+                "fontFamily": "Arial",
+                "fontWeight": "700",
+                "fill": "#FFFFFF",
+                "align": "left",
+                "verticalAlign": "middle"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "hero-section",
+                "x": 0,
+                "y": 60,
+                "width": 1200,
+                "height": 500,
+                "parentId": "page-wrapper",
+                "type": "rect",
+                "fill": "#F5F5DC"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "hero-title",
+                "x": 100,
+                "y": 150,
+                "width": 600,
+                "height": 80,
+                "parentId": "hero-section",
+                "type": "text",
+                "text": "Fresh Coffee, Every Day",
+                "fontSize": 48,
+                "fontFamily": "Georgia",
+                "fontWeight": "700",
+                "fill": "#8B4513",
+                "align": "left",
+                "verticalAlign": "middle"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "hero-subtitle",
+                "x": 100,
+                "y": 250,
+                "width": 500,
+                "height": 40,
+                "parentId": "hero-section",
+                "type": "text",
+                "text": "Experience the perfect cup of coffee in our cozy atmosphere",
+                "fontSize": 20,
+                "fontFamily": "Arial",
+                "fontWeight": "400",
+                "fill": "#654321",
+                "align": "left",
+                "verticalAlign": "middle"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "cta-button",
+                "x": 100,
+                "y": 350,
+                "width": 150,
+                "height": 50,
+                "parentId": "hero-section",
+                "type": "button",
+                "label": "Visit Us",
+                "fill": "#8B4513",
+                "cornerRadius": 8,
+                "fontSize": 18,
+                "fontFamily": "Arial",
+                "fontWeight": "600",
+                "textFill": "#FFFFFF"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "footer",
+                "x": 0,
+                "y": 560,
+                "width": 1200,
+                "height": 40,
+                "parentId": "page-wrapper",
+                "type": "rect",
+                "fill": "#333333"
+            }
+        },
+        {
+            "t": "add",
+            "node": {
+                "id": "footer-text",
+                "x": 40,
+                "y": 10,
+                "width": 300,
+                "height": 20,
+                "parentId": "footer",
+                "type": "text",
+                "text": "© 2024 Brew & Bean Coffee Shop",
+                "fontSize": 14,
+                "fontFamily": "Arial",
+                "fontWeight": "400",
+                "fill": "#FFFFFF",
+                "align": "left",
+                "verticalAlign": "middle"
+            }
+        },
+        {
+            "t": "addChild",
+            "parentId": "page-wrapper",
+            "childId": "header"
+        },
+        {
+            "t": "addChild",
+            "parentId": "header",
+            "childId": "logo"
+        },
+        {
+            "t": "addChild",
+            "parentId": "page-wrapper",
+            "childId": "hero-section"
+        },
+        {
+            "t": "addChild",
+            "parentId": "hero-section",
+            "childId": "hero-title"
+        },
+        {
+            "t": "addChild",
+            "parentId": "hero-section",
+            "childId": "hero-subtitle"
+        },
+        {
+            "t": "addChild",
+            "parentId": "hero-section",
+            "childId": "cta-button"
+        },
+        {
+            "t": "addChild",
+            "parentId": "page-wrapper",
+            "childId": "footer"
+        },
+        {
+            "t": "addChild",
+            "parentId": "footer",
+            "childId": "footer-text"
+        }
+    ],
+    "requestId": "req-simple-coffee-001"
+}

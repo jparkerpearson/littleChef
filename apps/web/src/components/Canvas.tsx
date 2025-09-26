@@ -627,11 +627,19 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
       }));
     }
 
-    // Render children inside the parent node
+    // Render children inside the parent node with relative positioning
     return (
       <Group key={`group-${node.id}`}>
         {nodeElement}
-        {alignedChildren.map((child: Node) => renderHierarchicalNode(child))}
+        {alignedChildren.map((child: Node) => {
+          // Create a child node with coordinates relative to the parent
+          const relativeChild = {
+            ...child,
+            x: child.x - node.x,
+            y: child.y - node.y
+          };
+          return renderHierarchicalNode(relativeChild);
+        })}
       </Group>
     );
   };
