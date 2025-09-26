@@ -1,7 +1,24 @@
 import { z } from 'zod';
 
-// Color validation - hex color with optional alpha
-export const ColorHexSchema = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid hex color');
+// Color validation - hex color, transparent, or other valid CSS colors
+// If invalid color is provided, transform it to a valid default
+const createColorSchema = (defaultColor: string) => z.string().transform((val) => {
+  // Allow hex colors
+  if (/^#[0-9A-Fa-f]{6}$/.test(val)) return val;
+  // Allow transparent
+  if (val === 'transparent') return val;
+  // Allow common CSS color names
+  const cssColors = ['white', 'black', 'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'gray', 'grey'];
+  if (cssColors.includes(val.toLowerCase())) return val;
+  
+  // If invalid color, return the provided default
+  console.warn(`Invalid color "${val}" - using default color ${defaultColor}`);
+  return defaultColor;
+});
+
+// Different defaults for different color contexts
+export const ColorHexSchema = createColorSchema('#ffffff'); // Default to white for fill colors
+export const TextColorSchema = createColorSchema('#000000'); // Default to black for text colors
 
 // Base node properties
 const BaseNodeSchema = z.object({
@@ -10,7 +27,7 @@ const BaseNodeSchema = z.object({
   y: z.number().int().min(0),
   width: z.number().int().min(1),
   height: z.number().int().min(1),
-  parentId: z.string().optional(),
+  parentId: z.string().nullable().optional(),
   children: z.array(z.string()).optional(),
   alignment: z.enum(['none', 'horizontal', 'vertical', 'grid']).optional(),
 });
@@ -30,7 +47,7 @@ export const TextNodeSchema = BaseNodeSchema.extend({
   fontSize: z.number().int().min(8).max(72),
   fontFamily: z.string().min(1),
   fontWeight: z.string(),
-  fill: ColorHexSchema,
+  fill: TextColorSchema,
   align: z.enum(['left', 'center', 'right']),
   verticalAlign: z.enum(['top', 'middle', 'bottom']),
 });
@@ -45,7 +62,7 @@ export const ButtonNodeSchema = BaseNodeSchema.extend({
   fontSize: z.number().int().min(8).max(72),
   fontFamily: z.string().min(1),
   fontWeight: z.string(),
-  textFill: ColorHexSchema,
+  textFill: TextColorSchema,
 });
 
 export const ImageNodeSchema = BaseNodeSchema.extend({

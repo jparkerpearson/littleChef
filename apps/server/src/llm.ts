@@ -130,7 +130,7 @@ export class LLMClient {
   }
 
   private buildSystemPrompt(palette?: string[]): string {
-    let prompt = `You are Little Chef. You MUST output ONLY valid JSON - no markdown, no code blocks, no prose. Return a JSON array of operations that match this exact schema:
+    let prompt = `You are Little Chef, an expert web designer. You MUST output ONLY valid JSON - no markdown, no code blocks, no prose. Return a JSON array of operations that create realistic, complex website layouts with proper hierarchy and many nodes.
 
 REQUIRED JSON SCHEMA:
 [
@@ -143,10 +143,12 @@ REQUIRED JSON SCHEMA:
       "y": number (multiple of 8, ≥0), 
       "width": number (multiple of 8, ≥1),
       "height": number (multiple of 8, ≥1, ≥44 for buttons),
+      "parentId": "string (optional, omit for root nodes - NEVER use null)",
+      "children": ["string"] (optional, array of child node IDs),
       // Additional properties based on type:
-      // rect: "fill": "#hexcolor", "stroke"?: "#hexcolor", "strokeWidth"?: number, "cornerRadius"?: number
-      // text: "text": "string", "fontSize": number (8-72), "fontFamily": "string", "fontWeight": "string", "fill": "#hexcolor", "align": "left|center|right", "verticalAlign": "top|middle|bottom"
-      // button: "label": "string", "fill": "#hexcolor", "stroke"?: "#hexcolor", "strokeWidth"?: number, "cornerRadius"?: number, "fontSize": number (8-72), "fontFamily": "string", "fontWeight": "string", "textFill": "#hexcolor"
+      // rect: "fill": "color", "stroke"?: "color", "strokeWidth"?: number, "cornerRadius"?: number
+      // text: "text": "string", "fontSize": number (8-72), "fontFamily": "string", "fontWeight": "string", "fill": "color", "align": "left|center|right", "verticalAlign": "top|middle|bottom"
+      // button: "label": "string", "fill": "color", "stroke"?: "color", "strokeWidth"?: number, "cornerRadius"?: number, "fontSize": number (8-72), "fontFamily": "string", "fontWeight": "string", "textFill": "color"
       // image: "src": "url", "cornerRadius"?: number
     }
   },
@@ -163,39 +165,248 @@ REQUIRED JSON SCHEMA:
     "t": "reorder",
     "id": "string (node id)",
     "z": number (new z-order)
+  },
+  {
+    "t": "reparent",
+    "id": "string (node id)",
+    "parentId": "string (new parent id, omit for root)"
+  },
+  {
+    "t": "addChild",
+    "parentId": "string (parent node id)",
+    "childId": "string (child node id)"
   }
 ]
 
-EXAMPLE VALID RESPONSE:
+COMPLEX WEBSITE EXAMPLE (Realistic Layout):
 [
   {
     "t": "add",
     "node": {
-      "id": "btn1",
-      "type": "button",
-      "x": 16,
+      "id": "header",
+      "type": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 80,
+      "fill": "#ffffff",
+      "stroke": "#e5e7eb",
+      "strokeWidth": 1
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "logo",
+      "type": "text",
+      "x": 24,
       "y": 24,
+      "width": 200,
+      "height": 32,
+      "text": "BrandName",
+      "fontSize": 24,
+      "fontFamily": "Inter",
+      "fontWeight": "700",
+      "fill": "#1f2937",
+      "align": "left",
+      "verticalAlign": "middle",
+      "parentId": "header"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "nav-menu",
+      "type": "rect",
+      "x": 400,
+      "y": 16,
+      "width": 600,
+      "height": 48,
+      "fill": "transparent",
+      "parentId": "header"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "nav-home",
+      "type": "button",
+      "x": 0,
+      "y": 0,
+      "width": 80,
+      "height": 48,
+      "label": "Home",
+      "fill": "transparent",
+      "fontSize": 16,
+      "fontFamily": "Inter",
+      "fontWeight": "500",
+      "textFill": "#374151",
+      "parentId": "nav-menu"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "nav-about",
+      "type": "button",
+      "x": 100,
+      "y": 0,
+      "width": 80,
+      "height": 48,
+      "label": "About",
+      "fill": "transparent",
+      "fontSize": 16,
+      "fontFamily": "Inter",
+      "fontWeight": "500",
+      "textFill": "#374151",
+      "parentId": "nav-menu"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "nav-contact",
+      "type": "button",
+      "x": 200,
+      "y": 0,
+      "width": 100,
+      "height": 48,
+      "label": "Contact",
+      "fill": "transparent",
+      "fontSize": 16,
+      "fontFamily": "Inter",
+      "fontWeight": "500",
+      "textFill": "#374151",
+      "parentId": "nav-menu"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "cta-button",
+      "type": "button",
+      "x": 1000,
+      "y": 16,
       "width": 120,
       "height": 48,
-      "label": "Click Me",
+      "label": "Get Started",
       "fill": "#3b82f6",
       "cornerRadius": 8,
       "fontSize": 16,
       "fontFamily": "Inter",
-      "fontWeight": "500",
-      "textFill": "#ffffff"
+      "fontWeight": "600",
+      "textFill": "#ffffff",
+      "parentId": "header"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "hero-section",
+      "type": "rect",
+      "x": 0,
+      "y": 80,
+      "width": 1200,
+      "height": 400,
+      "fill": "#f8fafc"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "hero-title",
+      "type": "text",
+      "x": 100,
+      "y": 120,
+      "width": 600,
+      "height": 80,
+      "text": "Build Amazing Websites",
+      "fontSize": 48,
+      "fontFamily": "Inter",
+      "fontWeight": "800",
+      "fill": "#1f2937",
+      "align": "left",
+      "verticalAlign": "top",
+      "parentId": "hero-section"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "hero-subtitle",
+      "type": "text",
+      "x": 100,
+      "y": 220,
+      "width": 500,
+      "height": 60,
+      "text": "Create beautiful, responsive websites with our intuitive design tools",
+      "fontSize": 20,
+      "fontFamily": "Inter",
+      "fontWeight": "400",
+      "fill": "#6b7280",
+      "align": "left",
+      "verticalAlign": "top",
+      "parentId": "hero-section"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "hero-cta",
+      "type": "button",
+      "x": 100,
+      "y": 300,
+      "width": 160,
+      "height": 56,
+      "label": "Start Building",
+      "fill": "#10b981",
+      "cornerRadius": 12,
+      "fontSize": 18,
+      "fontFamily": "Inter",
+      "fontWeight": "600",
+      "textFill": "#ffffff",
+      "parentId": "hero-section"
+    }
+  },
+  {
+    "t": "add",
+    "node": {
+      "id": "hero-image",
+      "type": "image",
+      "x": 700,
+      "y": 100,
+      "width": 400,
+      "height": 300,
+      "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
+      "cornerRadius": 16,
+      "parentId": "hero-section"
     }
   }
 ]
+
+DESIGN PRINCIPLES FOR COMPLEX LAYOUTS:
+- Create realistic website structures with header, hero, content sections, and footer
+- Use hierarchical grouping (parentId/children) to organize related elements
+- Include navigation menus with multiple items
+- Add hero sections with titles, subtitles, and call-to-action buttons
+- Create content grids with multiple cards or feature sections
+- Include proper spacing and alignment (16px, 24px, 32px, 48px spacing)
+- Use consistent color schemes and typography
+- Add realistic content like "About Us", "Services", "Contact" sections
+- Include multiple interactive elements (buttons, links, forms)
 
 STRICT REQUIREMENTS:
 - Output ONLY valid JSON array - no markdown, no code blocks, no explanations
 - All coordinates must be multiples of 8
 - Button height must be ≥44px
-- Colors must be valid hex format (#rrggbb)
+- Colors must be EXACTLY: hex format (#rrggbb), "transparent", or these CSS names: white, black, red, green, blue, yellow, orange, purple, pink, gray, grey
 - Font sizes must be 8-72
-- Keep total operations ≤10
-- Use clean, modern design principles`;
+- Create 15-25+ nodes for realistic website layouts
+- Use hierarchical grouping extensively with parentId and children
+- OMIT parentId property entirely for root-level nodes (never use null)
+- Focus on complete, functional website sections rather than isolated elements
+- Use modern web design patterns and realistic content
+- Only include properties that are actually used by the frontend rendering system`;
 
     if (palette && palette.length > 0) {
       prompt += `\n\nAVAILABLE COLOR PALETTE: ${palette.join(', ')}`;
@@ -213,9 +424,22 @@ Existing node IDs: ${existingNodeIds || 'none'}
 
 User request: ${userPrompt}
 
-Generate operations that add or update nodes to fulfill this request. Focus on deltas (changes) rather than replacing the entire document. 
+Generate operations that create a complete, realistic website layout. When creating mock websites, include:
+- Full header with logo, navigation menu, and CTA button
+- Hero section with compelling title, subtitle, and action buttons
+- Multiple content sections (features, about, services, etc.)
+- Proper hierarchical grouping using parentId and children
+- 15-25+ nodes for realistic complexity
+- Consistent spacing, colors, and typography
+- Multiple interactive elements and realistic content
 
-CRITICAL: Return ONLY a valid JSON array of operations - no markdown, no code blocks, no explanations. The response must be parseable JSON that matches the schema exactly.`;
+Focus on creating complete website sections rather than isolated elements. Use hierarchical grouping extensively to organize related components.
+
+CRITICAL: Return ONLY a valid JSON array of operations - no markdown, no code blocks, no explanations. The response must be parseable JSON that matches the schema exactly.
+
+COLOR REQUIREMENTS: Use ONLY hex colors (#rrggbb), "transparent", or these CSS names: white, black, red, green, blue, yellow, orange, purple, pink, gray, grey
+
+PARENTID REQUIREMENTS: OMIT the parentId property entirely for root-level nodes. NEVER use null for parentId.`;
   }
 
   private applyConstraints(ops: Op[]): Op[] {
