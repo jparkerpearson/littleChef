@@ -169,13 +169,13 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const node = doc.nodes.find(n => n.id === nodeId);
     if (!node) return;
 
-    // Position the menu near the node's center, accounting for zoom and pan
-    const nodeCenterX = (node.x + node.width / 2 + pan.x) * zoom;
-    const nodeCenterY = (node.y + node.height / 2 + pan.y) * zoom;
+    // Position the menu near the node's top-left corner, accounting for zoom and pan
+    const nodeTopLeftX = (node.x + pan.x) * zoom;
+    const nodeTopLeftY = (node.y + pan.y) * zoom;
 
     setContextMenu({
-      x: nodeCenterX,
-      y: nodeCenterY,
+      x: nodeTopLeftX,
+      y: nodeTopLeftY,
       nodeId
     });
   };
@@ -373,7 +373,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const pointerX = (pointerPosition.x - pan.x) / zoom;
     const pointerY = (pointerPosition.y - pan.y) / zoom;
 
-    // Calculate the offset from the node's top-left corner to where the user clicked
+    // Calculate the offset from the node's center to where the user clicked
     const offsetX = pointerX - node.x;
     const offsetY = pointerY - node.y;
 
@@ -395,7 +395,7 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const pointerX = (pointerPosition.x - pan.x) / zoom;
     const pointerY = (pointerPosition.y - pan.y) / zoom;
 
-    // Calculate the new node position by subtracting the click offset
+    // Calculate the new node center position by subtracting the click offset
     const newX = pointerX - dragOffset.x;
     const newY = pointerY - dragOffset.y;
 
@@ -467,8 +467,9 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
     const stage = event.target.getStage();
     const pointerPosition = stage.getPointerPosition();
-    const nodeCenterX = node.x + node.width / 2;
-    const nodeCenterY = node.y + node.height / 2;
+    // Node is positioned at its center, so node.x and node.y are the center coordinates
+    const nodeCenterX = node.x;
+    const nodeCenterY = node.y;
 
     const angle = Math.atan2(
       (pointerPosition.y - pan.y) / zoom - nodeCenterY,
@@ -515,46 +516,50 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const x = (pointerPosition.x - pan.x) / zoom;
     const y = (pointerPosition.y - pan.y) / zoom;
 
-    let newX = resizeStart.x;
-    let newY = resizeStart.y;
+    // Convert from center-based coordinates to top-left based for calculations
+    const startTopLeftX = resizeStart.x - resizeStart.width / 2;
+    const startTopLeftY = resizeStart.y - resizeStart.height / 2;
+
+    let newTopLeftX = startTopLeftX;
+    let newTopLeftY = startTopLeftY;
     let newWidth = resizeStart.width;
     let newHeight = resizeStart.height;
 
     // Calculate new dimensions based on handle type
     switch (resizeHandle) {
       case 'nw': // Top-left corner
-        newX = x;
-        newY = y;
-        newWidth = resizeStart.width + (resizeStart.x - x);
-        newHeight = resizeStart.height + (resizeStart.y - y);
+        newTopLeftX = x;
+        newTopLeftY = y;
+        newWidth = resizeStart.width + (startTopLeftX - x);
+        newHeight = resizeStart.height + (startTopLeftY - y);
         break;
       case 'ne': // Top-right corner
-        newY = y;
-        newWidth = x - resizeStart.x;
-        newHeight = resizeStart.height + (resizeStart.y - y);
+        newTopLeftY = y;
+        newWidth = x - startTopLeftX;
+        newHeight = resizeStart.height + (startTopLeftY - y);
         break;
       case 'sw': // Bottom-left corner
-        newX = x;
-        newWidth = resizeStart.width + (resizeStart.x - x);
-        newHeight = y - resizeStart.y;
+        newTopLeftX = x;
+        newWidth = resizeStart.width + (startTopLeftX - x);
+        newHeight = y - startTopLeftY;
         break;
       case 'se': // Bottom-right corner
-        newWidth = x - resizeStart.x;
-        newHeight = y - resizeStart.y;
+        newWidth = x - startTopLeftX;
+        newHeight = y - startTopLeftY;
         break;
       case 'n': // Top edge
-        newY = y;
-        newHeight = resizeStart.height + (resizeStart.y - y);
+        newTopLeftY = y;
+        newHeight = resizeStart.height + (startTopLeftY - y);
         break;
       case 's': // Bottom edge
-        newHeight = y - resizeStart.y;
+        newHeight = y - startTopLeftY;
         break;
       case 'w': // Left edge
-        newX = x;
-        newWidth = resizeStart.width + (resizeStart.x - x);
+        newTopLeftX = x;
+        newWidth = resizeStart.width + (startTopLeftX - x);
         break;
       case 'e': // Right edge
-        newWidth = x - resizeStart.x;
+        newWidth = x - startTopLeftX;
         break;
     }
 
@@ -562,18 +567,22 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     const minSize = 20;
     if (newWidth < minSize) {
       if (resizeHandle.includes('w')) {
-        newX = resizeStart.x + resizeStart.width - minSize;
+        newTopLeftX = startTopLeftX + resizeStart.width - minSize;
       }
       newWidth = minSize;
     }
     if (newHeight < minSize) {
       if (resizeHandle.includes('n')) {
-        newY = resizeStart.y + resizeStart.height - minSize;
+        newTopLeftY = startTopLeftY + resizeStart.height - minSize;
       }
       newHeight = minSize;
     }
 
-    setResizeCurrent({ x: newX, y: newY, width: newWidth, height: newHeight });
+    // Convert back to center-based coordinates
+    const newCenterX = newTopLeftX + newWidth / 2;
+    const newCenterY = newTopLeftY + newHeight / 2;
+
+    setResizeCurrent({ x: newCenterX, y: newCenterY, width: newWidth, height: newHeight });
   };
 
   // Handle resize handle drag end
@@ -605,8 +614,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
     setResizingNodeId(null);
   };
 
-  // Render hierarchical nodes recursively
-  const renderHierarchicalNode = (node: Node, parentOffset: { x: number; y: number } = { x: 0, y: 0 }): React.ReactNode => {
+  // Render a node and all its descendants within a Group
+  const renderNodeWithChildren = (node: Node, parentOffset: { x: number; y: number } = { x: 0, y: 0 }): React.ReactNode => {
     const children = getChildNodes(doc, node.id);
 
     if (children.length === 0) {
@@ -637,11 +646,16 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         {/* Render the parent node at (0,0) relative to the group */}
         {renderNode({ ...node, x: 0, y: 0 })}
         {alignedChildren.map((child: Node) => {
-          // Child nodes are positioned relative to this node's absolute position
-          return renderHierarchicalNode(child, { x: nodeAbsoluteX, y: nodeAbsoluteY });
+          // Child nodes are positioned relative to this node's top-left corner (0,0 in the group)
+          return renderNodeWithChildren(child, { x: 0, y: 0 });
         })}
       </Group>
     );
+  };
+
+  // Render hierarchical nodes recursively
+  const renderHierarchicalNode = (node: Node, parentOffset: { x: number; y: number } = { x: 0, y: 0 }): React.ReactNode => {
+    return renderNodeWithChildren(node, parentOffset);
   };
 
   // Render different node types
@@ -662,8 +676,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           return (
             <Rect
               key={node.id}
-              x={node.x + node.width / 2}
-              y={node.y + node.height / 2}
+              x={node.x}
+              y={node.y}
               width={node.width}
               height={node.height}
               fill={node.fill}
@@ -693,8 +707,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           return (
             <Group
               key={node.id}
-              x={node.x + node.width / 2}
-              y={node.y + node.height / 2}
+              x={node.x}
+              y={node.y}
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
@@ -741,8 +755,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           return (
             <Group
               key={node.id}
-              x={node.x + node.width / 2}
-              y={node.y + node.height / 2}
+              x={node.x}
+              y={node.y}
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
@@ -790,8 +804,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           return (
             <Group
               key={node.id}
-              x={node.x + node.width / 2}
-              y={node.y + node.height / 2}
+              x={node.x}
+              y={node.y}
               rotation={rotation}
               offsetX={node.width / 2}
               offsetY={node.height / 2}
@@ -846,8 +860,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           {nodeElement}
           {/* Rotation handle */}
           <Circle
-            x={node.x + node.width / 2}
-            y={node.y - 20}
+            x={node.x}
+            y={node.y - node.height / 2 - 20}
             radius={6}
             fill="#4c93af"
             stroke="#ffffff"
@@ -860,8 +874,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           {/* Resize handles */}
           {/* Corner handles */}
           <Rect
-            x={node.x - handleOffset}
-            y={node.y - handleOffset}
+            x={node.x - node.width / 2 - handleOffset}
+            y={node.y - node.height / 2 - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -873,8 +887,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
           <Rect
-            x={node.x + node.width - handleOffset}
-            y={node.y - handleOffset}
+            x={node.x + node.width / 2 - handleOffset}
+            y={node.y - node.height / 2 - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -886,8 +900,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
           <Rect
-            x={node.x - handleOffset}
-            y={node.y + node.height - handleOffset}
+            x={node.x - node.width / 2 - handleOffset}
+            y={node.y + node.height / 2 - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -899,8 +913,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
           <Rect
-            x={node.x + node.width - handleOffset}
-            y={node.y + node.height - handleOffset}
+            x={node.x + node.width / 2 - handleOffset}
+            y={node.y + node.height / 2 - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -914,8 +928,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
 
           {/* Edge handles */}
           <Rect
-            x={node.x + node.width / 2 - handleOffset}
-            y={node.y - handleOffset}
+            x={node.x - handleOffset}
+            y={node.y - node.height / 2 - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -923,19 +937,6 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             strokeWidth={1}
             draggable
             onDragStart={(e) => handleResizeStart(node.id, 'n', e)}
-            onDragMove={(e) => handleResizeMove(node.id, e)}
-            onDragEnd={(e) => handleResizeEnd(node.id, e)}
-          />
-          <Rect
-            x={node.x + node.width / 2 - handleOffset}
-            y={node.y + node.height - handleOffset}
-            width={handleSize}
-            height={handleSize}
-            fill="#4c93af"
-            stroke="#ffffff"
-            strokeWidth={1}
-            draggable
-            onDragStart={(e) => handleResizeStart(node.id, 's', e)}
             onDragMove={(e) => handleResizeMove(node.id, e)}
             onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
@@ -948,13 +949,26 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
             stroke="#ffffff"
             strokeWidth={1}
             draggable
+            onDragStart={(e) => handleResizeStart(node.id, 's', e)}
+            onDragMove={(e) => handleResizeMove(node.id, e)}
+            onDragEnd={(e) => handleResizeEnd(node.id, e)}
+          />
+          <Rect
+            x={node.x - node.width / 2 - handleOffset}
+            y={node.y - handleOffset}
+            width={handleSize}
+            height={handleSize}
+            fill="#4c93af"
+            stroke="#ffffff"
+            strokeWidth={1}
+            draggable
             onDragStart={(e) => handleResizeStart(node.id, 'w', e)}
             onDragMove={(e) => handleResizeMove(node.id, e)}
             onDragEnd={(e) => handleResizeEnd(node.id, e)}
           />
           <Rect
-            x={node.x + node.width - handleOffset}
-            y={node.y + node.height / 2 - handleOffset}
+            x={node.x + node.width / 2 - handleOffset}
+            y={node.y - handleOffset}
             width={handleSize}
             height={handleSize}
             fill="#4c93af"
@@ -978,8 +992,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         <Group key={`${node.id}-dragging`}>
           {nodeElement}
           <Rect
-            x={snappedX + node.width / 2}
-            y={snappedY + node.height / 2}
+            x={snappedX}
+            y={snappedY}
             width={node.width}
             height={node.height}
             fill="transparent"
@@ -1006,8 +1020,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
         <Group key={`${node.id}-resizing`}>
           {nodeElement}
           <Rect
-            x={snappedX + snappedWidth / 2}
-            y={snappedY + snappedHeight / 2}
+            x={snappedX}
+            y={snappedY}
             width={snappedWidth}
             height={snappedHeight}
             fill="transparent"
@@ -1060,8 +1074,8 @@ export function Canvas({ doc, onDocChange, selectedIds, onSelectionChange, zoom,
           {/* Render preview for initial node creation */}
           {creatingNode && (
             <Rect
-              x={resizeCurrent.x + resizeCurrent.width / 2}
-              y={resizeCurrent.y + resizeCurrent.height / 2}
+              x={resizeCurrent.x}
+              y={resizeCurrent.y}
               width={resizeCurrent.width}
               height={resizeCurrent.height}
               fill="transparent"
